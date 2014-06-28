@@ -9,43 +9,43 @@
   <items>
     <item id="1" file="account_wrap.cpp" function="account_get_locktext">
       <original> by {}</original>
-      <translate> </translate>
+      <translate> por </translate>
     </item>
     <item id="2" file="account_wrap.cpp" function="account_get_locktext">
       <original> for {}</original>
-      <translate> </translate>
+      <translate> para </translate>
     </item>
     <item id="3" file="account_wrap.cpp" function="account_get_locktext">
       <original> permanently</original>
-      <translate> </translate>
+      <translate> permanentemente </translate>
     </item>
     <item id="4" file="account_wrap.cpp" function="account_get_locktext">
       <original> with a reason "{}"</original>
-      <translate> </translate>
+      <translate>con una razón "{}"</translate>
     </item>
     <item id="6" file="alias_command.cpp" function="handle_alias_command">
       <original>No such alias.  Use // to show the list.</original>
-      <translate> </translate>
+      <translate>No hay tal alias. Usar // para mostrar la lista. </translate>
     </item>
     <item id="5" file="alias_command.cpp" function="list_aliases">
       <original>Alias list:</original>
-      <translate> </translate>
+      <translate> Lista de alias: </translate>
     </item>
     <item id="7" file="channel.cpp" function="channel_add_connection">
       <original>you are now tempOP for this channel</original>
-      <translate> </translate>
+      <translate> Ahora eres tempOP para este canal</translate>
     </item>
     <item id="260" file="command.cpp" function="_handle_addacct_command">
       <original>Account name contains some invalid symbol!</original>
-      <translate> </translate>
+      <translate>El nombre de cuenta contiene algun carácter invalido! </translate>
     </item>
     <item id="261" file="command.cpp" function="_handle_addacct_command">
       <original>Maximum password length allowed is {}</original>
-      <translate> </translate>
+      <translate>La longitud máxima permitida para la contraseña es de </translate>
     </item>
     <item id="262" file="command.cpp" function="_handle_addacct_command">
       <original>Trying to add account "{}" with password "{}"</original>
-      <translate> </translate>
+      <translate>Intentando añadir cuenta  "{}" con contraseña "{}"</translate>
     </item>
     <item id="263" file="command.cpp" function="_handle_addacct_command">
       <original>Hash is: {}</original>
@@ -53,51 +53,51 @@
     </item>
     <item id="264" file="command.cpp" function="_handle_addacct_command">
       <original>Failed to create account!</original>
-      <translate> </translate>
+      <translate>No ha sido posible crear la cuenta! </translate>
     </item>
     <item id="265" file="command.cpp" function="_handle_addacct_command">
       <original>Account {} created.</original>
-      <translate> </translate>
+      <translate>Cuenta {} creada. </translate>
     </item>
     <item id="51" file="command.cpp" function="_handle_admin_command">
       <original>You must supply a username.</original>
-      <translate> </translate>
+      <translate>Se debe proporcionar una nombre de usuario. </translate>
     </item>
     <item id="52" file="command.cpp" function="_handle_admin_command">
       <original>There's no account with username {}.</original>
-      <translate> </translate>
+      <translate>No existe ninguna cuenta con el nombre de usuario {} </translate>
     </item>
     <item id="53" file="command.cpp" function="_handle_admin_command">
       <original>{} is already a Server Admin</original>
-      <translate> </translate>
+      <translate>{} ya es Admin del Servidor </translate>
     </item>
     <item id="54" file="command.cpp" function="_handle_admin_command">
       <original>{} has been promoted to a Server Admin</original>
-      <translate> </translate>
+      <translate>{} ha sido ascendido a Admin del Servidor </translate>
     </item>
     <item id="55" file="command.cpp" function="_handle_admin_command">
       <original>{} has promoted you to a Server Admin</original>
-      <translate> </translate>
+      <translate>{} le ha ascendido a Admin del Servidor </translate>
     </item>
     <item id="56" file="command.cpp" function="_handle_admin_command">
       <original>{} is not a Server Admin.</original>
-      <translate> </translate>
+      <translate>{} no es un Admin del Servidor </translate>
     </item>
     <item id="57" file="command.cpp" function="_handle_admin_command">
       <original>{} has been demoted from a Server Admin</original>
-      <translate> </translate>
+      <translate>{} ha sido degradado a no ser Admin del Servidor </translate>
     </item>
     <item id="58" file="command.cpp" function="_handle_admin_command">
       <original>{} has demoted you from a Server Admin</original>
-      <translate> </translate>
+      <translate>{} le ha degradado a no ser Admin del Servidor</translate>
     </item>
     <item id="299" file="command.cpp" function="_handle_admins_command">
       <original>Currently logged on Administrators:</original>
-      <translate> </translate>
+      <translate>Actualmente conectado en Administradores: </translate>
     </item>
     <item id="416" file="command.cpp" function="_handle_alert_command">
       <original>Your game client doesn't support MessageBox.</original>
-      <translate> </translate>
+      <translate>El cliente no es compatible con MessageBox</translate>
     </item>
     <item id="417" file="command.cpp" function="_handle_alert_command">
       <original>\n\n***************************\nBy {}</original>
@@ -105,7 +105,7 @@
     </item>
     <item id="418" file="command.cpp" function="_handle_alert_command">
       <original>Information from {}</original>
-      <translate> </translate>
+      <translate>Información de {}</translate>
     </item>
     <item id="419" file="command.cpp" function="_handle_alert_command">
       <original> for {}</original>
@@ -113,19 +113,19 @@
     </item>
     <item id="158" file="command.cpp" function="_handle_announce_command">
       <original>Announcement from {}: {}</original>
-      <translate> </translate>
+      <translate>Notificación de {}: </translate>
     </item>
     <item id="159" file="command.cpp" function="_handle_announce_command">
       <original>Could not broadcast message.</original>
-      <translate> </translate>
+      <translate>No se ha podido transmitir el mensaje.</translate>
     </item>
     <item id="66" file="command.cpp" function="_handle_aop_command">
       <original>This command can only be used inside a channel.</original>
-      <translate> </translate>
+      <translate>Este comando tan solo se puede usar dentro de un canal </translate>
     </item>
     <item id="67" file="command.cpp" function="_handle_aop_command">
       <original>You must be at least a Channel Admin to use this command.</original>
-      <translate> </translate>
+      <translate>Se debe ser Admin del Canal como mñinimo para poder usar este comando.</translate>
     </item>
     <item id="68" file="command.cpp" function="_handle_aop_command">
       <original>There's no account with username {}.</original>
@@ -133,23 +133,23 @@
     </item>
     <item id="69" file="command.cpp" function="_handle_aop_command">
       <original>{} is already a Channel Admin</original>
-      <translate> </translate>
+      <translate>{} ya es Admin del Canal</translate>
     </item>
     <item id="70" file="command.cpp" function="_handle_aop_command">
       <original>{} has been promoted to a Channel Admin</original>
-      <translate> </translate>
+      <translate>{} ha sido ascendio </translate>
     </item>
     <item id="71" file="command.cpp" function="_handle_aop_command">
       <original>{} has promoted you to a Channel Admin for channel "{}"</original>
-      <translate> </translate>
+      <translate>{} le ha ascendido a Admin del Canal "{}" </translate>
     </item>
     <item id="198" file="command.cpp" function="_handle_away_command">
       <original>You are now marked as being away.</original>
-      <translate> </translate>
+      <translate>Su estado ha sido marcado como ausente </translate>
     </item>
     <item id="199" file="command.cpp" function="_handle_away_command">
       <original>You are no longer marked as away.</original>
-      <translate> </translate>
+      <translate>Su estado ya no es ausente </translate>
     </item>
     <item id="218" file="command.cpp" function="_handle_ban_command">
       <original>This command can only be used inside a channel.</original>
