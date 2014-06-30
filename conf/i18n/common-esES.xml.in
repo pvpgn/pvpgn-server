@@ -121,7 +121,7 @@
     </item>
     <item id="66" file="command.cpp" function="_handle_aop_command">
       <original>This command can only be used inside a channel.</original>
-      <translate>Este comando tan solo se puede usar dentro de un canal </translate>
+      <translate>Este comando solamente se puede usar dentro de un canal.</translate>
     </item>
     <item id="67" file="command.cpp" function="_handle_aop_command">
       <original>You must be at least a Channel Admin to use this command.</original>
@@ -137,7 +137,7 @@
     </item>
     <item id="70" file="command.cpp" function="_handle_aop_command">
       <original>{} has been promoted to a Channel Admin</original>
-      <translate>{} ha sido ascendio </translate>
+      <translate>{} ha sido ascendido </translate>
     </item>
     <item id="71" file="command.cpp" function="_handle_aop_command">
       <original>{} has promoted you to a Channel Admin for channel "{}"</original>
@@ -605,31 +605,31 @@
     </item>
     <item id="139" file="command.cpp" function="_handle_friends_command">
       <original>Your {} - Friends List</original>
-      <translate> </translate>
+      <translate>Su {} - Lista de Amigos</translate>
     </item>
     <item id="140" file="command.cpp" function="_handle_friends_command">
       <original>Your {} - Online Friends List</original>
-      <translate> </translate>
+      <translate>Su {} - Lista de Amigos Conectados</translate>
     </item>
     <item id="141" file="command.cpp" function="_handle_friends_command">
       <original>, offline</original>
-      <translate> </translate>
+      <translate>, desconectado/a</translate>
     </item>
     <item id="142" file="command.cpp" function="_handle_friends_command">
       <original> using {}</original>
-      <translate> </translate>
+      <translate> está usando {}</translate>
     </item>
     <item id="143" file="command.cpp" function="_handle_friends_command">
       <original>, in game "{}"</original>
-      <translate> </translate>
+      <translate>, dentro del juego "{}" </translate>
     </item>
     <item id="144" file="command.cpp" function="_handle_friends_command">
       <original>, in game AT Preparation</original>
-      <translate> </translate>
+      <translate>, dentro del juego en  </translate>
     </item>
     <item id="145" file="command.cpp" function="_handle_friends_command">
       <original>, in channel "{}",</original>
-      <translate> </translate>
+      <translate>, en el canal "{}" </translate>
     </item>
     <item id="146" file="command.cpp" function="_handle_friends_command">
       <original>, is in AT Preparation</original>
@@ -637,27 +637,27 @@
     </item>
     <item id="147" file="command.cpp" function="_handle_friends_command">
       <original>, is in a game</original>
-      <translate> </translate>
+      <translate>, está en una partida</translate>
     </item>
     <item id="148" file="command.cpp" function="_handle_friends_command">
       <original>, is in a chat channel</original>
-      <translate> </translate>
+      <translate>, está en un canal de chat</translate>
     </item>
     <item id="149" file="command.cpp" function="_handle_friends_command">
       <original>End of Friends List</original>
-      <translate> </translate>
+      <translate>Final de la Lista de Amigos</translate>
     </item>
     <item id="310" file="command.cpp" function="_handle_gameinfo_command">
       <original>You are not in a game.</original>
-      <translate> </translate>
+      <translate>No se está en una partida.</translate>
     </item>
     <item id="311" file="command.cpp" function="_handle_gameinfo_command">
       <original>That game does not exist.</original>
-      <translate> </translate>
+      <translate>Ese juego no existe.</translate>
     </item>
     <item id="312" file="command.cpp" function="_handle_gameinfo_command">
       <original>Name: {}    ID: {} ({})</original>
-      <translate> </translate>
+      <translate>Nombre: {}    ID: {} ({}) </translate>
     </item>
     <item id="313" file="command.cpp" function="_handle_gameinfo_command">
       <original>none</original>
@@ -669,19 +669,19 @@
     </item>
     <item id="315" file="command.cpp" function="_handle_gameinfo_command">
       <original>Owner: {}</original>
-      <translate> </translate>
+      <translate>Propietario: {}</translate>
     </item>
     <item id="316" file="command.cpp" function="_handle_gameinfo_command">
       <original>Address: {}</original>
-      <translate> </translate>
+      <translate>Dirección {}</translate>
     </item>
     <item id="317" file="command.cpp" function="_handle_gameinfo_command">
       <original>Address: {} (trans {})</original>
-      <translate> </translate>
+      <translate>Dirección: {} (trans {})</translate>
     </item>
     <item id="318" file="command.cpp" function="_handle_gameinfo_command">
       <original>Client: {} (version {}, startver {})</original>
-      <translate> </translate>
+      <translate>Cliente: {} (versión {}, startver {})</translate>
     </item>
     <item id="319" file="command.cpp" function="_handle_gameinfo_command">
       <original>Created: {}</original>
@@ -689,11 +689,11 @@
     </item>
     <item id="320" file="command.cpp" function="_handle_gameinfo_command">
       <original>Started: {}</original>
-      <translate> </translate>
+      <translate>Iniciado: {}</translate>
     </item>
     <item id="321" file="command.cpp" function="_handle_gameinfo_command">
       <original>Status: {}</original>
-      <translate> </translate>
+      <translate>Estado: {} </translate>
     </item>
     <item id="322" file="command.cpp" function="_handle_gameinfo_command">
       <original>Type: {}</original>
@@ -725,11 +725,11 @@
     </item>
     <item id="329" file="command.cpp" function="_handle_gameinfo_command">
       <original>Map Type: {}</original>
-      <translate> </translate>
+      <translate>Tipo de Mapa: {}</translate>
     </item>
     <item id="330" file="command.cpp" function="_handle_gameinfo_command">
       <original>Players: {} current, {} total, {} max</original>
-      <translate> </translate>
+      <translate>Jugadores: {} actuales, {} total, {} max </translate>
     </item>
     <item id="331" file="command.cpp" function="_handle_gameinfo_command">
       <original>Description: {}</original>
@@ -761,11 +761,11 @@
     </item>
     <item id="254" file="command.cpp" function="_handle_games_command">
       <original>ctag </original>
-      <translate> </translate>
+      <translate>ctag </translate>
     </item>
     <item id="255" file="command.cpp" function="_handle_games_command">
       <original>--------addr--------</original>
-      <translate> </translate>
+      <translate>--------direc-------- </translate>
     </item>
     <item id="380" file="command.cpp" function="_handle_ipscan_command">
       <original>Warning: That user is not online, using last known address.</original>
@@ -777,11 +777,11 @@
     </item>
     <item id="382" file="command.cpp" function="_handle_ipscan_command">
       <original>Scanning online users for IP {}...</original>
-      <translate>Scaneando usuarios online para IP {}...</translate>
+      <translate>Escaneando usuarios online para IP {}...</translate>
     </item>
     <item id="383" file="command.cpp" function="_handle_ipscan_command">
       <original>There are no online users with that IP address</original>
-      <translate>No hay usuarios onlne con esa dirección IP</translate>
+      <translate>No hay usuarios conectados con esa dirección IP</translate>
     </item>
     <item id="210" file="command.cpp" function="_handle_kick_command">
       <original>This command can only be used inside a channel.</original>
@@ -837,7 +837,7 @@
     </item>
     <item id="332" file="command.cpp" function="_handle_ladderactivate_command">
       <original>Copied current scores to active scores on all ladders.</original>
-      <translate> </translate>
+      <translate>Se han copiado las puntuaciones actuales a las puntuaciones activas en todas las clasificaciones</translate>
     </item>
     <item id="340" file="command.cpp" function="_handle_ladderinfo_command">
       <original>This game does not support win/loss records.</original>
@@ -845,11 +845,11 @@
     </item>
     <item id="341" file="command.cpp" function="_handle_ladderinfo_command">
       <original>You must supply a rank and a valid program ID.</original>
-      <translate> </translate>
+      <translate>Se debe proporcionar un rango y una ID de programa válidos.</translate>
     </item>
     <item id="342" file="command.cpp" function="_handle_ladderinfo_command">
       <original>Example: /ladderinfo 1 STAR</original>
-      <translate> </translate>
+      <translate>Ejemplo: /ladderinfo 1 STAR</translate>
     </item>
     <item id="365" file="command.cpp" function="_handle_lockacct_command">
       <original>Invalid user.</original>
@@ -857,11 +857,11 @@
     </item>
     <item id="366" file="command.cpp" function="_handle_lockacct_command">
       <original>Account {} is now locked</original>
-      <translate> </translate>
+      <translate>La cuenta {} ha sido bloqueada</translate>
     </item>
     <item id="367" file="command.cpp" function="_handle_lockacct_command">
       <original>Your account has just been locked</original>
-      <translate> </translate>
+      <translate>Su cuenta acaba de ser bloqueada</translate>
     </item>
     <item id="245" file="command.cpp" function="_handle_lusers_command">
       <original>This command can only be used inside a channel.</original>
@@ -869,11 +869,11 @@
     </item>
     <item id="246" file="command.cpp" function="_handle_lusers_command">
       <original>Banned users:</original>
-      <translate> </translate>
+      <translate>Usuarios baneados:</translate>
     </item>
     <item id="150" file="command.cpp" function="_handle_me_command">
       <original>You are not in a channel.</original>
-      <translate> </translate>
+      <translate>No se encuentra en un canal.</translate>
     </item>
     <item id="407" file="command.cpp" function="_handle_moderate_command">
       <original>This command can only be used inside a channel.</original>
@@ -885,23 +885,23 @@
     </item>
     <item id="409" file="command.cpp" function="_handle_moderate_command">
       <original>Unable to change channel flags.</original>
-      <translate> </translate>
+      <translate>No ha sido posible cambiar las del canal</translate>
     </item>
     <item id="410" file="command.cpp" function="_handle_moderate_command">
       <original>Channel is now unmoderated.</original>
-      <translate> </translate>
+      <translate>El canal ahora está sin moderación.</translate>
     </item>
     <item id="411" file="command.cpp" function="_handle_moderate_command">
       <original>Channel is now moderated.</original>
-      <translate> </translate>
+      <translate>El canal ahora está moderado </translate>
     </item>
     <item id="390" file="command.cpp" function="_handle_motd_command">
       <original>Unable to open motd.</original>
-      <translate> </translate>
+      <translate>No es posible abrir motd (mapa del dia) </translate>
     </item>
     <item id="391" file="command.cpp" function="_handle_motd_command">
       <original>No motd.</original>
-      <translate> </translate>
+      <translate>No hay motd (mapa del dia) </translate>
     </item>
     <item id="371" file="command.cpp" function="_handle_muteacct_command">
       <original>Invalid user.</original>
@@ -909,11 +909,11 @@
     </item>
     <item id="372" file="command.cpp" function="_handle_muteacct_command">
       <original>Account {} is now muted</original>
-      <translate> </translate>
+      <translate>La cuenta {} ahora está silenciada.</translate>
     </item>
     <item id="373" file="command.cpp" function="_handle_muteacct_command">
       <original>Your account has just been muted</original>
-      <translate> </translate>
+      <translate>Su cuenta acaba de ser silenciada</translate>
     </item>
     <item id="353" file="command.cpp" function="_handle_netinfo_command">
       <original>That user is not logged on.</original>
@@ -921,39 +921,39 @@
     </item>
     <item id="354" file="command.cpp" function="_handle_netinfo_command">
       <original>Address information for other users is only available to admins.</original>
-      <translate> </translate>
+      <translate>La información sobre las direcciones de otros usuarios solo esta avalible para los administradores. </translate>
     </item>
     <item id="355" file="command.cpp" function="_handle_netinfo_command">
       <original>Server TCP: {} (bind {})</original>
-      <translate> </translate>
+      <translate>TCP del Servidor: {} (enlazar {})</translate>
     </item>
     <item id="356" file="command.cpp" function="_handle_netinfo_command">
       <original>Client TCP: {}</original>
-      <translate> </translate>
+      <translate>TCP del Cliente: {}</translate>
     </item>
     <item id="357" file="command.cpp" function="_handle_netinfo_command">
       <original>Client UDP: {}</original>
-      <translate> </translate>
+      <translate>UDP del Cliente: {}</translate>
     </item>
     <item id="358" file="command.cpp" function="_handle_netinfo_command">
       <original>Client UDP: {} (trans {})</original>
-      <translate> </translate>
+      <translate>UDP del Cliente: {} (trans{})</translate>
     </item>
     <item id="359" file="command.cpp" function="_handle_netinfo_command">
       <original>Game UDP: {}</original>
-      <translate> </translate>
+      <translate>UDP del Juego: {}</translate>
     </item>
     <item id="360" file="command.cpp" function="_handle_netinfo_command">
       <original>Game UDP: {} (trans {})</original>
-      <translate> </translate>
+      <translate>UDP del Juego {} (trans {})</translate>
     </item>
     <item id="361" file="command.cpp" function="_handle_netinfo_command">
       <original>Game UDP: none</original>
-      <translate> </translate>
+      <translate>UDP del Juego: No hay</translate>
     </item>
     <item id="161" file="command.cpp" function="_handle_nobeep_command">
       <original>Audible notification off.</original>
-      <translate> </translate>
+      <translate>Notificación acústica desactivada.</translate>
     </item>
     <item id="96" file="command.cpp" function="_handle_op_command">
       <original>This command can only be used inside a channel.</original>
@@ -961,7 +961,7 @@
     </item>
     <item id="97" file="command.cpp" function="_handle_op_command">
       <original>You must be at least a Channel Operator or tempOP to use this command.</original>
-      <translate> </translate>
+      <translate>Se debe ser como mínimo Operador del Canal o tempoOP para usar este comando.</translate>
     </item>
     <item id="98" file="command.cpp" function="_handle_op_command">
       <original>There's no account with username {}.</original>
@@ -969,31 +969,31 @@
     </item>
     <item id="99" file="command.cpp" function="_handle_op_command">
       <original>{} is already a Channel Operator</original>
-      <translate> </translate>
+      <translate>{} ya es un Operador del Canal.</translate>
     </item>
     <item id="100" file="command.cpp" function="_handle_op_command">
       <original>{} has been promoted to a Channel Operator</original>
-      <translate> </translate>
+      <translate>{} ha sido ascendido a Operador del Canal</translate>
     </item>
     <item id="101" file="command.cpp" function="_handle_op_command">
       <original>{} has promoted you to a Channel Operator in channel "{}"</original>
-      <translate> </translate>
+      <translate>{} le ha ascendido a Operador del Canal "{}"</translate>
     </item>
     <item id="102" file="command.cpp" function="_handle_op_command">
       <original>{} must be on the same channel to tempOP him</original>
-      <translate> </translate>
+      <translate>{} debe estar en el mismo canal para darle el privilegio OPtemp</translate>
     </item>
     <item id="103" file="command.cpp" function="_handle_op_command">
       <original>{} already is operator or admin, no need to tempOP him</original>
-      <translate> </translate>
+      <translate>{} ya es operador o administrador, no es necesario darle el privilegio de OPtemp </translate>
     </item>
     <item id="104" file="command.cpp" function="_handle_op_command">
       <original>{} has been promoted to a tempOP</original>
-      <translate> </translate>
+      <translate>{} ha sido ascendido a OPtemp</translate>
     </item>
     <item id="105" file="command.cpp" function="_handle_op_command">
       <original>{} has promoted you to a tempOP in this channel</original>
-      <translate> </translate>
+      <translate>{} le ha ascendido a ser OPtemp en este canal</translate>
     </item>
     <item id="59" file="command.cpp" function="_handle_operator_command">
       <original>You must supply a username.</original>
@@ -1005,35 +1005,35 @@
     </item>
     <item id="61" file="command.cpp" function="_handle_operator_command">
       <original>{} is already a Server Operator</original>
-      <translate> </translate>
+      <translate>{} ya es un Operador del Servidor </translate>
     </item>
     <item id="62" file="command.cpp" function="_handle_operator_command">
       <original>{} has been promoted to a Server Operator</original>
-      <translate> </translate>
+      <translate>{} ha sido ascendido a Operador del Servidor</translate>
     </item>
     <item id="63" file="command.cpp" function="_handle_operator_command">
       <original>{} has promoted you to a Server Operator</original>
-      <translate> </translate>
+      <translate>{} le ha ascendido a Operador del Servidor</translate>
     </item>
     <item id="64" file="command.cpp" function="_handle_operator_command">
       <original>{} is no Server Operator, so you can't demote him</original>
-      <translate> </translate>
+      <translate>{} no es Operador del Servidor, así que no se le puede degradar</translate>
     </item>
     <item id="65" file="command.cpp" function="_handle_operator_command">
       <original>{} has been demoted from a Server Operator</original>
-      <translate> </translate>
+      <translate>{} ha sido degradado a no ser Operador del Servidor</translate>
     </item>
     <item id="393" file="command.cpp" function="_handle_ping_command">
       <original>{} latency: {}</original>
-      <translate> </translate>
+      <translate>{} latencia: {}</translate>
     </item>
     <item id="394" file="command.cpp" function="_handle_ping_command">
       <original>Your latency {}</original>
-      <translate> </translate>
+      <translate>Su latencia {}</translate>
     </item>
     <item id="395" file="command.cpp" function="_handle_ping_command">
       <original>{} latency ()</original>
-      <translate> </translate>
+      <translate>{} latencia () </translate>
     </item>
     <item id="396" file="command.cpp" function="_handle_ping_command">
       <original>Invalid user.</original>
@@ -1041,31 +1041,31 @@
     </item>
     <item id="300" file="command.cpp" function="_handle_quit_command">
       <original>Connection closed.</original>
-      <translate> </translate>
+      <translate>Conexión cerrada.</translate>
     </item>
     <item id="362" file="command.cpp" function="_handle_quota_command">
       <original>Your quota allows you to write {} line(s) per {} second(s).</original>
-      <translate> </translate>
+      <translate>Su cuota le permite escribir {} línea(s) por {} segundo(s).</translate>
     </item>
     <item id="363" file="command.cpp" function="_handle_quota_command">
       <original>Long lines will be wrapped every {} characters.</original>
-      <translate> </translate>
+      <translate>Las líneas demasiado extensas serán comprimidas cada {} carácteres</translate>
     </item>
     <item id="364" file="command.cpp" function="_handle_quota_command">
       <original>You are not allowed to send lines with more than {} characters.</original>
-      <translate> </translate>
+      <translate>No le está permitido enviar líneas con más de {} carácteres.</translate>
     </item>
     <item id="231" file="command.cpp" function="_handle_realmann_command">
       <original>You must join a realm first</original>
-      <translate> </translate>
+      <translate>Primero se debe unir a un reino</translate>
     </item>
     <item id="232" file="command.cpp" function="_handle_realmann_command">
       <original>Announcement from {}@{}: {}</original>
-      <translate> </translate>
+      <translate>Notificación de {}@{}: {}</translate>
     </item>
     <item id="333" file="command.cpp" function="_handle_rehash_command">
       <original>Invalid mode.</original>
-      <translate> </translate>
+      <translate>Modo no válido.</translate>
     </item>
     <item id="334" file="command.cpp" function="_handle_rehash_command">
       <original>Rehash of "{}" is complete!</original>
@@ -1077,11 +1077,11 @@
     </item>
     <item id="230" file="command.cpp" function="_handle_reply_command">
       <original>No one messaged you, use /m instead</original>
-      <translate> </translate>
+      <translate>Nadie le ha enviado ningún mensaje, en ese caso usar /m </translate>
     </item>
     <item id="336" file="command.cpp" function="_handle_save_command">
       <original>Pending changes has been saved into the database.</original>
-      <translate> </translate>
+      <translate>Los cambios pendientes han sido guardados en la base de datos.</translate>
     </item>
     <item id="347" file="command.cpp" function="_handle_serverban_command">
       <original>That user is not logged on.</original>
@@ -1089,27 +1089,27 @@
     </item>
     <item id="348" file="command.cpp" function="_handle_serverban_command">
       <original>Banning {} who is using IP address {}</original>
-      <translate> </translate>
+      <translate>Baneando {} quién está usando la dirección IP {}</translate>
     </item>
     <item id="349" file="command.cpp" function="_handle_serverban_command">
       <original>User's account is also LOCKED! Only an admin can unlock it!</original>
-      <translate> </translate>
+      <translate>¡La cuenta del usuario también está BLOQUEADA! ¡Solamente un administrador puede desbloquearla!</translate>
     </item>
     <item id="350" file="command.cpp" function="_handle_serverban_command">
       <original>/ipban a {}</original>
-      <translate> </translate>
+      <translate>/ipban a {}</translate>
     </item>
     <item id="351" file="command.cpp" function="_handle_serverban_command">
       <original>You have been banned by Admin: {}</original>
-      <translate> </translate>
+      <translate>Ha sido baneado por el Administrador: {} </translate>
     </item>
     <item id="352" file="command.cpp" function="_handle_serverban_command">
       <original>Your account is also LOCKED! Only an admin can UNLOCK it!</original>
-      <translate> </translate>
+      <translate>¡Su cuenta también está BLOQUEADA! ¡Solamente un administrador puede desbloquearla! </translate>
     </item>
     <item id="384" file="command.cpp" function="_handle_set_command">
       <original>Access denied due to security reasons.</original>
-      <translate> </translate>
+      <translate>Acceso denegado debido a razones de seguridad.</translate>
     </item>
     <item id="385" file="command.cpp" function="_handle_set_command">
       <original>Invalid user.</original>
@@ -1117,19 +1117,19 @@
     </item>
     <item id="386" file="command.cpp" function="_handle_set_command">
       <original>Current value of {} is "{}"</original>
-      <translate> </translate>
+      <translate>El valor actual de {} es "{}"</translate>
     </item>
     <item id="387" file="command.cpp" function="_handle_set_command">
       <original>Value currently not set</original>
-      <translate> </translate>
+      <translate>Valor actual no fijado</translate>
     </item>
     <item id="388" file="command.cpp" function="_handle_set_command">
       <original>Unable to set key for</original>
       <translate>No es posible establecer tecla para</translate>
     </item>
     <item id="389" file="command.cpp" function="_handle_set_command">
-      <original>Tecla establecida con éxito para</original>
-      <translate> </translate>
+      <original>Key set successfully for</original>
+      <translate>Tecla establecida con éxito para </translate>
     </item>
     <item id="337" file="command.cpp" function="_handle_shutdown_command">
       <original>Invalid delay.</original>
@@ -1140,8 +1140,8 @@
       <translate>Se ha iniciado la secuencia de cierre.</translate>
     </item>
     <item id="339" file="command.cpp" function="_handle_shutdown_command">
-      <original>Se ha cancelado la secuencia de cierre.</original>
-      <translate> </translate>
+      <original>You've canceled the shutdown sequence.</original>
+      <translate>Se ha cancelado la secuencia de cierre. </translate>
     </item>
     <item id="203" file="command.cpp" function="_handle_squelch_command">
       <original>No such user.</original>
@@ -1169,7 +1169,7 @@
     </item>
     <item id="165" file="command.cpp" function="_handle_stats_command">
       <original>This game does not support win/loss records.</original>
-      <translate>Este juego no soporta records de vitcoria/derrota.</translate>
+      <translate>Este juego no soporta records de victoria/derrota.</translate>
     </item>
     <item id="166" file="command.cpp" function="_handle_stats_command">
       <original>You must supply a user name and a valid program ID.</original>
@@ -1277,19 +1277,19 @@
     </item>
     <item id="151" file="command.cpp" function="_handle_status_command">
       <original>There are currently {} user(s) in {} games of {}</original>
-      <translate> </translate>
+      <translate>Actualmente hay {} usuario(s) en {} juegos de {}</translate>
     </item>
     <item id="152" file="command.cpp" function="_handle_status_command">
       <original>There are currently {} users online, in {} games, and in {} channels.</original>
-      <translate> </translate>
+      <translate>Actualmente hay {} usuarios conectados, en {} juegos, y en {} canales.</translate>
     </item>
     <item id="378" file="command.cpp" function="_handle_tag_command">
       <original>Client tag set to {}.</original>
-      <translate> </translate>
+      <translate>Etiqueta del cliente fijada en {}</translate>
     </item>
     <item id="379" file="command.cpp" function="_handle_tag_command">
       <original>Invalid clienttag {} specified</original>
-      <translate> </translate>
+      <translate>Etiqueta del cliente especificada {} no válida</translate>
     </item>
     <item id="192" file="command.cpp" function="_handle_time_command">
       <original>Server Time: {}</original>
@@ -1353,19 +1353,19 @@
     </item>
     <item id="404" file="command.cpp" function="_handle_topic_command">
       <original>Max topic length exceeded (max {} symbols)</original>
-      <translate> </translate>
+      <translate>Longitud máxima del hilo excedida ( max {} cáracteres)</translate>
     </item>
     <item id="405" file="command.cpp" function="_handle_topic_command">
       <original>You must be at least a Channel Operator of {} to set the topic</original>
-      <translate> </translate>
+      <translate>Se debe ser como mínimo Operador del Canal {} para establecer el hilo</translate>
     </item>
     <item id="406" file="command.cpp" function="_handle_topic_command">
       <original>{} topic: no topic</original>
-      <translate> </translate>
+      <translate>{} hilo: sin hilo</translate>
     </item>
     <item id="392" file="command.cpp" function="_handle_tos_command">
       <original>Unable to send TOS (Terms of Service).</original>
-      <translate> </translate>
+      <translate>No ha sido posible enviar los TDS (Términos del Servicio)</translate>
     </item>
     <item id="226" file="command.cpp" function="_handle_unban_command">
       <original>This command can only be used inside a channel.</original>
@@ -1373,15 +1373,15 @@
     </item>
     <item id="227" file="command.cpp" function="_handle_unban_command">
       <original>You are not a channel operator.</original>
-      <translate> </translate>
+      <translate>No se es un operador de canal.</translate>
     </item>
     <item id="228" file="command.cpp" function="_handle_unban_command">
       <original>That user is not banned.</original>
-      <translate> </translate>
+      <translate>Ese usuario no está baneado.</translate>
     </item>
     <item id="229" file="command.cpp" function="_handle_unban_command">
       <original>{} is no longer banned from this channel.</original>
-      <translate> </translate>
+      <translate>{} ya no esta baneado en este canal.</translate>
     </item>
     <item id="368" file="command.cpp" function="_handle_unlockacct_command">
       <original>Invalid user.</original>
@@ -1445,7 +1445,7 @@
     </item>
     <item id="162" file="command.cpp" function="_handle_uptime_command">
       <original>Uptime: {}</original>
-      <translate> </translate>
+      <translate>Tiempo de actividad: {}</translate>
     </item>
     <item id="78" file="command.cpp" function="_handle_voice_command">
       <original>This command can only be used inside a channel.</original>
@@ -1785,11 +1785,11 @@
     </item>
     <item id="447" file="command.lua" function="api.message_send_text">
       <original>Available Quiz dictionaries: </original>
-      <translate> </translate>
+      <translate>Diccionarios para Quiz dispnobiles: </translate>
     </item>
     <item id="448" file="command.lua" function="api.message_send_text">
       <original>Quiz is not running.</original>
-      <translate> </translate>
+      <translate>El Quiz no está en marcha.</translate>
     </item>
     <item id="451" file="command.lua" function="api.message_send_text">
       <original>{}'s Quiz record:</original>
