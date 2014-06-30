@@ -1389,11 +1389,11 @@
     </item>
     <item id="369" file="command.cpp" function="_handle_unlockacct_command">
       <original>Your account has just been unlocked by {}</original>
-      <translate> </translate>
+      <translate>Su cuenta acaba de ser desbloqueada por {}</translate>
     </item>
     <item id="370" file="command.cpp" function="_handle_unlockacct_command">
       <original>That user's account is now unlocked.</original>
-      <translate> </translate>
+      <translate>La cuenta de ese usuario ahora está desbloqueada.</translate>
     </item>
     <item id="374" file="command.cpp" function="_handle_unmuteacct_command">
       <original>Invalid user.</original>
@@ -1401,11 +1401,11 @@
     </item>
     <item id="375" file="command.cpp" function="_handle_unmuteacct_command">
       <original>Your account has just been unmuted by {}</original>
-      <translate> </translate>
+      <translate>Su cuenta acaban de devolverle la voz por {}</translate>
     </item>
     <item id="376" file="command.cpp" function="_handle_unmuteacct_command">
       <original>That user's account is now unmuted.</original>
-      <translate> </translate>
+      <translate>Esa cuenta de usuario vuelve a tener voz.</translate>
     </item>
     <item id="207" file="command.cpp" function="_handle_unsquelch_command">
       <original>No such user.</original>
@@ -1413,11 +1413,11 @@
     </item>
     <item id="208" file="command.cpp" function="_handle_unsquelch_command">
       <original>User was not being ignored.</original>
-      <translate> </translate>
+      <translate>El usuario no estaba siendo ignorado.</translate>
     </item>
     <item id="209" file="command.cpp" function="_handle_unsquelch_command">
       <original>No longer ignoring.</original>
-      <translate> </translate>
+      <translate>Ya no se le ignora más.</translate>
     </item>
     <item id="236" file="command.cpp" function="_handle_unwatch_command">
       <original>That user does not exist.</original>
@@ -1425,11 +1425,11 @@
     </item>
     <item id="237" file="command.cpp" function="_handle_unwatch_command">
       <original>Removal from watch list failed.</original>
-      <translate> </translate>
+      <translate>Eliminación fallida de la lista de vigilancia.</translate>
     </item>
     <item id="238" file="command.cpp" function="_handle_unwatch_command">
       <original>User {} removed from your watch list.</original>
-      <translate> </translate>
+      <translate>Usuario {} eliminado de la lista de vigilancia.</translate>
     </item>
     <item id="242" file="command.cpp" function="_handle_unwatchall_command">
       <original>Removal from watch list failed.</original>
@@ -1437,11 +1437,11 @@
     </item>
     <item id="243" file="command.cpp" function="_handle_unwatchall_command">
       <original>All {} users removed from your watch list.</original>
-      <translate> </translate>
+      <translate>Todos los {} usuarios han sido eliminados de la lista de vigilancia.</translate>
     </item>
     <item id="244" file="command.cpp" function="_handle_unwatchall_command">
       <original>All users removed from your watch list.</original>
-      <translate> </translate>
+      <translate>Todos los usuarios han sido eliminados de la lista de vigilancia.</translate>
     </item>
     <item id="162" file="command.cpp" function="_handle_uptime_command">
       <original>Uptime: {}</original>
@@ -1453,7 +1453,7 @@
     </item>
     <item id="79" file="command.cpp" function="_handle_voice_command">
       <original>You must be at least a Channel Operator to use this command.</original>
-      <translate> </translate>
+      <translate>Se debe ser como mínimo Operador del Canal para poder usar este comando.</translate>
     </item>
     <item id="80" file="command.cpp" function="_handle_voice_command">
       <original>There's no account with username {}.</original>
@@ -1461,27 +1461,27 @@
     </item>
     <item id="81" file="command.cpp" function="_handle_voice_command">
       <original>{} is already on VOP list, no need to Voice him</original>
-      <translate> </translate>
+      <translate>{} ya se encuentra en la lista VOP, no es necesario darle Voz.</translate>
     </item>
     <item id="82" file="command.cpp" function="_handle_voice_command">
       <original>{} must be on the same channel to voice him</original>
-      <translate> </translate>
+      <translate>{} debe estar en el mismo canal para darle voz</translate>
     </item>
     <item id="83" file="command.cpp" function="_handle_voice_command">
       <original>{} already has Voice in this channel</original>
-      <translate> </translate>
+      <translate>{} ya tiene Voz en en este canal</translate>
     </item>
     <item id="84" file="command.cpp" function="_handle_voice_command">
       <original>{} is already an operator or admin.</original>
-      <translate> </translate>
+      <translate>{} ya es un operador o admin. </translate>
     </item>
     <item id="85" file="command.cpp" function="_handle_voice_command">
       <original>{} has been granted Voice in this channel</original>
-      <translate> </translate>
+      <translate>Se le ha concedido la Voz a {} en este canal</translate>
     </item>
     <item id="86" file="command.cpp" function="_handle_voice_command">
       <original>{} has granted you Voice in this channel</original>
-      <translate> </translate>
+      <translate>{} le ha concedido la Voz en este canal</translate>
     </item>
     <item id="72" file="command.cpp" function="_handle_vop_command">
       <original>This command can only be used inside a channel.</original>
@@ -1497,15 +1497,15 @@
     </item>
     <item id="75" file="command.cpp" function="_handle_vop_command">
       <original>{} is already on VOP list</original>
-      <translate> </translate>
+      <translate>{} ya se encuentra en al lista VOP</translate>
     </item>
     <item id="76" file="command.cpp" function="_handle_vop_command">
       <original>{} has been added to the VOP list</original>
-      <translate> </translate>
+      <translate>Se ha añadido a {} a la lista VOP</translate>
     </item>
     <item id="77" file="command.cpp" function="_handle_vop_command">
       <original>{} has added you to the VOP list of channel "{}"</original>
-      <translate> </translate>
+      <translate>{} le ha añadido a la lista VOP del canal "{}"</translate>
     </item>
     <item id="233" file="command.cpp" function="_handle_watch_command">
       <original>That user does not exist.</original>
@@ -1513,11 +1513,11 @@
     </item>
     <item id="234" file="command.cpp" function="_handle_watch_command">
       <original>Add to watch list failed.</original>
-      <translate> </translate>
+      <translate>Inclusión fallida a la lista de vigilancia</translate>
     </item>
     <item id="235" file="command.cpp" function="_handle_watch_command">
       <original>User {} added to your watch list.</original>
-      <translate> </translate>
+      <translate>Usuario {} incluido en la lista de vigilancia.</translate>
     </item>
     <item id="239" file="command.cpp" function="_handle_watchall_command">
       <original>Add to watch list failed.</original>
@@ -1525,39 +1525,39 @@
     </item>
     <item id="240" file="command.cpp" function="_handle_watchall_command">
       <original>All {} users added to your watch list.</original>
-      <translate> </translate>
+      <translate> Todos los {} usuarios han sido incluidos a l lisa de vigilancia.</translate>
     </item>
     <item id="241" file="command.cpp" function="_handle_watchall_command">
       <original>All users added to your watch list.</original>
-      <translate> </translate>
+      <translate>Todos los usuarios han sido incluidos a la lista de vigilancia.</translate>
     </item>
     <item id="153" file="command.cpp" function="_handle_who_command">
       <original>That channel does not exist.</original>
-      <translate> </translate>
+      <translate>Ese canal no existe.</translate>
     </item>
     <item id="154" file="command.cpp" function="_handle_who_command">
       <original>(If you are trying to search for a user, use the /whois command.)</original>
-      <translate> </translate>
+      <translate>(Si se está intentando buscar a un usuario, usar el comando /whois)</translate>
     </item>
     <item id="155" file="command.cpp" function="_handle_who_command">
       <original>You are banned from that channel.</original>
-      <translate> </translate>
+      <translate>Está expulsado de ese canal.</translate>
     </item>
     <item id="156" file="command.cpp" function="_handle_who_command">
       <original>Users in channel {}:</original>
-      <translate> </translate>
+      <translate>Usuarios en el canal {}:</translate>
     </item>
     <item id="157" file="command.cpp" function="_handle_whoami_command">
       <original>Unable to obtain your account name.</original>
-      <translate> </translate>
+      <translate>No es posible obtener su nombre de cuenta.</translate>
     </item>
     <item id="247" file="command.cpp" function="_news_cb">
       <original>(invalid date)</original>
-      <translate> </translate>
+      <translate>(Fecha no válida)</translate>
     </item>
     <item id="412" file="command.cpp" function="_reset_d1_stats">
       <original>Reset {}'s {} stats</original>
-      <translate> </translate>
+      <translate>Reiniciar los stats de {} en {} </translate>
     </item>
     <item id="413" file="command.cpp" function="_reset_scw2_stats">
       <original>Reset {}'s {} stats</original>
@@ -1569,39 +1569,39 @@
     </item>
     <item id="214" file="command.cpp" function="account_get_auth_admin">
       <original>You cannot kick administrators.</original>
-      <translate> </translate>
+      <translate>No se puede echar a administradores.</translate>
     </item>
     <item id="215" file="command.cpp" function="account_get_auth_operator">
       <original>You cannot kick operators.</original>
-      <translate> </translate>
+      <translate>No se puede echar a operadores.</translate>
     </item>
     <item id="216" file="command.cpp" function="account_get_auth_operator">
       <original>{} has been kicked by {} ({}).</original>
-      <translate> </translate>
+      <translate>{} ha sido echado por {} ({}) </translate>
     </item>
     <item id="217" file="command.cpp" function="account_get_auth_operator">
       <original>{} has been kicked by {}.</original>
-      <translate> </translate>
+      <translate>{} ha sido echado por {}.</translate>
     </item>
     <item id="222" file="command.cpp" function="account_get_auth_operator">
       <original>You cannot ban operators.</original>
-      <translate> </translate>
+      <translate>No se puede banear a operadores.</translate>
     </item>
     <item id="223" file="command.cpp" function="account_get_auth_operator">
       <original>Unable to ban {}.</original>
-      <translate> </translate>
+      <translate>No es posible banear a {} </translate>
     </item>
     <item id="224" file="command.cpp" function="account_get_auth_operator">
       <original>{} has been banned by {} ({}).</original>
-      <translate> </translate>
+      <translate>{} ha sido baneado por {} ({}).</translate>
     </item>
     <item id="225" file="command.cpp" function="account_get_auth_operator">
       <original>{} has been banned by {}.</original>
-      <translate> </translate>
+      <translate>{} ha sido baneado por {}.</translate>
     </item>
     <item id="271" file="command.cpp" function="account_get_auth_operator">
       <original>Password for account {} updated.</original>
-      <translate> </translate>
+      <translate>Contraseña para la cuenta {} actualizada.</translate>
     </item>
     <item id="272" file="command.cpp" function="account_get_auth_operator">
       <original>Hash is: {}</original>
@@ -1609,31 +1609,31 @@
     </item>
     <item id="8" file="command.cpp" function="do_whisper">
       <original>Your account has been muted, you can't whisper to other users.</original>
-      <translate> </translate>
+      <translate>Su cuenta ha sido silenciada, no se puede susurrar a otros usuarios.</translate>
     </item>
     <item id="9" file="command.cpp" function="do_whisper">
       <original>That user is not logged on.</original>
-      <translate> </translate>
+      <translate>Ese usuario no esta conectado.</translate>
     </item>
     <item id="10" file="command.cpp" function="do_whisper">
       <original>{} is unavailable ({})</original>
-      <translate> </translate>
+      <translate>{} no esta disponible ({}) </translate>
     </item>
     <item id="11" file="command.cpp" function="do_whisper">
       <original>{} is away ({})</original>
-      <translate> </translate>
+      <translate>{} está ausente ({}) </translate>
     </item>
     <item id="12" file="command.cpp" function="do_whois">
       <original>Unknown user.</original>
-      <translate> </translate>
+      <translate>Usuario desconocido.</translate>
     </item>
     <item id="13" file="command.cpp" function="do_whois">
       <original>User was last seen on: {}</original>
-      <translate> </translate>
+      <translate>Usuario última vez viste el: {}</translate>
     </item>
     <item id="14" file="command.cpp" function="do_whois">
       <original>User is offline</original>
-      <translate> </translate>
+      <translate>El usuario está desconectado</translate>
     </item>
     <item id="15" file="command.cpp" function="do_whois">
       <original>You</original>
@@ -1649,35 +1649,35 @@
     </item>
     <item id="18" file="command.cpp" function="do_whois">
       <original>{} {} using {} and {} currently in {} game "{}".</original>
-      <translate> </translate>
+      <translate>{} {} está usando {} y {} actualmente dentro de {} juego "{}".</translate>
     </item>
     <item id="19" file="command.cpp" function="do_whois">
       <original>{} {} using {} and {} currently in channel "{}".</original>
-      <translate> </translate>
+      <translate>{} {} está usando {} y {} actualmente dentro del canal "{}".</translate>
     </item>
     <item id="20" file="command.cpp" function="do_whois">
-      <original>{} {} using {}.</original>
-      <translate> </translate>
+      <original>{} {} using {}./original>
+      <translate>{} {} está usando {}.</translate>
     </item>
     <item id="21" file="command.cpp" function="do_whois">
       <original>{} {} refusing messages ({})</original>
-      <translate> </translate>
+      <translate>{} {} denegando mensajes ({})</translate>
     </item>
     <item id="22" file="command.cpp" function="do_whois">
       <original>{} away ({})</original>
-      <translate> </translate>
+      <translate>{} ausente ({}) </translate>
     </item>
     <item id="23" file="command.cpp" function="handle_command">
       <original>You are sending commands to {} too quickly and risk being disconnected for flooding. Please slow down.</original>
-      <translate> </translate>
+      <translate>Se están mandando comandos a {} demasiado rápido con el riesgo a ser desconectado por sobrecarga. Por favor introducir comandos más depspacio. </translate>
     </item>
     <item id="24" file="command.cpp" function="handle_command">
       <original>This command has been deactivated</original>
-      <translate> </translate>
+      <translate>Este comando ha sido desactivado</translate>
     </item>
     <item id="25" file="command.cpp" function="handle_command">
       <original>This command is reserved for admins.</original>
-      <translate> </translate>
+      <translate>Este comando esta reservado para admins.</translate>
     </item>
     <item id="26" file="command.cpp" function="handle_command">
       <original>Unknown command.</original>
@@ -1685,7 +1685,7 @@
     </item>
     <item id="420" file="handle_bnet.cpp" function="_client_loginreq2">
       <original>This account has been locked</original>
-      <translate> </translate>
+      <translate>Esta cuenta ha sido bloqueada</translate>
     </item>
     <item id="421" file="handle_bnet.cpp" function="_client_logonproofreq">
       <original>This account has been locked</original>
@@ -1693,7 +1693,7 @@
     </item>
     <item id="422" file="helpfile.cpp" function="handle_help_command">
       <original>Oops ! There is a problem with the help file. Please contact the administrator of the server.</original>
-      <translate> </translate>
+      <translate>¡Ups!  Hay un problema con el archivo de ayuda. Por favor contactar con el administrador del servidor.</translate>
     </item>
     <item id="423" file="icons.cpp" function="handle_icon_command">
       <original>This command can only be used inside a channel.</original>
@@ -1701,75 +1701,75 @@
     </item>
     <item id="424" file="icons.cpp" function="handle_icon_command">
       <original>This command can only be used from the game.</original>
-      <translate> </translate>
+      <translate>Este comando tan solo se puede usar dentro del juego.</translate>
     </item>
     <item id="425" file="icons.cpp" function="handle_icon_command">
       <original>Bad icon.</original>
-      <translate> </translate>
+      <translate>Icono incorrecto.</translate>
     </item>
     <item id="426" file="ipban.cpp" function="ipbanlist_add">
       <original>{} banned permamently by {}.</original>
-      <translate> </translate>
+      <translate>{} baneado permanentemente por {}</translate>
     </item>
     <item id="427" file="ipban.cpp" function="ipbanlist_add">
       <original>{} banned permamently.</original>
-      <translate> </translate>
+      <translate>{} baneado permanentemente.</translate>
     </item>
     <item id="428" file="ipban.cpp" function="ipbanlist_add">
       <original>{} banned for {} by {}.</original>
-      <translate> </translate>
+      <translate>{} baneado por {} por {}</translate>
     </item>
     <item id="429" file="ipban.cpp" function="ipbanlist_add">
       <original>{} banned for {}.</original>
-      <translate> </translate>
+      <translate>{} baneado por {}. </translate>
     </item>
     <item id="430" file="ipban.cpp" function="ipbanlist_str_to_time_t">
       <original>Banning only for: {} minutes.</original>
-      <translate> </translate>
+      <translate>Baneando tan solo por: {} minutos.</translate>
     </item>
     <item id="431" file="mail.cpp" function="handle_mail_command">
       <original>This server has NO mail support.</original>
-      <translate> </translate>
+      <translate>Este servidor NO soporta correos.</translate>
     </item>
     <item id="438" file="mail.cpp" function="mail_func_delete">
       <original>Please specify which message to delete. Use the following syntax: /mail delete {&amp;lt;index&amp;gt;|all} .</original>
-      <translate> </translate>
+      <translate>Por favor especificar cual mensaje se va a eliminar. Utilizar la siguiente sintaxis: /mail delete {&amp;lt;index&amp;gt;|all} .</translate>
     </item>
     <item id="439" file="mail.cpp" function="mail_func_delete">
       <original>Successfully deleted messages.</original>
-      <translate> </translate>
+      <translate>Mensajes eliminados satisfactoriamente.</translate>
     </item>
     <item id="440" file="mail.cpp" function="mail_func_delete">
       <original>Invalid index. Please use /mail delete {&amp;lt;index&amp;gt;|all} where &amp;lt;index&amp;gt; is a number.</original>
-      <translate> </translate>
+      <translate>Índice no válido. Por favor usar /mail delete {&amp;lt;index&amp;gt;|all} donde &amp;lt;index&amp;gt; is un número. </translate>
     </item>
     <item id="441" file="mail.cpp" function="mail_func_delete">
       <original>Succesfully deleted message.</original>
-      <translate> </translate>
+      <translate>Mensaje eliminado satisfactoriamente.</translate>
     </item>
     <item id="436" file="mail.cpp" function="mail_func_read">
       <original>You have no mail.</original>
-      <translate> </translate>
+      <translate>No hay correo.</translate>
     </item>
     <item id="437" file="mail.cpp" function="mail_func_read">
       <original>There was an error completing your request.</original>
-      <translate> </translate>
+      <translate>Ha ocurrido un error mientras se completaba su petición.</translate>
     </item>
     <item id="432" file="mail.cpp" function="mail_func_send">
       <original>Receiver UNKNOWN!</original>
-      <translate> </translate>
+      <translate>¡Destinatario DESCONOCIDO! </translate>
     </item>
     <item id="433" file="mail.cpp" function="mail_func_send">
       <original>Receiver has reached his mail quota. Your message will NOT be sent.</original>
-      <translate> </translate>
+      <translate>El destinatario ha alcanzado su cuota de correos. El mensaje NO será enviado. </translate>
     </item>
     <item id="434" file="mail.cpp" function="mail_func_send">
       <original>Your mail has been sent successfully.</original>
-      <translate> </translate>
+      <translate>El correo ha sido enviado satisfactoriamente </translate>
     </item>
     <item id="435" file="mail.cpp" function="mail_func_send">
       <original>There was an error completing your request!</original>
-      <translate> </translate>
+      <translate>¡Ha ocurrido un error mientras se completaba la petición!</translate>
     </item>
     <item id="444" file="command.lua" function="api.message_send_text">
       <original>You must be at least a Channel Operator to use this command.</original>
