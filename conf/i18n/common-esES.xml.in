@@ -9,15 +9,15 @@
   <items>
     <item id="1" file="account_wrap.cpp" function="account_get_locktext">
       <original> by {}</original>
-      <translate> por </translate>
+      <translate> por {}</translate>
     </item>
     <item id="2" file="account_wrap.cpp" function="account_get_locktext">
       <original> for {}</original>
-      <translate> para </translate>
+      <translate> para {}</translate>
     </item>
     <item id="3" file="account_wrap.cpp" function="account_get_locktext">
       <original> permanently</original>
-      <translate> permanentemente </translate>
+      <translate> permanentemente</translate>
     </item>
     <item id="4" file="account_wrap.cpp" function="account_get_locktext">
       <original> with a reason "{}"</original>
@@ -25,11 +25,11 @@
     </item>
     <item id="6" file="alias_command.cpp" function="handle_alias_command">
       <original>No such alias.  Use // to show the list.</original>
-      <translate>No existe tal alias. Usar // para mostrar la lista. </translate>
+      <translate>No existe tal alias. Usar // para mostrar la lista.</translate>
     </item>
     <item id="5" file="alias_command.cpp" function="list_aliases">
       <original>Alias list:</original>
-      <translate> Lista de alias: </translate>
+      <translate> Lista de alias:</translate>
     </item>
     <item id="7" file="channel.cpp" function="channel_add_connection">
       <original>you are now tempOP for this channel</original>
@@ -37,11 +37,11 @@
     </item>
     <item id="260" file="command.cpp" function="_handle_addacct_command">
       <original>Account name contains some invalid symbol!</original>
-      <translate>El nombre de cuenta contiene algun carácter invalido! </translate>
+      <translate>El nombre de cuenta contiene algun carácter invalido!</translate>
     </item>
     <item id="261" file="command.cpp" function="_handle_addacct_command">
       <original>Maximum password length allowed is {}</original>
-      <translate>La longitud máxima permitida para la contraseña es de </translate>
+      <translate>La longitud máxima permitida para la contraseña es de</translate>
     </item>
     <item id="262" file="command.cpp" function="_handle_addacct_command">
       <original>Trying to add account "{}" with password "{}"</original>
@@ -53,39 +53,39 @@
     </item>
     <item id="264" file="command.cpp" function="_handle_addacct_command">
       <original>Failed to create account!</original>
-      <translate>¡No ha sido posible crear la cuenta! </translate>
+      <translate>¡No ha sido posible crear la cuenta!</translate>
     </item>
     <item id="265" file="command.cpp" function="_handle_addacct_command">
       <original>Account {} created.</original>
-      <translate>Cuenta {} creada. </translate>
+      <translate>Cuenta {} creada.</translate>
     </item>
     <item id="51" file="command.cpp" function="_handle_admin_command">
       <original>You must supply a username.</original>
-      <translate>Se debe proporcionar una nombre de usuario. </translate>
+      <translate>Se debe proporcionar una nombre de usuario.</translate>
     </item>
     <item id="52" file="command.cpp" function="_handle_admin_command">
       <original>There's no account with username {}.</original>
-      <translate>No existe ninguna cuenta con el nombre de usuario {} </translate>
+      <translate>No existe ninguna cuenta con el nombre de usuario {}.</translate>
     </item>
     <item id="53" file="command.cpp" function="_handle_admin_command">
       <original>{} is already a Server Admin</original>
-      <translate>{} ya es Admin del Servidor </translate>
+      <translate>{} ya es Admin del Servidor</translate>
     </item>
     <item id="54" file="command.cpp" function="_handle_admin_command">
       <original>{} has been promoted to a Server Admin</original>
-      <translate>{} ha sido ascendido a Admin del Servidor </translate>
+      <translate>{} ha sido ascendido a Admin del Servidor</translate>
     </item>
     <item id="55" file="command.cpp" function="_handle_admin_command">
       <original>{} has promoted you to a Server Admin</original>
-      <translate>{} le ha ascendido a Admin del Servidor </translate>
+      <translate>{} le ha ascendido a Admin del Servidor</translate>
     </item>
     <item id="56" file="command.cpp" function="_handle_admin_command">
       <original>{} is not a Server Admin.</original>
-      <translate>{} no es un Admin del Servidor </translate>
+      <translate>{} no es un Admin del Servidor</translate>
     </item>
     <item id="57" file="command.cpp" function="_handle_admin_command">
       <original>{} has been demoted from a Server Admin</original>
-      <translate>{} ha sido degradado a no ser Admin del Servidor </translate>
+      <translate>{} ha sido degradado a no ser Admin del Servidor</translate>
     </item>
     <item id="58" file="command.cpp" function="_handle_admin_command">
       <original>{} has demoted you from a Server Admin</original>
