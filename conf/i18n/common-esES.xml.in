@@ -325,23 +325,23 @@
     </item>
     <item id="398" file="command.cpp" function="_handle_commandgroups_command">
       <original>{}'s command group(s): {}</original>
-      <translate> </translate>
+      <translate>Comando de grupo(s) de {} </translate>
     </item>
     <item id="399" file="command.cpp" function="_handle_commandgroups_command">
       <original>Got bad group: {}</original>
-      <translate> </translate>
+      <translate>Grupo erróneo: {}</translate>
     </item>
     <item id="400" file="command.cpp" function="_handle_commandgroups_command">
       <original>Groups {} has been added to {}</original>
-      <translate> </translate>
+      <translate>Se ha añadio los grupos {} a {} </translate>
     </item>
     <item id="401" file="command.cpp" function="_handle_commandgroups_command">
       <original>Groups {} has been deleted from {}</original>
-      <translate> </translate>
+      <translate>Se han eliminado los grupos {} de {} </translate>
     </item>
     <item id="402" file="command.cpp" function="_handle_commandgroups_command">
       <original>Got unknown command: {}</original>
-      <translate> </translate>
+      <translate>Comando introducido desconocido: {} </translate>
     </item>
     <item id="273" file="command.cpp" function="_handle_connections_command">
       <original>This command is only enabled for admins.</original>
@@ -349,7 +349,7 @@
     </item>
     <item id="274" file="command.cpp" function="_handle_connections_command">
       <original>Current connections:</original>
-      <translate>conexiones actuales:</translate>
+      <translate>Conexiones actuales:</translate>
     </item>
     <item id="275" file="command.cpp" function="_handle_connections_command">
       <original> -class -tag -----name------ -lat(ms)- ----channel---- --game--</original>
@@ -485,7 +485,7 @@
     </item>
     <item id="282" file="command.cpp" function="_handle_finger_command">
       <original>Login: {} {} Sex: {}</original>
-      <translate>{} {} Sexo: {} </translate>
+      <translate>Conexión: {} {} Sexo: {} </translate>
     </item>
     <item id="283" file="command.cpp" function="_handle_finger_command">
       <original>Created: {}</original>
@@ -769,11 +769,11 @@
     </item>
     <item id="380" file="command.cpp" function="_handle_ipscan_command">
       <original>Warning: That user is not online, using last known address.</original>
-      <translate>Atención: El usuario no está online, usando la última dirección conocida </translate>
+      <translate>Atención: El usuario no está online, usando la última dirección conocida.</translate>
     </item>
     <item id="381" file="command.cpp" function="_handle_ipscan_command">
       <original>Sorry, no IP address could be retrieved.</original>
-      <translate>Lo siento, pero nose puedo recuperar ninguna dirección IP.</translate>
+      <translate>Lo siento, pero no se ha podido recuperar ninguna dirección IP.</translate>
     </item>
     <item id="382" file="command.cpp" function="_handle_ipscan_command">
       <original>Scanning online users for IP {}...</original>
@@ -789,7 +789,7 @@
     </item>
     <item id="211" file="command.cpp" function="_handle_kick_command">
       <original>You have to be at least a Channel Operator or tempOP to use this command.</original>
-      <translate> </translate>
+      <translate>Se debe ser como mínimo Operador del Canal o OPtemp para usar este comando.</translate>
     </item>
     <item id="212" file="command.cpp" function="_handle_kick_command">
       <original>That user is not logged in.</original>
@@ -801,7 +801,7 @@
     </item>
     <item id="301" file="command.cpp" function="_handle_kill_command">
       <original>That connection doesn't exist.</original>
-      <translate>Esa conexión no existe </translate>
+      <translate>Esa conexión no existe.</translate>
     </item>
     <item id="302" file="command.cpp" function="_handle_kill_command">
       <original>That user is not logged in?</original>
@@ -1204,8 +1204,8 @@
       <translate>Juegos en normal: {}-{}-{} </translate>
     </item>
     <item id="174" file="command.cpp" function="_handle_stats_command">
-      <original>Juegos en ladder: {}-{}-{} (valuación {})</original>
-      <translate> </translate>
+      <original>Ladder games: {}-{}-{} (valuación {})</original>
+      <translate>Juegos en ladder: {}-{}-{} (valuación {}) </translate>
     </item>
     <item id="175" file="command.cpp" function="_handle_stats_command">
       <original>Ladder games: 0-0-0</original>
@@ -1225,39 +1225,39 @@
     </item>
     <item id="179" file="command.cpp" function="_handle_stats_command">
       <original>Users Solo Level: {}, Experience: {}</original>
-      <translate> </translate>
+      <translate>Nivel de los usuarios en Solitario : {}, Experiencia: {}</translate>
     </item>
     <item id="180" file="command.cpp" function="_handle_stats_command">
       <original>SOLO Ladder Record: {}-{}-0</original>
-      <translate> </translate>
+      <translate>Record en Ladder en Solitario: {}-{}-0 </translate>
     </item>
     <item id="181" file="command.cpp" function="_handle_stats_command">
       <original>SOLO Rank: {}</original>
-      <translate> </translate>
+      <translate>Rango en Solitario: {}</translate>
     </item>
     <item id="182" file="command.cpp" function="_handle_stats_command">
       <original>Users Team Level: {}, Experience: {}</original>
-      <translate> </translate>
+      <translate>Nivel de los usuarios en Equipos: {}. Experiencia: {}</translate>
     </item>
     <item id="183" file="command.cpp" function="_handle_stats_command">
       <original>TEAM Ladder Record: {}-{}-0</original>
-      <translate> </translate>
+      <translate>Record en Ladder en Equipos: {}-{}-0 </translate>
     </item>
     <item id="184" file="command.cpp" function="_handle_stats_command">
       <original>TEAM Rank: {}</original>
-      <translate> </translate>
+      <translate>Rango en Equipos: {}</translate>
     </item>
     <item id="185" file="command.cpp" function="_handle_stats_command">
       <original>Users FFA Level: {}, Experience: {}</original>
-      <translate> </translate>
+      <translate>Nivel de los usuarios en TCT (Todos Contra Todos): {}, Experiencia: {} </translate>
     </item>
     <item id="186" file="command.cpp" function="_handle_stats_command">
       <original>FFA Ladder Record: {}-{}-0</original>
-      <translate> </translate>
+      <translate>Records en Ladder para TCT (Todos Contra Todos): {}-{}-0 </translate>
     </item>
     <item id="187" file="command.cpp" function="_handle_stats_command">
       <original>FFA Rank: {}</original>
-      <translate> </translate>
+      <translate>Rango TCT (Todos Contra Todos): {}</translate>
     </item>
     <item id="188" file="command.cpp" function="_handle_stats_command">
       <original>Users AT Team No. {}</original>
@@ -1341,7 +1341,7 @@
     </item>
     <item id="112" file="command.cpp" function="_handle_tmpop_command">
       <original>{} has been promoted to tmpOP in this channel</original>
-      <translate> </translate>
+      <translate>{} ha sido ascendido a OPtemp en este canal</translate>
     </item>
     <item id="113" file="command.cpp" function="_handle_tmpop_command">
       <original>{} has promoted you to a tempOP in this channel</original>
@@ -1525,7 +1525,7 @@
     </item>
     <item id="240" file="command.cpp" function="_handle_watchall_command">
       <original>All {} users added to your watch list.</original>
-      <translate> Todos los {} usuarios han sido incluidos a l lisa de vigilancia.</translate>
+      <translate>Todos los {} usuarios han sido incluidos a l lisa de vigilancia.</translate>
     </item>
     <item id="241" file="command.cpp" function="_handle_watchall_command">
       <original>All users added to your watch list.</original>
@@ -1589,7 +1589,7 @@
     </item>
     <item id="223" file="command.cpp" function="account_get_auth_operator">
       <original>Unable to ban {}.</original>
-      <translate>No es posible banear a {} </translate>
+      <translate>No es posible banear a {}.</translate>
     </item>
     <item id="224" file="command.cpp" function="account_get_auth_operator">
       <original>{} has been banned by {} ({}).</original>
