@@ -21,7 +21,7 @@
     </item>
     <item id="4" file="account_wrap.cpp" function="account_get_locktext">
       <original> with a reason "{}"</original>
-      <translate>con una razón "{}"</translate>
+      <translate> con una razón "{}"</translate>
     </item>
     <item id="6" file="alias_command.cpp" function="handle_alias_command">
       <original>No such alias.  Use // to show the list.</original>
@@ -29,19 +29,19 @@
     </item>
     <item id="5" file="alias_command.cpp" function="list_aliases">
       <original>Alias list:</original>
-      <translate> Lista de alias:</translate>
+      <translate>Lista de alias:</translate>
     </item>
     <item id="7" file="channel.cpp" function="channel_add_connection">
       <original>you are now tempOP for this channel</original>
-      <translate> Ahora eres tempOP para este canal</translate>
+      <translate>ahora eres OPtempo para este canal</translate>
     </item>
     <item id="260" file="command.cpp" function="_handle_addacct_command">
       <original>Account name contains some invalid symbol!</original>
-      <translate>El nombre de cuenta contiene algun carácter invalido!</translate>
+      <translate>¡El nombre de cuenta contiene algun carácter invalido!</translate>
     </item>
     <item id="261" file="command.cpp" function="_handle_addacct_command">
       <original>Maximum password length allowed is {}</original>
-      <translate>La longitud máxima permitida para la contraseña es de</translate>
+      <translate>La longitud máxima permitida para la contraseña es de {}</translate>
     </item>
     <item id="262" file="command.cpp" function="_handle_addacct_command">
       <original>Trying to add account "{}" with password "{}"</original>
@@ -49,7 +49,7 @@
     </item>
     <item id="263" file="command.cpp" function="_handle_addacct_command">
       <original>Hash is: {}</original>
-      <translate> </translate>
+      <translate>La etiqueta hash es: {}</translate>
     </item>
     <item id="264" file="command.cpp" function="_handle_addacct_command">
       <original>Failed to create account!</original>
@@ -93,11 +93,11 @@
     </item>
     <item id="299" file="command.cpp" function="_handle_admins_command">
       <original>Currently logged on Administrators:</original>
-      <translate>Actualmente conectado en Administradores: </translate>
+      <translate>Actualmente conectado en Administradores:</translate>
     </item>
     <item id="416" file="command.cpp" function="_handle_alert_command">
       <original>Your game client doesn't support MessageBox.</original>
-      <translate>El cliente no es compatible con MessageBox</translate>
+      <translate>El cliente no es compatible con MessageBox.</translate>
     </item>
     <item id="417" file="command.cpp" function="_handle_alert_command">
       <original>\n\n***************************\nBy {}</original>
@@ -113,7 +113,7 @@
     </item>
     <item id="158" file="command.cpp" function="_handle_announce_command">
       <original>Announcement from {}: {}</original>
-      <translate>Notificación de {}: </translate>
+      <translate>Notificación de {}: {}</translate>
     </item>
     <item id="159" file="command.cpp" function="_handle_announce_command">
       <original>Could not broadcast message.</original>
@@ -125,7 +125,7 @@
     </item>
     <item id="67" file="command.cpp" function="_handle_aop_command">
       <original>You must be at least a Channel Admin to use this command.</original>
-      <translate>Se debe ser Admin del Canal como mínimo para poder usar este comando.</translate>
+      <translate>Se debe ser como mínimo Admin del Canal para poder usar este comando.</translate>
     </item>
     <item id="68" file="command.cpp" function="_handle_aop_command">
       <original>There's no account with username {}.</original>
@@ -133,23 +133,23 @@
     </item>
     <item id="69" file="command.cpp" function="_handle_aop_command">
       <original>{} is already a Channel Admin</original>
-      <translate>{} ya es Admin del Canal</translate>
+      <translate>{} ya es Administrador del Canal</translate>
     </item>
     <item id="70" file="command.cpp" function="_handle_aop_command">
       <original>{} has been promoted to a Channel Admin</original>
-      <translate>{} ha sido ascendido </translate>
+      <translate>{} ha sido ascendido a Administrador del Canal</translate>
     </item>
     <item id="71" file="command.cpp" function="_handle_aop_command">
       <original>{} has promoted you to a Channel Admin for channel "{}"</original>
-      <translate>{} le ha ascendido a Admin del Canal "{}" </translate>
+      <translate>{} le ha ascendido a Administrador del Canal "{}"</translate>
     </item>
     <item id="198" file="command.cpp" function="_handle_away_command">
       <original>You are now marked as being away.</original>
-      <translate>Su estado ha sido marcado como ausente. </translate>
+      <translate>Su estado ha sido marcado como ausente.</translate>
     </item>
     <item id="199" file="command.cpp" function="_handle_away_command">
       <original>You are no longer marked as away.</original>
-      <translate>Su estado ya no es ausente. </translate>
+      <translate>Su estado ya no es ausente.</translate>
     </item>
     <item id="218" file="command.cpp" function="_handle_ban_command">
       <original>This command can only be used inside a channel.</original>
@@ -157,11 +157,11 @@
     </item>
     <item id="219" file="command.cpp" function="_handle_ban_command">
       <original>You have to be at least a Channel Operator to use this command.</original>
-      <translate>Se debe ser Operador de Canal como mínimo para poder usar este comando. </translate>
+      <translate>Se debe ser como mínimo Operador de Canal para poder usar este comando.</translate>
     </item>
     <item id="220" file="command.cpp" function="_handle_ban_command">
       <original>That account doesn't currently exist.</original>
-      <translate>Esta cuenta no existe actualmente. </translate>
+      <translate>Esta cuenta no existe actualmente.</translate>
     </item>
     <item id="221" file="command.cpp" function="_handle_ban_command">
       <original>You cannot ban administrators.</original>
@@ -169,7 +169,7 @@
     </item>
     <item id="160" file="command.cpp" function="_handle_beep_command">
       <original>Audible notification on.</original>
-      <translate>Notificacíon acústica activa.</translate>
+      <translate>Notificacíon acústica activada.</translate>
     </item>
     <item id="194" file="command.cpp" function="_handle_channel_command">
       <original>Channel Arranged Teams is a RESTRICTED Channel!</original>
@@ -177,11 +177,11 @@
     </item>
     <item id="195" file="command.cpp" function="_handle_channel_command">
       <original>Max channel name length exceeded (max {} symbols)</original>
-      <translate>Longitud máxima para el nombre del canal sobrepasada (máximo de {} carácteres) </translate>
+      <translate>Longitud máxima para el nombre del canal sobrepasada (máximo de {} carácteres)</translate>
     </item>
     <item id="196" file="command.cpp" function="_handle_channel_command">
       <original>Command disabled while inside a game.</original>
-      <translate>Comando desactivado durante partidas. </translate>
+      <translate>Comando desactivado durante partidas.</translate>
     </item>
     <item id="256" file="command.cpp" function="_handle_channels_command">
       <original>Currently accessible channels:</original>
