@@ -417,7 +417,7 @@
     </item>
     <item id="124" file="command.cpp" function="_handle_deop_command">
       <original>{} is no Channel Admin or Channel Operator or tempOP, so you can't demote him.</original>
-      <translate>{} no es ni Administrador ni Operador del Canala ni tempOP, así que no se le puede degradar. </translate>
+      <translate>{} no es ni Administrador ni Operador del Canala ni tempOP, así que no se le puede degradar.</translate>
     </item>
     <item id="125" file="command.cpp" function="_handle_deop_command">
       <original>{} has demoted you from a tempOP of channel "{}"</original>
@@ -697,31 +697,31 @@
     </item>
     <item id="322" file="command.cpp" function="_handle_gameinfo_command">
       <original>Type: {}</original>
-      <translate> </translate>
+      <translate>Tipo: {} </translate>
     </item>
     <item id="323" file="command.cpp" function="_handle_gameinfo_command">
       <original>Speed: {}</original>
-      <translate> </translate>
+      <translate>Velocidad: {} </translate>
     </item>
     <item id="324" file="command.cpp" function="_handle_gameinfo_command">
       <original>Difficulty: {}</original>
-      <translate> </translate>
+      <translate>Dificultad: {} </translate>
     </item>
     <item id="325" file="command.cpp" function="_handle_gameinfo_command">
       <original>Option: {}</original>
-      <translate> </translate>
+      <translate>Opciones: {} </translate>
     </item>
     <item id="326" file="command.cpp" function="_handle_gameinfo_command">
       <original>Map: {}</original>
-      <translate> </translate>
+      <translate>Mapa: {}</translate>
     </item>
     <item id="327" file="command.cpp" function="_handle_gameinfo_command">
       <original>Map Size: {}x{}</original>
-      <translate> </translate>
+      <translate>Tamaño del MApa {}x{} </translate>
     </item>
     <item id="328" file="command.cpp" function="_handle_gameinfo_command">
       <original>Map Tileset: {}</original>
-      <translate> </translate>
+      <translate>Ambientación del Mapa: {}</translate>
     </item>
     <item id="329" file="command.cpp" function="_handle_gameinfo_command">
       <original>Map Type: {}</original>
@@ -733,31 +733,31 @@
     </item>
     <item id="331" file="command.cpp" function="_handle_gameinfo_command">
       <original>Description: {}</original>
-      <translate> </translate>
+      <translate>Descripción: {}</translate>
     </item>
     <item id="248" file="command.cpp" function="_handle_games_command">
       <original>Currently accessible games:</original>
-      <translate> </translate>
+      <translate>Juegos actualmente accesibles:</translate>
     </item>
     <item id="249" file="command.cpp" function="_handle_games_command">
       <original>All current games:</original>
-      <translate> </translate>
+      <translate>Todos los juegos actuales:</translate>
     </item>
     <item id="250" file="command.cpp" function="_handle_games_command">
       <original>Games in lobby:</original>
-      <translate> </translate>
+      <translate>Juegos en lobby:</translate>
     </item>
     <item id="251" file="command.cpp" function="_handle_games_command">
       <original>Current games of type {}</original>
-      <translate> </translate>
+      <translate>Juegos actuales de tipo {}</translate>
     </item>
     <item id="252" file="command.cpp" function="_handle_games_command">
       <original>Current games of type {} {}</original>
-      <translate> </translate>
+      <translate>Juegos actuales de tipo {} {}</translate>
     </item>
     <item id="253" file="command.cpp" function="_handle_games_command">
       <original> ------name------ p -status- --------type--------- count </original>
-      <translate> </translate>
+      <translate>------nombre------ p -estado- --------tipo--------- cuenta </translate>
     </item>
     <item id="254" file="command.cpp" function="_handle_games_command">
       <original>ctag </original>
@@ -769,19 +769,19 @@
     </item>
     <item id="380" file="command.cpp" function="_handle_ipscan_command">
       <original>Warning: That user is not online, using last known address.</original>
-      <translate> </translate>
+      <translate>Atención: El usuario no está online, usando la última dirección conocida </translate>
     </item>
     <item id="381" file="command.cpp" function="_handle_ipscan_command">
       <original>Sorry, no IP address could be retrieved.</original>
-      <translate> </translate>
+      <translate>Lo siento, pero nose puedo recuperar ninguna dirección IP.</translate>
     </item>
     <item id="382" file="command.cpp" function="_handle_ipscan_command">
       <original>Scanning online users for IP {}...</original>
-      <translate> </translate>
+      <translate>Scaneando usuarios online para IP {}...</translate>
     </item>
     <item id="383" file="command.cpp" function="_handle_ipscan_command">
       <original>There are no online users with that IP address</original>
-      <translate> </translate>
+      <translate>No hay usuarios onlne con esa dirección IP</translate>
     </item>
     <item id="210" file="command.cpp" function="_handle_kick_command">
       <original>This command can only be used inside a channel.</original>
@@ -793,43 +793,43 @@
     </item>
     <item id="212" file="command.cpp" function="_handle_kick_command">
       <original>That user is not logged in.</original>
-      <translate> </translate>
+      <translate>Ese usuario no está conectado.</translate>
     </item>
     <item id="213" file="command.cpp" function="_handle_kick_command">
       <original>That user is not in this channel.</original>
-      <translate> </translate>
+      <translate>Ese usuario no esta en este canal.</translate>
     </item>
     <item id="301" file="command.cpp" function="_handle_kill_command">
       <original>That connection doesn't exist.</original>
-      <translate> </translate>
+      <translate>Esa conexión no existe </translate>
     </item>
     <item id="302" file="command.cpp" function="_handle_kill_command">
       <original>That user is not logged in?</original>
-      <translate> </translate>
+      <translate>Ese usuario no esta conectado.</translate>
     </item>
     <item id="303" file="command.cpp" function="_handle_kill_command">
       <original>An admin has closed your connection and banned your IP address.</original>
-      <translate> </translate>
+      <translate>Un Admmin ha cerrado su conexión y baneado su dirección IP. </translate>
     </item>
     <item id="304" file="command.cpp" function="_handle_kill_command">
       <original>Connection closed by admin.</original>
-      <translate> </translate>
+      <translate>Conexión cerrada por admin.</translate>
     </item>
     <item id="305" file="command.cpp" function="_handle_kill_command">
       <original>Operation successful.</original>
-      <translate> </translate>
+      <translate>Operación con éxito.</translate>
     </item>
     <item id="306" file="command.cpp" function="_handle_killsession_command">
       <original>That is not a valid session.</original>
-      <translate> </translate>
+      <translate>Esa no es una sesión válida</translate>
     </item>
     <item id="307" file="command.cpp" function="_handle_killsession_command">
       <original>That session does not exist.</original>
-      <translate> </translate>
+      <translate>Esa sesión no existe.</translate>
     </item>
     <item id="308" file="command.cpp" function="_handle_killsession_command">
       <original>Connection closed by admin and banned your IP's.</original>
-      <translate> </translate>
+      <translate>Conexión cerrada por admin, su dirección IP ha sido baneada.</translate>
     </item>
     <item id="309" file="command.cpp" function="_handle_killsession_command">
       <original>Connection closed by admin.</original>
@@ -1125,103 +1125,103 @@
     </item>
     <item id="388" file="command.cpp" function="_handle_set_command">
       <original>Unable to set key for</original>
-      <translate> </translate>
+      <translate>No es posible establecer tecla para</translate>
     </item>
     <item id="389" file="command.cpp" function="_handle_set_command">
-      <original>Key set successfully for</original>
+      <original>Tecla establecida con éxito para</original>
       <translate> </translate>
     </item>
     <item id="337" file="command.cpp" function="_handle_shutdown_command">
       <original>Invalid delay.</original>
-      <translate> </translate>
+      <translate>Retraso no válido. </translate>
     </item>
     <item id="338" file="command.cpp" function="_handle_shutdown_command">
       <original>You've initialized the shutdown sequence.</original>
-      <translate> </translate>
+      <translate>Se ha iniciado la secuencia de cierre.</translate>
     </item>
     <item id="339" file="command.cpp" function="_handle_shutdown_command">
-      <original>You've canceled the shutdown sequence.</original>
+      <original>Se ha cancelado la secuencia de cierre.</original>
       <translate> </translate>
     </item>
     <item id="203" file="command.cpp" function="_handle_squelch_command">
       <original>No such user.</original>
-      <translate> </translate>
+      <translate>No existe tal usuario.</translate>
     </item>
     <item id="204" file="command.cpp" function="_handle_squelch_command">
       <original>You can't squelch yourself.</original>
-      <translate> </translate>
+      <translate>No se puede ignorar a uno mismo.</translate>
     </item>
     <item id="205" file="command.cpp" function="_handle_squelch_command">
       <original>Could not squelch user.</original>
-      <translate> </translate>
+      <translate>No se ha podido ignorar al usuario.</translate>
     </item>
     <item id="206" file="command.cpp" function="_handle_squelch_command">
       <original>{} has been squelched.</original>
-      <translate> </translate>
+      <translate>{} esta siendo ignorado.</translate>
     </item>
     <item id="163" file="command.cpp" function="_handle_stats_command">
       <original>Invalid user.</original>
-      <translate> </translate>
+      <translate>Usuario no válido.</translate>
     </item>
     <item id="164" file="command.cpp" function="_handle_stats_command">
       <original>Unable to determine client game.</original>
-      <translate> </translate>
+      <translate>No es posible determinar el cliente del juego </translate>
     </item>
     <item id="165" file="command.cpp" function="_handle_stats_command">
       <original>This game does not support win/loss records.</original>
-      <translate> </translate>
+      <translate>Este juego no soporta records de vitcoria/derrota.</translate>
     </item>
     <item id="166" file="command.cpp" function="_handle_stats_command">
       <original>You must supply a user name and a valid program ID.</original>
-      <translate> </translate>
+      <translate>Se debe subministrar un nombre de usuario y una ID de programa válidos.</translate>
     </item>
     <item id="167" file="command.cpp" function="_handle_stats_command">
       <original>Example: /stats joe STAR</original>
-      <translate> </translate>
+      <translate>Ejemplo: /stats joe STAR </translate>
     </item>
     <item id="168" file="command.cpp" function="_handle_stats_command">
       <original>{}'s record:</original>
-      <translate> </translate>
+      <translate>record de {} </translate>
     </item>
     <item id="169" file="command.cpp" function="_handle_stats_command">
       <original>level: {}</original>
-      <translate> </translate>
+      <translate>nivel: {} </translate>
     </item>
     <item id="170" file="command.cpp" function="_handle_stats_command">
       <original>class: {}</original>
-      <translate> </translate>
+      <translate>clase: {} </translate>
     </item>
     <item id="171" file="command.cpp" function="_handle_stats_command">
       <original>stats: {} str  {} mag  {} dex  {} vit  {} gld</original>
-      <translate> </translate>
+      <translate>estaditicas: {} str  {} mag  {} dex  {} vit  {} gld </translate>
     </item>
     <item id="172" file="command.cpp" function="_handle_stats_command">
       <original>Diablo kills: {}</original>
-      <translate> </translate>
+      <translate>Muertes de Diablo: {} </translate>
     </item>
     <item id="173" file="command.cpp" function="_handle_stats_command">
       <original>Normal games: {}-{}-{}</original>
-      <translate> </translate>
+      <translate>Juegos en normal: {}-{}-{} </translate>
     </item>
     <item id="174" file="command.cpp" function="_handle_stats_command">
-      <original>Ladder games: {}-{}-{} (rating {})</original>
+      <original>Juegos en ladder: {}-{}-{} (valuación {})</original>
       <translate> </translate>
     </item>
     <item id="175" file="command.cpp" function="_handle_stats_command">
       <original>Ladder games: 0-0-0</original>
-      <translate> </translate>
+      <translate>Juegos en ladder: 0-0-0</translate>
     </item>
     <item id="176" file="command.cpp" function="_handle_stats_command">
       <original>IronMan games: {}-{}-{} (rating {})</original>
-      <translate> </translate>
+      <translate>Juegos IronMan: {}-{}-{} </translate>
     </item>
     <item id="177" file="command.cpp" function="_handle_stats_command">
       <original>IronMan games: 0-0-0</original>
-      <translate> </translate>
+      <translate>Juegos IronMan: 0-0-0 </translate>
     </item>
     <item id="178" file="command.cpp" function="_handle_stats_command">
       <original>{}'s Ladder Record's:</original>
-      <translate> </translate>
+      <translate>Record en ladder de {} </translate>
     </item>
     <item id="179" file="command.cpp" function="_handle_stats_command">
       <original>Users Solo Level: {}, Experience: {}</original>
@@ -1293,27 +1293,27 @@
     </item>
     <item id="192" file="command.cpp" function="_handle_time_command">
       <original>Server Time: {}</original>
-      <translate> </translate>
+      <translate>Hora del Servidor: {} </translate>
     </item>
     <item id="193" file="command.cpp" function="_handle_time_command">
       <original>Your local time: {}</original>
-      <translate> </translate>
+      <translate>Hora local: {}</translate>
     </item>
     <item id="343" file="command.cpp" function="_handle_timer_command">
       <original>Invalid duration.</original>
-      <translate> </translate>
+      <translate>Duración no válida</translate>
     </item>
     <item id="344" file="command.cpp" function="_handle_timer_command">
       <original>Your timer has expired.</original>
-      <translate> </translate>
+      <translate>El temporizador ha expirado.</translate>
     </item>
     <item id="345" file="command.cpp" function="_handle_timer_command">
       <original>Could not set timer.</original>
-      <translate> </translate>
+      <translate>No se ha podido establecer el temporizador.</translate>
     </item>
     <item id="346" file="command.cpp" function="_handle_timer_command">
       <original>Timer set for {} second(s)</original>
-      <translate> </translate>
+      <translate>Temporizador establecido para {} segundo(s)</translate>
     </item>
     <item id="106" file="command.cpp" function="_handle_tmpop_command">
       <original>This command can only be used inside a channel.</original>
@@ -1321,7 +1321,7 @@
     </item>
     <item id="107" file="command.cpp" function="_handle_tmpop_command">
       <original>You must be at least a Channel Operator or tmpOP to use this command.</original>
-      <translate> </translate>
+      <translate>Se debe ser como mínimo Operador de Canal o tempOP para usar este comando.</translate>
     </item>
     <item id="108" file="command.cpp" function="_handle_tmpop_command">
       <original>There's no account with username {}.</original>
