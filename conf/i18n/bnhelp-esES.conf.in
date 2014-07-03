@@ -1,130 +1,132 @@
 ##############################################################################
-# bnhelp  -  This Help File is used for describing the commands to the user  #
+# bnhelp  -  Este Archivo de Ayuda se usa para describir comandos al usuario #
 #----------------------------------------------------------------------------#
-# Entries are separated by a percent sign (%) at the beginning of the line.  #
-# The commands that correspond with the entry should follow the % on the     #
-# same line.                                                                 #
+# Cada entrada está separada por un signo de porcentaje (%) al inicio        #
+# de la línea.                                                               #
+# Los comandos que se corresponden con la entrada deberán estar seguidos de  #
+# % en la mísma línea                                                        #
 #                                                                            #
-# You can enter comments by starting a line with #.  Comments extend to the  #
-# end of the line.                                                           #
-# Tabs replaces with 3 spaces.                                               #
-# Empty lines are ignored.                                                   #
+# Se pueden insertar comentarios al empezar una línea con #.                 #     
+# Los comentarios se extienden hasta el final de la línea.                   #
+# Las pestañas se reemplazan con 3 espacios.                                 #
+# Las líneas vacias se ignoran.                                              #
 #                                                                            #
 ##############################################################################
 
 %whois whereis where
 --------------------------------------------------------
-/whois <player> (aliases: /where /whereis)
-	Displays where a <player> is on the server.
+/whois <jugador> (también se puede usar: /where /whereis)
+	Muestra donde un <jugador> se encuentra en el servidor.
 	
-	Example: /whois nomad
+	Ejemplo: /whois nomad
 
 %msg whisper m w
 --------------------------------------------------------
-/whisper <player> <message> (aliases: /w /m /msg)
-	Sends a private <message> to <player>
+/whisper <jugador> <mensaje> (también se puede usar: /w /m /msg)
+	Envía un <mensaje> privado para <jugador>
 	
-	Example: /whisper nomad How are you doing?
+	Ejemplo: /whisper nomad ¿Qué tal todo?
 
 %ignore squelch
 --------------------------------------------------------
-/squelch <username> (alias: ignore, see also: /unsquelch)
-	Blocks future messages sent from <username>.
+/squelch <nombreusuario> (también se puede usar: /ignore, Véase también: /unsquelch)
+	Bloquea mensajes futuros enviados por <nombreusuario>.
 	
-	Example: /squelch nomad
+	Ejemplo: /squelch nomad
 
 %unignore unsquelch
 --------------------------------------------------------
-/unsquelch <player> (alias: /unignore)
-	Allows a previously squelched <player> to talk to you normally.
+/unsquelch <jugador> (también se puede usar: /unignore)
+	Permite a <jugador> previamente ignorado poder volver a hablar con normalidad.
 	
-	Example: /unsquelch nomad
+	Ejemplo: /unsquelch nomad
 
 %away
 --------------------------------------------------------
-/away [message]
-	Displays [message] to users who whisper to you. To disable, use the /away command again with no [message].
+/away [mensaje]
+	Muestra [mensaje] a los usuarios que le susurren (whisper). Para desactivar, usar el comando /away de nuevo sin [mensaje].
 	
-	Example: /away Eating dinner
+	Ejemplo: /away Estoy cenando.
 
 %dnd
 --------------------------------------------------------
-/dnd [message]
-	Prevents all whispers from displaying to your screen. To disable, use the command again with no [message].
+/dnd [mensaje]
+	Previene que se muestre cualquier susurro en su pantalla. Para desactivar, usar el comando /dnd de nuevo sin [mensaje].
 	
-	Example: /dnd I'm playing a game and don't want to hear whispers.
+	Ejemplo: /dnd Estoy jugando y no quiero leer mensajes.
 
 %who
 --------------------------------------------------------
-/who <channel>
-	Displays a list of users in <channel>
+/who <canal>
+	Muestra una lista de los usuarios en <canal>
 	
-	Example: /who Moderated Support
+	Ejemplo: /who Moderated Support
 
 %stats astat
 --------------------------------------------------------
-/stats [player] [client] (alias: /astat)
-	Displays a [player]'s Win/Loss record.
+/stats [jugador] [cliente] (también se puede usar: /astat)
+	Muestra el record de Victorias/Derrotas de un [jugador].
 	
-	Example: /stats nomad
+	Ejemplo: /stats nomad
 
 %status users
 --------------------------------------------------------
-/users [gametag] (alias: /status)
-	Displays the current number of users connected to the server.
-	Example: /users W3XP
+/users [SiglasJuego] (también se puede usar: /status)
+	Muestra el actual número de usuarios conectados al servidor.
+	
+	Ejemplo: /users W3XP
 
 %time
 --------------------------------------------------------
 /time
-	Displays the current server and your local time.
+	Muestra su hora local y el servidor actual.
 
 %channel join j
 --------------------------------------------------------
-/channel <channel> (alias: /join /j)
-	Moves you to <channel>
+/channel <canal> (también se puede usar: /join /j)
+	Mueve al usuario a <canal>
 	
-	Example: /channel Moderated Support
+	Ejemplo: /channel Moderated Support
 
 %rejoin
 --------------------------------------------------------
-/rejoin (alias: /resign)
-	Removes your status as the channel Operator.
+/rejoin (también se puede usar: /resign)
+	Elimina su status como Operador del canal.
 
 %me emote
 --------------------------------------------------------
-/me <message> (alias: /emote)
-	Displays your name and <message> in a different color.
+/me <mensaje> (también se puede usar: /emote)
+	Muestra su nombre y el <mensaje> en diferente color.
 	
-	Example: /emote wants to play a game.
+	Ejemplo: /emote quiere jugar una partida.
 
 %kick
 --------------------------------------------------------
-/kick <player>
-	Kicks <player> from the channel.
+/kick <jugador>
+	Expulsa <jugador> del canal.
 	
-	Example: /kick nomad
+	Ejemplo: /kick nomad
 
 %ban
 --------------------------------------------------------
-/ban <player> (see also: /unban)
-	Bans <player> from the channel, and prevents him from returning.
+/ban <jugador> (véase también: /unban)
+	Banea al <jugador> del canal, previniendo que regrese.
 	
-	Example: /ban nomad
+	Ejemplo: /ban nomad
 
 %unban
 --------------------------------------------------------
-/unban <player>
-	Allows a banned <player> to return to the channel.
+/unban <jugador>
+	Permite a un <jugador> baneado poder volver a entrar al canal.
 	
 	Example: /unban nomad
 
 %serverban
 --------------------------------------------------------
-/serverban <player> (see also: /unban)
-	Bans <player> by IP and lock his account
+/serverban <jugador> (véase también: /unban)
+	Banea <jugador> por su IP y bloquea la cuenta.
 	
-	Example: /serverban nomad
+	Ejemplo: /serverban nomad
 
 %ipscan
 --------------------------------------------------------
