@@ -130,92 +130,92 @@
 
 %ipscan
 --------------------------------------------------------
-/ipscan <name or IP-address>
-	Finds all currently logged in users with the given <name> or <IP-address>.
+/ipscan <nombre o dirección-IP>
+	Busca a todos los usuarios actualmente conectados con el <nombre> o <dirección-IP> dados.
 	
-	Example: /ipscan 127.0.0.1
-	Example: /ipscan nomad
+	Ejemplo: /ipscan 127.0.0.1
+	Ejemplo: /ipscan nomad
 	
 %whoami
 --------------------------------------------------------
 /whoami
-	Displays where you are on the server.
+	Muestra donde se encuentra uno mismo en el servidor.
 
 %uptime
 --------------------------------------------------------
 /uptime
-	Displays how long the server has been running.
+	Muestra durante cuanto tiempo el servidor ha estado en marcha.
 
 %version
 --------------------------------------------------------
 /version
-	Displays the version of the server
+	Muestra la versión del servidor.
 
 %lusers
 --------------------------------------------------------
 /lusers
-	Displays a list of players who have been banned from the channel
+	Muestra una lista de los jugadores que han sido baneados del canal.
 
 %games
 --------------------------------------------------------
-/games [gametag] [difficulty]
-	Displays a list of online games. 
-	Set [difficulty] for Diablo games only (norm|night|hell)
+/games [SiglasJuego] [dificultad]
+	Muestra una lista de los juegos online.
+	Establece [dificultad] solamente para juegos en Diablo (norm|night|hell)
 --------------------------------------------------------
 	/games all
-		Displays a list of all games.
+		Muestra una lista de todos los juegos.
 	/games l[obby]
-		Displays a list of games in lobby.
+		Muestra una lista de los juegos en la sala de espera (lobby).
 
 %channels chs
 --------------------------------------------------------
-/channels [gametag] (alias: /chs)
-	Displays a list of channels.
+/channels [SiglasJuego] (también se puede usar: /chs)
+	Muestra una lista de los canales.
 --------------------------------------------------------
 	/channels all
-		Displays a list of all channels.
+		Muestra una lista de todos los canales.
 		
 %connections con
 --------------------------------------------------------
-/connections (alis: /con)
-	Displays a list of connections.
+/connections (también se puede usar: /con)
+	Muestra una lista de las conexiones.
 
 %finger
 --------------------------------------------------------
-/finger <player>
-	Displays detailed information about <player>
+/finger <jugador>
+	Muestra informaciónd detallada sobre <jugador>
 	
-	Example: /finger nomad
+	Ejemplo: /finger nomad
 
 %admins
 --------------------------------------------------------
 /admins
-	Displays a list of all currently logged in administrators.
+	Muestra una lista de todos los administradores actualmente conectados.
 
 %reply r
 --------------------------------------------------------
-/reply <message> (alias: /r)
-	Replies to the last player who whispered you with <message>.
+/reply <mensaje> (también se puede usar: /r)
+	Contesta al último jugador que le haya susurrado con <mensaje>.
 	
-	Example: /r Hi, mate!
+	Ejemplo:/r Hey, ¿como vá?
 
 %announce ann
 --------------------------------------------------------
-/announce <message> (alias: /ann)
-	Announces <message> to everyone.
+/announce <mensaje> (también se puede usar: /ann)
+	Anuncia un <mensaje> para todos.
 	
-	Example: /ann Hello everyone!
+	Ejemplo: /ann ¡Hola a todos!
 
 %realmann
 --------------------------------------------------------
-/realmann <message>
-	Announces <message> to everyone in the current Diablo 2 realm.
+/realmann <mensaje>
+	Anuncia un <mensaje> para todos en el reino actual de Diablo 2.
 	
-	Example: /realmann Hello everyone!
+	Ejemplo: /realmann ¡Hola a todos!
 
 %alert
 --------------------------------------------------------
-/alert <message>
+/alert <mensajee>
 	Show MessageBox with <message> to everyone. Use \n as a new line symbol.
 	
 	Example: /alert Hello\neveryone!
