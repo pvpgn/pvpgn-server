@@ -282,43 +282,43 @@
 %ladderactivate
 --------------------------------------------------------
 /ladderactivate
-	Copies current ladder statistics to active ladder statistics.
+	Copia las estadísticas actuales de ladder a las estadísticas de ladder activas.
 
 %ladderinfo
 --------------------------------------------------------
-/ladderinfo <rank> [gametag]
-	Displays ladder information for <rank> of [gametag]
+/ladderinfo <rango> [SiglasJuego]
+	Muestra información de ladder para <rango> en [SiglasJuego]
 	
-	Example: /ladderinfo 1000 SEXP
+	Ejemplo: /ladderinfo 1000 SEXP
 
 %timer
 --------------------------------------------------------
-/timer <duration> [message]
-	Displays [message] after <duration> seconds.
+/timer <duración> [mensaje]
+	Muestra [mensaje] tras <duración> segundos.
 	
-	Example: /timer 60 one minute has passed
+	Example: /timer 60 ha pasado un minuto
 
 %netinfo
 --------------------------------------------------------
-/netinfo [player]
-	Displays [player]'s network information.
+/netinfo [jugador]
+	Muestra la información de red de [jugador].
 	
-	Example: /netinfo nomad
+	Ejemplo: /netinfo nomad
 
 %addacct
 --------------------------------------------------------
-/addacct <player> <password>
-	Creates a new account named <player> with password <password>.
+/addacct <jugador> <password>
+	Creates a new account named <jugador> with password <password>.
 	
-	Example: /addacct nomad password
+	Ejemplo: /addacct nomad password
 
 %chpass
 --------------------------------------------------------
-/chpass [<player>] <password> - change a player's password
-	Changes [<player>]'s password to <password>.
-	If [<player>] is empty then change password for your account.
+/chpass [<jugador>] <password> - change a jugador's password
+	Changes [<jugador>]'s password to <password>.
+	If [<jugador>] is empty then change password for your account.
 	
-	Example: /chpass nomad password
+	Ejemplo: /chpass nomad password
 
 %quota
 --------------------------------------------------------
@@ -330,65 +330,65 @@
 /shutdown [duration]
 	Sets the shutdown sequence at [duration] seconds or cancels it if set to zero.
 	
-	Example: /shutdown 300
+	Ejemplo: /shutdown 300
 
 %lock lockacct
 --------------------------------------------------------
-/lock <player> [hours] [reason] (alias: /lockacct)
-	Locks <player>'s account to prevent him/her from logging in with it.
+/lock <jugador> [hours] [reason] (alias: /lockacct)
+	Locks <jugador>'s account to prevent him/her from logging in with it.
 	Set [hours] = 0 to ban permanently.
 	
-	Example: /lock nomad 0 bye noob!
+	Ejemplo: /lock nomad 0 bye noob!
 
 %unlock unlockacct
 --------------------------------------------------------
-/unlock <player> (alias: /unlockacct)
-	Unlocks <player>'s account to allow him/her to log in with it.
+/unlock <jugador> (alias: /unlockacct)
+	Unlocks <jugador>'s account to allow him/her to log in with it.
 	
-	Example: /unlock nomad
+	Ejemplo: /unlock nomad
 
 %mute muteacct
 --------------------------------------------------------
-/mute <player> [hours] [reason] (alias: /muteacct)
-	Mutes <player>'s account to prevent him/her from talking on channels.
+/mute <jugador> [hours] [reason] (alias: /muteacct)
+	Mutes <jugador>'s account to prevent him/her from talking on channels.
 	Set [hours] = 0 to mute permanently.
 	
-	Example: /mute nomad 6 stop spam!
+	Ejemplo: /mute nomad 6 stop spam!
 
 %unmute unmuteacct
 --------------------------------------------------------
-/unmute <player> (alias: /unmuteacct)
-	Unmutes <player>'s account to allow him/her to talk on channels.
+/unmute <jugador> (alias: /unmuteacct)
+	Unmutes <jugador>'s account to allow him/her to talk on channels.
 	
-	Example: /unmute nomad
+	Ejemplo: /unmute nomad
 
 %friends f
 --------------------------------------------------------
-/friends <command> [options] (alias: /f)
+/friends <comando> [opciones] (también se puede usar: /f)
 --------------------------------------------------------
-	/friends add <username>
-		Adds <username> to your friends list.
-	/friends del <username>
-		Removes <username> from your friends list.
-	/friends promote <username>
-		Promotes <username> one line up your friends list.
-	/friends demote <username>
-		Demotes <username> one line down your friends list
+	/friends add <nombreusuario>
+		Añade a <nombreusuario> a su lista de amigos.
+	/friends del <nombreusuario>
+		Elimina a <nombreusuario> de su lista de amigos.
+	/friends promote <nombreusuario>
+		Asciende a <nombreusuario> una línea arriba en su lista de amigos.
+	/friends demote <nombreusuario>
+		Desciende a <nombreusuario> una línea abajo en su lista de amigos.
 	/friends list
-		Displays your friends list.
+		Muestra su lista de amigos.
 	/friends online
-		Displays your online friends list.
-	/friends msg <msgtext>
-		Whisper <msgtext> to all of your online friends.
+		Muestra la lista de sus amigos online.
+	/friends msg <msgtexto>
+		Susurra <msgtexto> a todos sus amigos online.
 
 %mail
 --------------------------------------------------------
-/mail <command> [options]
+/mail <commando> [opciones]
 --------------------------------------------------------
-    /mail s[end] <receiver> <message>
-		Sends mail to <receiver> with <message>.
-    /mail r[ead] [index]
-		Reads mail [index]
+    /mail s[end] <receptor> <mensaje>
+		Envia mail a <receptorr> con <mensaje>.
+    /mail r[ead] [índice]
+		Leer mail [índice]
     /mail del[ete] {all|<index>}
 		Deletes mail <index> or [all] mail.
 
@@ -407,7 +407,7 @@
 /help [command]
 	Displays help about [command]
 	
-	Example: /help whisper
+	Ejemplo: /help whisper
 
 %ipban
 --------------------------------------------------------
@@ -428,25 +428,25 @@
 	Sets or returns the value of <key> for account <account>.
 	Set [value] = null to erase value.
 	
-	Example: /set nomad BNET\auth\botlogin true
-	Example: /set nomad Record\SEXP\0_wins 999
+	Ejemplo: /set nomad BNET\auth\botlogin true
+	Ejemplo: /set nomad Record\SEXP\0_wins 999
 
 %motd
 --------------------------------------------------------
 /motd
-	Displays the MOTD.
+	Muestra el MOTD (Mapa del Dia).
 
 %tos
 --------------------------------------------------------
 /tos /warranty /license
-	Displays the Terms of Service.
+	Muestra los Términos de Servicio.
 
 %admin
 --------------------------------------------------------
-/admin [+|-]<player>
-	Promotes/demotes <player> to/from server administrator.
+/admin [+|-]<jugador>
+	Asciende/Degrada a <jugador> a ser /no ser administrador del servidor.
 	
-	Example: /admin +nomad
+	Ejemplo: /admin +nomad
 
 %rehash
 --------------------------------------------------------
@@ -464,8 +464,8 @@
 Commands for clan members:
 	/clan m[sg] <message> (alias [w]hisper)
 		Whispers a message to all your fellow clan members
-	/clan inv[ite] <username>
-		Invite <username> to your clan.
+	/clan inv[ite] <nombreusuario>
+		Invite <nombreusuario> to your clan.
 	/clan inv[ite] get
 		Show clanname which you have been invited
 	/clan inv[ite] accept
@@ -501,88 +501,88 @@ Commands for clan chieftain:
 
 %operator
 --------------------------------------------------------
-/operator [+|-]<player> (alias: /op)
-	Promotes/demotes <player> to/from server operator.
+/operator [+|-]<jugador>
+	Asciende/degrada a <jugador> a ser/no ser operador del servidor.
 	
-	Example: /operator +nomad
+	Ejemplo: /operator +nomad
 
 %aop
 --------------------------------------------------------
-/aop <username>
-	Promotes <username> to channel administrator.
+/aop <nombreusuario>
+	Asciende a <nombreusuario> a ser administrador del canal.
 	
-	Example: /aop nomad
+	Ejemplo: /aop nomad
 
 %op
 --------------------------------------------------------
-/op <username>
-	Promotes <username> to channel operator.
+/op <nombreusuario>
+	Asciende a <nombreusuario> a ser operador del canal.
 	
-	Example: /op nomad
+	Ejemplo: /op nomad
 %deop
 --------------------------------------------------------
-/deop <username>
-	Demotes <username> from channel administrator or operator.
+/deop <nombreusuario>
+	Degrada a <nombreusuario> a no ser operador o administrador del canal.
 	
-	Example: /deop nomad
+	Ejemplo: /deop nomad
 
 %tmpop
 --------------------------------------------------------
-/tmpop <username>
-	Promotes <username> to temporary channel operator.
+/tmpop <nombreusuario>
+	Asciende a <nombreusuario> operador del canal temporal.
 	
-	Example: /tmpop <username>
+	Ejemplo: /tmpop <nombreusuario>
 
 %vop
 --------------------------------------------------------
-/vop <username>
-	Adds <username> to the VOP list.
+/vop <nombreusuario>
+	Añade a <nombreusuario> a la lista VOP.
 	
-	Example: /vop nomad
+	Ejemplo: /vop nomad
 
 %voice
 --------------------------------------------------------
-/voice <username>
-	Temporarily gives voice privileges to <username>.
+/voice <nombreusuario>
+	Se dan privilegios de voz temporales a <nombreusuario>.
 	
-	Example: /voice nomad
+	Ejemplo: /voice nomad
 
 %devoice
 --------------------------------------------------------
-/devoice <username>
-	Removes <username> from the VOP list and removes temporary voice privileges.
+/devoice <nombreusuario>
+	Elimina a <nombreusuario> de la lista VOP y elimina  los privilegios de voz temporales.
 	
-	Example: /devoice nomad
+	Ejemplo: /devoice nomad
 
 %topic
 --------------------------------------------------------
-/topic [message]
-	Sets or displays current channel's topic.
+/topic [mensaje]
+	Establece o muestra el tema del canal actual.
 	
-	Example: /topic Supported is given in this channel...\n(some text on a new line)
+	Ejemplo: /topic En este canal se ofrece ayuda...\n(texto en una nueva línea)
 
 %moderate
 --------------------------------------------------------
 /moderate
-	Toggles the current channel's moderated status.
+	Activa/desactiva el estado de la moderación del canal actual.
 
 %clearstats
 --------------------------------------------------------
-/clearstats <player> <clienttag>
-	Clears <player>'s <clienttag> statistics, where <clienttag> can be any valid client or ALL for all clients
-	Supported clients: DRTL|DSHR|W2BN|STAR|SEXP|SSHR|WAR3|W3XP
+/clearstats <jugador> <SiglasCliente>
+	Resetea las estadísitcas del <jugador> para <SiglasCliente>, donde <SiglasCliente> puede ser cualquier cliente válido o ALL para todos.
+	Clientes soportados: DRTL|DSHR|W2BN|STAR|SEXP|SSHR|WAR3|W3XP
 	
-	Example: /clearstats nomad SEXP
+	Ejemplo: /clearstats nomad SEXP
 
 %find
 --------------------------------------------------------
 /find <substring>
-	Finds users with <substring> in their username. <substring> MUST be lowercase!
+	Encuentra usuarios con <substring> en su nombre de usuario. ¡<substring> DEBE estar en minúsculas!
 
 %save
 --------------------------------------------------------
 /save 
-	Forces the server to save account and clan changes to the database.
+	Fuerza al servidor a guardar todos los cambios en cuentas y clanes a la base de datos.
 
 %icon
 --------------------------------------------------------
