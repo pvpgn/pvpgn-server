@@ -215,7 +215,7 @@
 
 %alert
 --------------------------------------------------------
-/alert <mensajee>
+/alert <mensaje>
 	Show MessageBox with <message> to everyone. Use \n as a new line symbol.
 	
 	Example: /alert Hello\neveryone!
@@ -223,61 +223,61 @@
 %news
 --------------------------------------------------------
 /news
-	Displays the news.
+	Muestra las noticias.
 
 %logout quit exit
 --------------------------------------------------------
-/logout (alias: /quit /exit)
-	Disconnects you from the server.
+/logout (también se puede usar: /quit /exit)
+	Desconecta del servidor.
 
 %kill
 --------------------------------------------------------
-/kill {<username>|#<socket>} [min]
-	Disconnects <player> from the server and bans the player's IP address for [min] minutes.
+/kill {<nombreusuario>|#<socket>} [min]
+	Desconecta a <jugador> del servidor y banea la dirección IP del jugador durante [min] minutos.
 	
-	Example: /kill nomad 5
+	Ejemplo: /kill nomad 5
 
 %killsession
 --------------------------------------------------------
 /killsession <sessionid> [min]
-	Disconnects the session from the server and bans the session's IP address for [min] minutes.
+	Desconecta la sesión del servidor y banea la dirección IP de la sesión durante [min] minutos.
 	
-	Example: /killsession 1 5
+	Ejemplo: /killsession 1 5
 
 %watch
 --------------------------------------------------------
-/watch <player>
-	Enables notifications for <player>.
+/watch <jugador>
+	Activa notificaciones para <jugador>.
 	
-	Example: /watch nomad
+	Ejemplo: /watch nomad
 
 %unwatch
 --------------------------------------------------------
-/unwatch <player>
-	Disables notifications for <player>.
+/unwatch <jugador>
+	Desactiva notificaciones para <jugador>.
 	
-	Example: /unwatch nomad
+	Ejemplo: /unwatch nomad
 
 %watchall
 --------------------------------------------------------
-/watchall [gametag]
-	Enables notifications for everyone.
+/watchall [SiglasJuego]
+	Activa notificaciones para todos.
 	
-	Example: /watchall SEXP
+	Ejemplo: /watchall SEXP
 
 %unwatchall
 --------------------------------------------------------
-/unwatchall [gametag]
-	Disables notifications for everyone.
+/unwatchall [SiglasJuego]
+	Desactiva notificaciones para todos.
 
-	Example: /unwatchall SEXP
+	Ejemplo: /unwatchall SEXP
 		
 %gameinfo
 --------------------------------------------------------
-/gameinfo <gamename>
-	Displays information about <gamename>.
+/gameinfo <nombrejuego>
+	Muestra información sobre <nombrejuego>.
 	
-	Example: /gameinfo FS 1v1!!!
+	Ejemplo: /gameinfo FS 1v1!!!
 
 %ladderactivate
 --------------------------------------------------------
@@ -586,32 +586,32 @@ Commands for clan chieftain:
 
 %icon
 --------------------------------------------------------
-/icon [name]
-	Set custom icon for normal user.
-	Use /icon without [name] to display list of available icons in your stash.
+/icon [nombre]
+	Establece un icono personalizado para un usuario normal.
+	Usar /icon sin [name] para mostra una lista de los iconos disponibles en su alijo.
 --------------------------------------------------------
-Syntax for operator/admin:
-	/icon a[dd] <username> <icon>
-		Add icon into user stash
-	/icon d[el] <username> <icon>
-		Remove icon from user stash
-	/icon s[et] <username> <icon>
-		Set custom icon to user without adding it in user stash
-	/icon l[ist] <username>
-		Display icons in user's stash
+Sintaxis para operador/admin:
+	/icon a[dd] <nombreusuario> <icon>
+		Añadir icono al alijo del usuario
+	/icon d[el] <nombreusuario> <icon>
+		Elimina icono del alijo del usuario
+	/icon s[et] <nombreusuario> <icon>
+		Establece el icono para el usuario sin añadirlo en su alijo
+	/icon l[ist] <nombreusuario>
+		Muestra lista de los iconos en el alijo del usuario
 	/icon l[ist]
-		Display availaible icons in server stash that can be assigned to users
+		Muestra los iconos disponibles en el alijo del servidor para asginar a los usuarios
 
 %quiz
 --------------------------------------------------------
-/quiz <command> [option]
+/quiz <comando> [opción]
 	Trivia Quiz Game
 --------------------------------------------------------
-	/quiz start <name>
-		Start game with given dictionary name in current channel
+	/quiz start <nombre>
+		Comienza un juego con el nombre de diccionario introducido en el canal actual
 	/quiz stop
-		Finish game by force
-	/quiz stats [username]
-		Display record statistics for user
+		Finaliza el juego por la fuerza
+	/quiz stats [nombreusuario]
+		Muestra los records estadísticas del jugador
 	/quiz stats
-		Display Top records
+		Muestra los Top Records
