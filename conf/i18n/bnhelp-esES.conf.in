@@ -485,19 +485,19 @@ Commands for clan chieftain:
 
 %ping p latency
 --------------------------------------------------------
-/ping (alias: /p /latency)
-	Displays your ping to the server.
+/ping (también se puede usar: /p /latency)
+	Muestra su ping en el servidor.
 
 %command_groups cg
 --------------------------------------------------------
-/command_groups <command> <user> [groups] (alias: /cg)
+/command_groups <comando> <usuario> [grupos] (también se puede usar: /cg)
 --------------------------------------------------------
-	/cg list <user>
-		Displays <user>'s command groups.
-	/cg add <user> <group(s)>
-		Adds command group(s) <group(s)> to <user>.
-	/cg del <user> <group(s)>
-		Deletes command group(s) <group(s)> from <user>.
+	/cg list <usuario>
+		Muestra los grupos de comandos de <usuario>.
+	/cg add <usuario> <grupo(s)>
+		Añade grupos de comandos <grupo(s)> al <usuario>.
+	/cg del <usuario> <grupo(s)>
+		Elimina grupos de comandos <grupo(s)> del <usuario>.
 
 %operator
 --------------------------------------------------------
