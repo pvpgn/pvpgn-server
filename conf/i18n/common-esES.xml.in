@@ -425,7 +425,7 @@
     </item>
     <item id="126" file="command.cpp" function="_handle_deop_command">
       <original>{} is no tempOP in this channel, so you can't demote him</original>
-      <translate>{} no es tempOP en este canal, así que no se le puede degradar</translate>
+      <translate>{} no es OPtemp en este canal, así que no se le puede degradar</translate>
     </item>
     <item id="87" file="command.cpp" function="_handle_devoice_command">
       <original>This command can only be used inside a channel.</original>
