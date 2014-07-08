@@ -308,57 +308,57 @@
 %addacct
 --------------------------------------------------------
 /addacct <jugador> <password>
-	Creates a new account named <jugador> with password <password>.
+	Crea una nueva cuenta con el nombre <jugador> con el <password>.
 	
 	Ejemplo: /addacct nomad password
 
 %chpass
 --------------------------------------------------------
-/chpass [<jugador>] <password> - change a jugador's password
-	Changes [<jugador>]'s password to <password>.
-	If [<jugador>] is empty then change password for your account.
+/chpass [<jugador>] <password> - cambia el password de un jugador
+	Cambia el password de [<jugador>] por <password>.
+	Si [<jugador>] está vacio, entonces se cambia el password de su cuenta.
 	
 	Ejemplo: /chpass nomad password
 
 %quota
 --------------------------------------------------------
 /quota
-	Displays your message quota.
+	Muestra su cuota de mensajes.
 
 %shutdown
 --------------------------------------------------------
-/shutdown [duration]
-	Sets the shutdown sequence at [duration] seconds or cancels it if set to zero.
+/shutdown [duración]
+	Establece la secuencia de apagado en [duración] segundos o la cancela si se introduce a cero.
 	
 	Ejemplo: /shutdown 300
 
 %lock lockacct
 --------------------------------------------------------
-/lock <jugador> [hours] [reason] (alias: /lockacct)
-	Locks <jugador>'s account to prevent him/her from logging in with it.
-	Set [hours] = 0 to ban permanently.
+/lock <jugador> [horas] [razón] (también se puede usar: /lockacct)
+	Bloquea la cuenta de <jugador> previnendole de que se conecte con tal cuenta.
+	Establecer [horas] = 0 para banear permanentemente.
 	
-	Ejemplo: /lock nomad 0 bye noob!
+	Ejemplo: /lock nomad 0 ¡bye noob!
 
 %unlock unlockacct
 --------------------------------------------------------
-/unlock <jugador> (alias: /unlockacct)
-	Unlocks <jugador>'s account to allow him/her to log in with it.
+/unlock <jugador> (también se puede usar: /unlockacct)
+	Desbloquea la cuenta de <jugador> permitiendo poder volver a conectarse con ella.
 	
 	Ejemplo: /unlock nomad
 
 %mute muteacct
 --------------------------------------------------------
-/mute <jugador> [hours] [reason] (alias: /muteacct)
-	Mutes <jugador>'s account to prevent him/her from talking on channels.
-	Set [hours] = 0 to mute permanently.
+/mute <jugador> [horas] [razón] (también se puede usar: /muteacct)
+	Silencia la cuenta de <jugador> previniendole de que pueda hablar en los canales.
+	Establecer [horas] = 0 para silenciar permanentemente.
 	
-	Ejemplo: /mute nomad 6 stop spam!
+	Ejemplo: /mute nomad 6 ¡Basta con el spam!
 
 %unmute unmuteacct
 --------------------------------------------------------
-/unmute <jugador> (alias: /unmuteacct)
-	Unmutes <jugador>'s account to allow him/her to talk on channels.
+/unmute <jugador> (también se puede usar: /unmuteacct)
+	Devuelve la voz ala cuenta de <jugador> permitiendole volver a hablar en los canales.
 	
 	Ejemplo: /unmute nomad
 
@@ -395,38 +395,38 @@
 %flag
 --------------------------------------------------------
 /flag <number>
-	A debug tool for icon flags.
+	Una herramienta de depuración para iconos de estado.
 
 %tag
 --------------------------------------------------------
-/tag <gamename>
-	A debug tool for client tags.
+/tag <nombrejuego>
+	Una herramienta de depuración para etiquetas de clientes.
 
 %help
 --------------------------------------------------------
-/help [command]
-	Displays help about [command]
+/help [comando]
+	Muestra ayuda sobre [comando]
 	
 	Ejemplo: /help whisper
 
 %ipban
 --------------------------------------------------------
-/ipban <command> [option] [time]
+/ipban <comando> [opción] [tiempo]
 --------------------------------------------------------
     /ipban l[ist]
-		Displays a list of banned IP addresses
+		Muestra una lista de las direcciones IP baneadas
     /ipban c[heck] <IP>
-		Checks if IP address <IP> is banned or not.
-    /ipban d[el] <IP|index>
-		Deletes IP address <IP> or <index>
+		Comprueba si la dirección IP <IP> ha sido baneada o no.
+    /ipban d[el] <IP|índice>
+		Elimina la dirección IP <IP> o el <índice>
     /ipban a[dd] <IP> [time]
-		Bans IP address <IP> for [time] minutes. [time] = 0 - permanent ban
+		Banea la dirección IP<IP> durante [tiempo] minutos. [tiempo] = 0 - ban permanente
 
 %set
 --------------------------------------------------------
-/set <account> <key> [value]
-	Sets or returns the value of <key> for account <account>.
-	Set [value] = null to erase value.
+/set <cuenta> <clave> [valor]
+	Establece o retorna el valor de <clave> para la cuenta <cuenta>.
+	Establece [valor] = nulo para eliminar valor.
 	
 	Ejemplo: /set nomad BNET\auth\botlogin true
 	Ejemplo: /set nomad Record\SEXP\0_wins 999
@@ -434,7 +434,7 @@
 %motd
 --------------------------------------------------------
 /motd
-	Muestra el MOTD (Mapa del Dia).
+	Muestra el MOTD (Mensaje del Dia).
 
 %tos
 --------------------------------------------------------
@@ -450,38 +450,38 @@
 
 %rehash
 --------------------------------------------------------
-/rehash <mode>
-	Forces the server to reload specified config. Set "all" to reload all configs.
-	<mode> = all | i18n | channels | realms | autoupdate | news | versioncheck | ipbans | helpfile | banners | tracker | commandgroups | aliasfile | transfile | tournament | icons | anongame | topiclist | lua
+/rehash <modo>
+	Fuerza al servidor a recargar una config específica. Establecer "all" para recargar todas las configs.
+	<modo> = all | i18n | channels | realms | autoupdate | news | versioncheck | ipbans | helpfile | banners | tracker | commandgroups | aliasfile | transfile | tournament | icons | anongame | topiclist | lua
 
 %clan
 --------------------------------------------------------
-/clan <command> [option]
+/clan <comando> [opción]
 --------------------------------------------------------
-	/clan create <clantag> <clanname>
-		Create a new clan (max <clantag> length = 4; spaces are allowed in <clanname>)
+	/clan create <siglasclan> <nombreclan>
+		Crea un nuevo clan (longitud max <siglasclan> = 4; no se permiten espacios en <nombreclan>)
 		
 Commands for clan members:
-	/clan m[sg] <message> (alias [w]hisper)
-		Whispers a message to all your fellow clan members
+	/clan m[sg] <mesnsaje> (También se puede usar [w]hisper)
+		Susurra un mensaje a todos los compañeros del clan
 	/clan inv[ite] <nombreusuario>
-		Invite <nombreusuario> to your clan.
+		Invita a <nombreusuario> a su clan
 	/clan inv[ite] get
-		Show clanname which you have been invited
+		Muestra el nombre del clan al cual ha sido invitado
 	/clan inv[ite] accept
-		Accept invitation to clan
+		Acepta invitación al clan
 	/clan inv[ite] decline 
-		Decline invitation to clan
+		Declina invitación al clan
 		
-Commands for clan chieftain:
-	/clan motd <message>
-		Update the clan's Message of the Day to <message>.
-	/clan pub[lic] (alias: pub)
-		Opens the clan channel up to the public so that anyone may enter.
-	/clan priv[ate]  (alias: priv)
-		Closes the clan channel such that only members of the clan may enter.
+Comandos para jefe del clan:
+	/clan motd <mensaje>
+		Actualiza el Mensaje del Dia del clan a <mensaje>.
+	/clan pub[lic] (también se puede usar: pub)
+		Abre el canal del clan al público para que cualquiera pueda entrar.
+	/clan priv[ate]  (también se puede usar: priv)
+		Cierra el canal al público de manera que solamente miembros del clan pueden entrar.
 	/clan dis[band]
-		Disband your clan.
+		Disuelve su clan.
 
 %ping p latency
 --------------------------------------------------------
@@ -588,7 +588,7 @@ Commands for clan chieftain:
 --------------------------------------------------------
 /icon [nombre]
 	Establece un icono personalizado para un usuario normal.
-	Usar /icon sin [name] para mostra una lista de los iconos disponibles en su alijo.
+	Usar /icon sin [nombre] para mostrar una lista de los iconos disponibles en su alijo.
 --------------------------------------------------------
 Sintaxis para operador/admin:
 	/icon a[dd] <nombreusuario> <icon>
