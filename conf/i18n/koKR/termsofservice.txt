@@ -1,10 +1,15 @@
 You are currently connected to a PvPGN Server (Player -vs- Player Gaming Network)
+현재 PvPGN 서버를 연걸했습니다. (플레이어 대 플레이어 게임잉 네트워크)
 
 PvPGN TERMS OF USE:
+PvPGN 조건:
 
 PvPGN is a Battle.net(R) emulation server and in no way affiliated with bnetd, warforge, or Blizzard Entertainment(R).
+PvPGN은  배틀넷 (Battle.net®) 에물레이션 서버 라고 bnetd, warforge, Blizzard Entertainment과 제휴하고 있지 않다.
 PvPGN is provided "as is" without warrenties of any kind.
+PvPGN이 그대로 제공하고  보증서를 없다.
 We do not support the idea of Pirated software and urge you to purchase a legit copy of any games that you play on our servers.
+불법 복제된 소프트웨어의 사용을 지지하지 않다.  우리의 서버들에서 게임을 하려고 합법적인 버전을 구입하세요.
 
 1. Information found on PvPGN.
 PvPGN does not endorse or stand behind the accuracy, truthfulness or reliability of any information (including statements of opinion or advice) provided on or by means of PvPGN. Any and all statements made in forums, chat or during game play reflect only the views of their author.
