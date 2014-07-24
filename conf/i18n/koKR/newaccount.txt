@@ -1,0 +1,21 @@
+You are currently connected to a PvPGN Server (Player -vs- Player Gaming Network)
+
+PvPGN TERMS OF USE:
+
+PvPGN is a Battle.net(R) emulation server and in no way affiliated with bnetd, warforge, or Blizzard Entertainment(R).
+PvPGN is provided "as is" without warrenties of any kind.
+We do not support the idea of Pirated software and urge you to purchase a legit copy of any games that you play on our servers.
+
+1. Information found on PvPGN.
+PvPGN does not endorse or stand behind the accuracy, truthfulness or reliability of any information (including statements of opinion or advice) provided on or by means of PvPGN. Any and all statements made in forums, chat or during game play reflect only the views of their author.
+
+2. Disclaimer of Warrenty.
+PvPGN is provided to you "as is" without warrenty of any kind. PvPGN does not warrent that their programm will be uninterrupted or error free.
+
+3. Limitations of Liability
+PvPGN is in no way liable for loss or damage of any kind resulting from the use of PvPGN, including but not limited to, loss of goodwill, work stoppage, computer failure or malfunction, or any and all other damages or losses, commercial or otherwise.
+
+Battle.net(R) and Blizzard Entertainment(R) are trademarks or registered trademarks of Blizzard Entertainment in the U.S. and/or other countries.
+
+Besides all this... Happy gaming..
+PvPGN Project Page: http://pvpgn.berlios.de/
