@@ -1,0 +1,11 @@
+|c00FF0000Welcome |c00FF9933to |c0000CCFFthe |c00FF66FF%s |c0000CC00Version |c009999FF%v |c00FFFFFF
+
+There are currently %U user(s) in %G games of %N, and %u user(s) playing %g games and chatting in %c channels.
+
+
+
+
+
+
+
+This text invisible, because of limitation of 11 lines

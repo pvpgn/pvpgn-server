@@ -1,0 +1,21 @@
+Here is a short note of how to use and configure the conf/bnmotd.txt
+
+- all lines have to start with %I
+- possible parameters that can be used:
+-- %a = number of registered accounts on the server
+-- %c = number of currently existant channels
+-- %g = total number of currently running games
+-- %G = games of users with same clienttag.
+-- %h = hostname of the server
+-- %H = contact name (as set in bnetd.conf)
+-- %i = userid of the user
+-- %l = username
+-- %N = name of the game the user has connected with.
+-- %m = check users mail when they login
+-- %r = IP of the user
+-- %s = the servername
+-- %t = clienttag of the user
+-- %u = number of users currently logged in
+-- %U = users logged in with the same clienttag
+-- %v = server version
+-- 

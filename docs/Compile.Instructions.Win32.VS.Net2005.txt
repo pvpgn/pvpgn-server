@@ -1,0 +1,56 @@
+A step-by-step guide for building the SVN version of PvPGN using Visual Studio Professional
+===========================================================================================
+
+Requirements:
+ - CMake 2.4.7 ( http://www.cmake.org/files/v2.4/cmake-2.4.7-win32-x86.exe )
+ - Visual Studio 2005 Professional
+     (you can also use Visual C++ Express - but this will need additional 
+       tweaking that is beyond the scope of this guide.)
+ - zlib ( http://www.winimage.com/zLibDll/zlib123dll.zip AND http://www.winimage.com/zLibDll/zlib123.zip )
+ - latest PvPGN sources from SVN (in this example I have them extracted under D:/svn/pvpgn/ )
+ 
+ Optional:
+ - MySQL ( http://dev.mysql.com/get/Downloads/MySQL-5.0/mysql-5.0.45-win32.zip/from/pick#mirrors )
+    (using the installer version will make thinks alot easier for you - trust me on this)
+ - PostgreSQL ( http://wwwmaster.postgresql.org/download/mirrors-ftp?file=%2Fbinary%2Fv8.2.5%2Fwin32%2Fpostgresql-8.2.5-1.zip )
+    (same applies here - using this installer will make things alot easier for you)
+ - SQLite ( http://www.sqlite.org/sqlitedll-3_4_2.zip )
+    (needs some extra tweaking - but we'll leave that for later)
+     
+Step-by-step guide:
+ - install Visual Studio Professional (obviously not required when allread done)
+ - install CMake (same applies here)
+ - extract PvPGN sources from zip/tarball or get them via SVN
+ - create a folder called "zlib" inside you PvPGN base folder ( i.e. D:/svn/pvpgn/zlib/ )
+ - extract the following files from zlib123.zip into the "zlib" folder:
+      zconf.h, zlib.h
+ - extract the following file from zlib123dll.zip (from with dll32 folder) into the "zlib" folder:
+      zlibwapi.lib
+ - install MySQL if you intend to use it as a storage backend
+ - install PostgreSQL if you intend to use it as a storage backend
+ - SQLite stub - need some extra tweaking to be explained later (in version 2.0 of this guide)
+ - create a folder called "build" inside you PvPGN base folder ( i.e. D:/svn/pvpgn/build/ )
+ - fire up CMake (I'll use the GUI version for this guide - so you should use it, too)
+ - Where is the source code: D:\svn\pvpgn
+ - Where to build the binaries: D:\svn\pvpgn\build
+ - Now press the "Configure" button, select "Visual Studio 2005" as the build environment and wait a few seconds
+ - all the components should be found without any problems
+ - now enable optinal components if required ( WITH_MYSQL, WITH_PGSQL, WITH_SQLITE3 ) and "Configure" again
+ - again all the components should be found without any problems
+ - Press "OK"
+ - double-click on D:/svn/pvpgn/build/pvpgn.sln to fire up Visual Studio 2005
+ - build the "ALL_BUILD" target
+ - build the "INSTALL" target
+ - now you should find all the stuff (almost) ready under c:/Program Files/pvpgn/
+ - extract the following files from zlib123dll.zip (from with dll32 folder) into the "sbin" folder:
+      zlibwapi.lib
+ - optionally get the following files from C:\Program Files\MySQL\MySQL Server 5.0\lib\opt\ and copy them into the "sbin" folder
+      libmysql.dll 
+ - optionally get the following files from C:\Program Files\PostgreSQL\8.2\bin\ and copy them into the "sbin" folder
+      libpq.dll, libintl-2.dll, libiconv-2.dll, krb5_32.dll, comerr32.dll
+ - optionally extract the following files from sqlitedll-3_4_2.zip into the "sbin" folder:
+      sqlite3.dll
+ - drink a beer and congratulate yourself for what you accomplished today
+
+
+

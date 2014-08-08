@@ -1,0 +1,27 @@
+#################################################################################
+# realm.list  -  List of Diablo II Realms					#
+#-------------------------------------------------------------------------------#
+#										#
+# Realms are areas that hold closed characters and games.			#
+# Users are given this list of realms to choose from when			#
+# creating a new character.  Next time the character is				#
+# used, they will automatically join the same realm.				#
+#										#
+# The realm server runs on port 6113 by default.				#
+# If you do not specify a port number, it will use this by default.		#
+#										#
+# <realmname> : the realm name (mandatory; must start and end with " )		#
+# <description> : the realm description (optional; must start and end with " )	#
+# ip:port - actual ip the d2cs server is running on (mandatory)			#
+#							        		#
+# --- realm name ---	--- description ---	--- real address ---		#
+#    (mandatory)	    (optional)		     (mandatory)		#
+#-------------------------------------------------------------------------------#
+#   "<realmname>"	 ["<description>"]	      <ip:port>			#
+#										#
+#################################################################################
+
+# WARNING!! DO NOT USE "127.0.0.1" or "localhost" FOR ANY IP ADDRESS
+
+# example (having a d2cs server running on IP 1.2.3.4):
+#"D2CS"			"PvPGN Closed Realm"		1.2.3.4:6113

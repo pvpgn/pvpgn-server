@@ -1,0 +1,31 @@
+{03/29/2014}
+
+Note that text of news is cached in Warcraft 3 client. Be careful when deleting existing news - 
+ it remain on a client side until bncache.dat won't be removed or outdated!
+A file news.txt is loaded once when the server starts. Use command "/rehash news" to reload the file.
+
+ 
+New support channel at:
+http://pvpgn.pro
+
+
+{10/01/2004}
+Welcome To The Player-vs-Player Gaming Network!
+Bringing Emulation To New Levels!
+ 
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=
+ 
+** IF YOU EXPERIENCE PROBLEMS USING THIS SERVER PLEASE REPORT IT TO THE **
+*********  ADMINISTRATOR OF THE SERVER NOT TO THE PVPGN TEAM  ************
+ 
+Project development homepage: http://pvpgn.berlios.de
+ 
+Support channels (ONLY for the admins):
+========================================
+ 
+1. Forums: http://forums.pvpgn.org
+ 
+2. IRC live support: #pvpgn on irc.pvpgn.org
+ 
+Enjoy!
+The PvPGN Team

@@ -1,0 +1,117 @@
+.\"
+.\" Copyright (C) 1998,1999  Ross Combs (ross@bnetd.org)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH BNFTP 1 "11 June, 2000" "BNETD" "BNETD User's Manual"
+.SH NAME
+bnftp \- Battle.net file transfer client
+.SH SYNOPSIS
+.B bnftp
+[\fIoptions\fP]
+[\fIservername\fP [\fIserverport\fP]]
+.SH DESCRIPTION
+.B bnftp
+is a simple program for downloading data files from a bnetd server.  These files include
+\fItos.txt\fP, upgrade MPQ archives, and ad banners.
+.LP
+If no \fIservername\fP is specified, localhost is assumed.  If no \fIserverport\fP is
+specified, 6112 is assumed.
+.LP
+After the program is started it will connect to the server and then prompt for
+the filename to download.  No directory components may be used in the filename.
+The file is copied to a file with the same name in the current directory.
+.SH OPTIONS
+.TP
+.B \-b
+Causes
+.B bnftp
+to emulate a Brood Wars client.
+.TP
+.B \--client
+Causes
+.B bnftp
+to emulate a specific client.  The following client tags are
+recognized:
+DRTL DSHR STAR SSHR SEXP W2BN.
+There are short options which may be used instead for the common clients.
+.TP
+.B \-d
+Causes
+.B bnftp
+to emulate a Diablo client.
+.TP
+.B \-h --help --usage
+Print usage information and exit.
+.TP
+.B \-s
+Causes
+.B bnftp
+to emulate a Starcraft client.
+.TP
+.B \-v --version
+Print its version number and exit.
+.TP
+.B \-w
+Causes
+.B bnftp
+to emulate a Warcraft II BNE client.
+.SH NOTES
+The current version is available with the bnetd distribution at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH BUGS
+This program assumes that the terminal will move to the beginning of the current line
+when the carriage return character (^M) is printed.  It also assumes the backspace
+character (^H) will move one column to the left that character printed after that
+will replace those already on the screen.
+.LP
+The terminal settings are not consulted for keybindings.  The following are assumed:
+.TP
+^H
+delete the character to the left of the cursor
+.TP
+^J
+accept current line
+.TP
+^M (return)
+accept current line
+.TP
+^T
+transpose the last two characters
+.TP
+^W
+delete word to the left of the cursor
+.TP
+^U
+delete the whole input line
+.TP
+^[ (escape)
+cancel the current input line
+.TP
+^? (delete)
+delete the character to the left of the cursor
+.SH "SEE ALSO"
+.BR bnetd (1)
+.SH AUTHOR
+Ross Combs (\fIross@bnetd.org\fP)

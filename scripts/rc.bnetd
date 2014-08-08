@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# /etc/rc.d/rc.bnetd
+#
+# Copyright (C) 2003 rakware@go.ro
+# BSD style RC startup script
+# start/stop/restart the pvpgn Battle.net emulator.
+#
+# to make bnetd start automatically at boot, make this
+# file executable:  chmod +x /etc/rc.d/rc.bnetd
+# also make sure that your rc.local script executes it
+#
+# 30.10.2003
+# added sleep 3 to bnetd_up(down) so pidof can do
+# the work right
+
+bnetd_up() {
+  sleep 3;
+  if `echo `pidof bnetd`` >>/dev/null; then
+    echo "OK"
+  else
+    echo "FAILED"
+  fi
+}
+
+bnetd_down() {
+  sleep 3;
+  if `echo `pidof bnetd`` >>/dev/null; then
+    echo "FAILED"
+  else
+    echo "OK"
+  fi
+}
+
+bnetd_start() {
+  if [ -x /usr/local/sbin/bnetd -a -r /usr/local/bnetd/etc/bnetd.conf ]; then
+    /usr/local/sbin/bnetd
+    echo -n "starting pvpgn... : "; bnetd_up
+  fi
+}
+
+bnetd_stop() {
+  killall -9 bnetd
+  echo -n "killing pvpgn... : "; bnetd_down
+}
+
+bnetd_restart() {
+  bnetd_stop
+  sleep 3
+  bnetd_start
+}
+
+bnetd_status() {
+  if `echo `pidof bnetd`` >>/dev/null; then
+    echo "pvpgn is UP and running"
+  else
+    echo "pvpgn is NOT running"
+  fi
+}
+
+case "$1" in
+'start')
+  bnetd_start
+  ;;
+'stop')
+  bnetd_stop
+  ;;
+'restart')
+  bnetd_restart
+  ;;
+'status')
+  bnetd_status
+  ;;
+*)
+# Default is "start", for backwards compatibility with previous
+# Slackware versions.  This may change to a 'usage' error someday.
+
+  bnetd_start
+esac

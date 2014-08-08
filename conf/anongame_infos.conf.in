@@ -1,0 +1,263 @@
+#
+# this file shows a sample config of a Frozen Throne ladder URL config
+# replace www.your-ladder-page.com with your actual ladder stats URL
+#
+
+[URL]
+server_URL  = "http://www.your-ladder-page.com"
+player_URL  = "http://www.your-ladder-page.com/?game=W3XP&user="
+tourney_URL = "http://www.your-tourney-page.com"
+clan_URL = "http://www.your-clan-page/?clan="
+
+ladder_PG_1v1_URL  = "http://www.your-ladder-page.com/?game=W3XP&type=solo"
+ladder_PG_ffa_URL  = "http://www.your-ladder-page.com/?game=W3XP&type=team"
+ladder_PG_team_URL = "http://www.your-ladder-page.com/?game=W3XP&type=ffa"
+
+ladder_AT_2v2_URL  = "http://www.your-ladder-page.com/?game=W3XP&type=at"
+ladder_AT_3v3_URL  = "http://www.your-ladder-page.com/?game=W3XP&type=at"
+ladder_AT_4v4_URL  = "http://www.your-ladder-page.com/?game=W3XP&type=at"
+
+ladder_clan_1v1_URL = "http://www.your-ladder-page.com/?game=W3XP&type=clan_1v1"
+ladder_clan_2v2_URL = "http://www.your-ladder-page.com/?game=W3XP&type=clan_2v2"
+ladder_clan_3v3_URL = "http://www.your-ladder-page.com/?game=W3XP&type=clan_3v3"
+ladder_clan_4v4_URL = "http://www.your-ladder-page.com/?game=W3XP&type=clan_4v4"
+
+[DEFAULT_DESC]
+ladder_PG_1v1_desc =  "Solo Games"
+ladder_PG_ffa_desc =  "Free For all Games"
+ladder_PG_team_desc = "Team Games"
+
+ladder_AT_2v2_desc  = "2 Player Team"
+ladder_AT_3v3_desc  = "3 Player Team"
+ladder_AT_4v4_desc  = "4 Player Team"
+
+ladder_clan_1v1_desc = "Solo Games"
+ladder_clan_2v2_desc = "2 Player Team"
+ladder_clan_3v3_desc = "3 Player Team"
+ladder_clan_4v4_desc = "4 Player Team"
+
+gametype_1v1_short = "One vs. One"
+gametype_1v1_long  = "Two players fight to the death"
+
+gametype_2v2_short = "Two vs. Two"
+gametype_2v2_long  = "Two teams of two vie for dominance"
+
+gametype_3v3_short = "Three vs. Three"
+gametype_3v3_long  = "Two teams of three face off on the battlefield"
+
+gametype_4v4_short = "Four vs. Four"
+gametype_4v4_long  = "Two teams of four head to battle"
+
+gametype_5v5_short = "Five vs. Five"
+gametype_5v5_long  = "Two teams of five - who will prevail?"
+
+gametype_6v6_short = "Six vs. Six"
+gametype_6v6_long  = "Two teams of six - get ready to rumble!"
+
+gametype_sffa_short = "Small Free for All"
+gametype_sffa_long  = "Can you defeat 3-5 opponents alone?"
+
+gametype_tffa_short = "Team Free for All"
+gametype_tffa_long  = "Can your team defeat 1-2 others?"
+
+gametype_2v2v2_short = "Two vs. Two vs. Two"
+gametype_2v2v2_long  = "Three teams of two, can you handle it?"
+
+gametype_3v3v3_short = "Three vs. Three vs. Three"
+gametype_3v3v3_long  = "Three teams of three battle each other"
+
+gametype_4v4v4_short = "Four vs. Four vs. Four"
+gametype_4v4v4_long  = "Three teams of four - things getting crowded?"
+
+gametype_2v2v2v2_short = "Two vs. Two vs. Two vs. Two"
+gametype_2v2v2v2_long  = "Four teams of two, is this a challenge?"
+
+gametype_3v3v3v3_short = "Three vs. Three vs. Three vs. Three"
+gametype_3v3v3v3_long  = "Four teams of three, the ultimate challenge!"
+
+[deDE]
+ladder_PG_1v1_desc  = "Solo-Spiele"
+ladder_PG_ffa_desc  = "J.g.J.-Spiele"
+ladder_PG_team_desc = "Team-Spiele"
+
+ladder_AT_2v2_desc = "2 Spieler Team"
+ladder_AT_3v3_desc = "3 Spieler Team"
+ladder_AT_4v4_desc = "4 Spieler Team"
+
+ladder_clan_1v1_desc = "Solo-Spiele"
+ladder_clan_2v2_desc = "2 Spieler-Spiele"
+ladder_clan_3v3_desc = "3 Spieler-Spiele"
+ladder_clan_4v4_desc = "4 Spieler-Spiele"
+
+gametype_1v1_short = "Einer gegen Einen"
+gametype_1v1_long  = "Zwei Spieler k�mpfen bis zum Tod."
+
+gametype_2v2_short = "Zwei gegen Zwei"
+gametype_2v2_long  = "Zwei Zweier-Teams ringen um die Vorherrschaft."
+
+gametype_3v3_short = "Drei gegen Drei"
+gametype_3v3_long  = "Zwei Dreier-Teams stehen sich auf dem Schlachfeld gegen�ber."
+
+gametype_4v4_short = "Vier gegen Vier"
+gametype_4v4_long  = "Zwei Vierer-Teams st�rmen in die Schlacht."
+
+gametype_5v5_short = "F�nf gegen F�nf"
+gametype_5v5_long  = "Zwei F�nfer-Teams, wer wird vorherschen?"
+
+gametype_6v6_short = "Sechs gegen Sechs"
+gametype_6v6_long  = "Zwei Sechser-Teams, macht euch bereit zur Schlacht!"
+
+gametype_sffa_short = "Jeder gegen Jeden - klein"
+gametype_sffa_long  = "K�nnen Sie allein 3-5 Gegener besiegen?"
+
+gametype_tffa_short = "Jeder gegen Jeden - Team"
+gametype_tffa_long  = "Kann dein Team 1-2 andere besiegen?"
+
+gametype_2v2v2_short = "Zwei gegen Zwei gegen Zwei"
+gametype_2v2v2_long  = "Drei Zweier-Teams, k�nnen sie das schaffen?"
+
+gametype_3v3v3_short = "Drei gegen Drei gegen Drei"
+gametype_3v3v3_long  = "Drei Dreier-Teams bek�mpfen sich gegenseitig"
+
+gametype_4v4v4_short = "Vier gegen Vier gegen Vier"
+gametype_4v4v4_long  = "Drei Vierer-Teams - wirds langsam eng?"
+
+gametype_2v2v2v2_short = "2 gegen 2 gegen 2 gegen 2"
+gametype_2v2v2v2_long  = "Vier Zweier-Teams, ist das eine Herausforderung?"
+
+gametype_3v3v3v3_short = "3 gegen 3 gegen 3 gegen 3"
+gametype_3v3v3v3_long  = "Vier Dreier-Teams, die ultimative Herausforderung!"
+
+[zhCN]
+ladder_PG_1v1_desc =  "单挑"
+ladder_PG_ffa_desc =  "混战"
+ladder_PG_team_desc = "群殴"
+
+ladder_AT_2v2_desc  = "两人队伍"
+ladder_AT_3v3_desc  = "三人队伍"
+ladder_AT_4v4_desc  = "四人队伍"
+
+gametype_1v1_short = "1对1"
+gametype_1v1_long  = "两个玩家一定要分出个胜负。"
+
+gametype_2v2_short = "2对2"
+gametype_2v2_long  = "两个队伍展开对决。"
+
+gametype_3v3_short = "3对3"
+gametype_3v3_long  = "两个三人队伍进行对决。"
+
+gametype_4v4_short = "4对4"
+gametype_4v4_long  = "两个四人队伍进行对决。"
+
+gametype_5v5_short = "5对5"
+gametype_5v5_long  = "两个五人队伍进行对决。"
+
+gametype_6v6_short = "6对6"
+gametype_6v6_long  = "两个六人队伍进行对决。"
+
+gametype_sffa_short = " 小型的FFA"
+gametype_sffa_long  = "你能单独击败3到5个对手么?"
+
+gametype_tffa_short = " 组队的FFA"
+gametype_tffa_long  = "你能和队友合作击败1到2个对手么?"
+
+gametype_2v2v2_short = "2对2对2"
+gametype_2v2v2_long  = "三个队伍进行对决。"
+ 
+gametype_3v3v3_short = "3对3对3"
+gametype_3v3v3_long  = "三个三人队伍进行对决。"
+
+gametype_4v4v4_short = "4对4对4"
+gametype_4v4v4_long  = "三个四人队伍进行对决。"
+
+gametype_2v2v2v2_short = "2对2对2对2"
+gametype_2v2v2v2_long  = "四个二人队伍进行对决。"
+
+gametype_3v3v3v3_short = "3对3对3对3"
+gametype_3v3v3v3_long  = "四个三人队伍进行对决。"
+
+[ruRU]
+ladder_PG_1v1_desc =  "Игры без правил"
+ladder_PG_ffa_desc =  "Без правил"
+ladder_PG_team_desc = "Клановые игры"
+
+ladder_AT_2v2_desc  = "2 Player Team"
+ladder_AT_3v3_desc  = "3 Player Team"
+ladder_AT_4v4_desc  = "4 Player Team"
+
+gametype_1v1_short = "1x1"
+gametype_1v1_long  = "Дуэль двух игроков."
+
+gametype_2v2_short = "2x2"
+gametype_2v2_long  = "Два враждующих клана, по 2 игрока в каждом."
+
+gametype_3v3_short = "3x3"
+gametype_3v3_long  = "Два враждующих клана, по 3 игрока в каждом."
+
+gametype_4v4_short = "4x4"
+gametype_4v4_long  = "Два враждующих клана, по 4 игрока в каждом."
+
+gametype_5v5_short = "5x5"
+gametype_5v5_long  = "Два враждующих клана, по 5 игроков в каждом."
+
+gametype_6v6_short = "6x6"
+gametype_6v6_long  = "Два враждующих клана, по 6 игроков в каждом."
+
+gametype_sffa_short = "Малая игра БП"
+gametype_sffa_long  = "Справишся в одиночку с 3-5 противниками?"
+
+gametype_tffa_short = "Team Free for All"
+gametype_tffa_long  = "Справишся с 1-2 противниками?"
+
+gametype_2v2v2_short = "2x2x2"
+gametype_2v2v2_long  = "Три враждующих клана, по 2 игрока в каждом."
+
+gametype_3v3v3_short = "3x3x3"
+gametype_3v3v3_long  = "Три враждующих клана, по 3 игрока в каждом."
+
+gametype_4v4v4_short = "4x4x4"
+gametype_4v4v4_long  = "Три враждующих клана, по 4 игрока в каждом."
+
+gametype_2v2v2v2_short = "2x2x2x2"
+gametype_2v2v2v2_long  = "Четыре враждующих клана, по 2 игрока в каждом."
+
+gametype_3v3v3v3_short = "3x3x3x3"
+gametype_3v3v3v3_long  = "Четыре враждующих клана, по 3 игрока в каждом."
+
+[THUMBS_DOWN_LIMIT]
+PG_1v1 = 3
+PG_2v2 = 2
+PG_3v3 = 1
+PG_4v4 = 1
+PG_5v5 = 1
+PG_6v6 = 1
+PG_ffa = 2
+AT_2v2 = 3
+AT_3v3 = 2
+AT_4v4 = 1
+AT_ffa = 0
+PG_2v2v2 = 0
+PG_3v3v3 = 0
+PG_4v4v4 = 0
+PG_2v2v2v2 = 0
+PG_3v3v3v3 = 0
+
+[ICON_REQUIRED_RACE_WINS_WAR3]
+Level1 = 25
+Level2 = 250
+Level3 = 500
+Level4 = 1500
+
+[ICON_REQUIRED_RACE_WINS_W3XP]
+Level1 = 25
+Level2 = 150
+Level3 = 350
+Level4 = 750
+Level5 = 1500
+
+[ICON_REQUIRED_TOURNEY_WINS]
+Level1 = 10
+Level2 = 75
+Level3 = 150
+Level4 = 250
+Level5 = 500

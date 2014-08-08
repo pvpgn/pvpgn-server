@@ -1,0 +1,17 @@
+# This file is used to compute the XP points gained/lost by Warcraft III
+# anonymous matchmaking games
+#
+# <min realm level> <level diff> <higher points gained> <higher points lost> <lower points gained> <lower points lost>
+#
+# Note: you may notice that blizzard has columns for points win/loss by
+# higher and lower opponets but because they must keep constant the sum
+# of points the columns are in "mirror"
+
+# used for all players
+65 0 100 100 100 100
+65 1 95 105 115 85
+65 2 90 110 130 70
+65 3 85 115 145 55
+65 4 80 120 155 45 
+65 5 75 125 165 35 
+65 6 70 130 175 25

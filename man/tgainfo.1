@@ -1,0 +1,70 @@
+.\"
+.\" Copyright (C) 2000  Ross Combs (ross@bnetd.org)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH TGAINFO 1 "6 November, 2000" "BNETD" "BNETD User's Manual"
+.SH NAME
+tgainfo \- display information about a Targa image
+.SH SYNOPSIS
+.B tgainfo
+[\fIoptions\fP]
+[--]
+[\fItgafile\fP]
+.SH DESCRIPTION
+.B tgainfo
+is a simple program which will display information from the TGA header.
+This information may be useful for determining if a file is in the correct
+format for
+.BR bnibuild (1)
+or other programs.
+.LP
+If
+.I tgafile
+is not specified or is specified as "-", the standard input will be used.
+.SH OPTIONS
+.TP
+.B \-h --help --usage
+Print usage information and exit.
+.TP
+.B \-v --version
+Print its version number and exit.
+.TP
+.B --
+Signal end of options.  Any further arguments will be treated as filenames
+even if they begin with a "-".
+.SH NOTES
+The current version is available with the bnetd distribution at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH BUGS
+Only a subset of all the possible Targa formats are recognized properly.
+.SH "SEE ALSO"
+.BR bnetd (1),
+.BR bni2tga (1),
+.BR bnibuild (1),
+.BR bniextract (1),
+.BR bnilist (1)
+.SH AUTHOR
+.TP
+Ross Combs (\fIross@bnetd.org\fP)

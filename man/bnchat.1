@@ -1,0 +1,160 @@
+.\"
+.\" Copyright (C) 1998,1999,2000  Ross Combs (ross@bnetd.org)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH BNCHAT 1 "09 April, 1999" "BNETD" "BNETD User's Manual"
+.SH NAME
+bnchat \- Battle.net text-based chat client
+.SH SYNOPSIS
+.B bnchat
+[\fIoptions\fP]
+[\fIservername\fP [\fIserverport\fP]]
+.SH DESCRIPTION
+.B bnchat
+is a simple Battle.net client emulator that can be used as a minimal chat client with
+.BR bnetd (1)
+in order to test certain aspects of the server configuration or to do server
+administration from the Unix command line. It is also compatible with FSGS servers, but
+has difficulty with real Battle.net servers.
+.LP
+If no \fIservername\fP is specified, localhost is assumed.  If no \fIserverport\fP is
+specified, 6112 is assumed.
+.SH OPTIONS
+.TP
+.B \-a --ansi-color
+Allows
+.B bnchat
+to use ANSI terminal color escapes to make things more
+readable.  You must be using a terminal compatible with VT100 positioning and
+ANSI color codes.  The program will not attempt to determine your terminal type.
+.TP
+.B \-b
+Causes
+.B bnchat
+to emulate a Brood Wars client.
+.TP
+.B \-c --change-password
+Causes
+.B bnchat
+to prompt for a new login password on the
+.BR bnetd (1)
+server.
+.TP
+.B \--client
+Causes
+.B bnchat
+to emulate a specific client.  The following client tags are recognized:
+DRTL DSHR STAR SSHR SEXP W2BN.
+There are short options which may be used instead for the common clients.
+.TP
+.B \-d
+Causes
+.B bnchat
+to emulate a Diablo client.
+.TP
+.B \-h --help --usage
+Print usage information and exit.
+.TP
+.B \-k --cdkey
+Causes
+.B bnchat
+to report an alternate key to the
+.BR bnetd (1)
+server.
+.TP
+.B \-o --owner
+Causes
+.B bnchat
+to report an alternate owner to the
+.BR bnetd (1)
+server.
+.TP
+.B \-n --new-account
+Causes
+.B bnchat
+to prompt to create a new player account on the
+.BR bnetd (1)
+server.
+.TP
+.B \-s
+Causes
+.B bnchat
+to emulate a Starcraft client.
+.TP
+.B \-v --version
+Print its version number and exit.
+.TP
+.B \-w
+Causes
+.B bnchat
+to emulate a Warcraft II BNE client.
+.SH NOTES
+The terminal width is attempted to be determined at runtime but if it does not work
+you may need to try running
+.BR resize (1) .
+As a final act of desperation you can try setting the COLUMNS environmental variable.
+.LP
+If SIGWINCH and its associated
+.BR ioctl (2)
+are supported on your system, resizing the window while the program is running should
+immediately update width of the entry line.
+.LP
+The current version is available with the bnetd distribution at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH BUGS
+This program assumes that the terminal will move to the beginning of the current line
+when the carriage return character (^M) is printed.  It also assumes the backspace
+character (^H) will move one column to the left that character printed after that
+will replace those already on the screen.
+.LP
+The terminal settings are not consulted for keybindings.  The following are assumed:
+.TP
+^H
+delete the character to the left of the cursor
+.TP
+^J
+accept current line
+.TP
+^M (return)
+accept current line
+.TP
+^T
+transpose the last two characters
+.TP
+^W
+delete word to the left of the cursor
+.TP
+^U
+delete the whole input line
+.TP
+^[ (escape)
+cancel the current input line
+.TP
+^? (delete)
+delete the character to the left of the cursor
+.SH "SEE ALSO"
+.BR bnetd (1)
+.SH AUTHOR
+Ross Combs (\fIross@bnetd.org\fP)

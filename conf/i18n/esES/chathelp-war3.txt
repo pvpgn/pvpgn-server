@@ -1,0 +1,15 @@
+Comandos de Ayuda para el Chat de la Emulación de Bnet PvPGN 
+
+Nuevos Comandos:
+
+usar /f help para ayuda sobre la lista de amigos
+usar /users para ver usuarios online
+usar /w o /msg <nombre de usuario> para sususrrar a gente
+usar /join <canal> para unirse a un canal
+
+Para Operadores de Canal:
+
+usar /ban <nombre de usuario> prohibe permanentenmente al usuario usar el canal
+usar /kick <nombre de usuario> expulsa al usuario del canal
+
+Para una ayuda más detallada escribir: /help

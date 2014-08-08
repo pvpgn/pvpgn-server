@@ -1,0 +1,146 @@
+##############################################################################
+# bnetd_default_user  -  Default values for user accounts                    #
+#----------------------------------------------------------------------------#
+#                                                                            #
+# When a value is not stored in a player's account file, the value is taken  #
+# from this file instead.                                                    #
+#                                                                            #
+##############################################################################
+
+
+##############################################################################
+# Game record section                                                        #
+#----------------------------------------------------------------------------#
+
+# Brood War stats
+"Record\\SEXP\\0\\last game result"="NONE"
+"Record\\SEXP\\0\\last game"="0"
+"Record\\SEXP\\0\\disconnects"="0"
+"Record\\SEXP\\0\\losses"="0"
+"Record\\SEXP\\0\\wins"="0"
+"Record\\SEXP\\1\\last game result"="NONE"
+"Record\\SEXP\\1\\last game"="0"
+"Record\\SEXP\\1\\high rank"="0"
+"Record\\SEXP\\1\\rank"="0"
+"Record\\SEXP\\1\\high rating"="0"
+"Record\\SEXP\\1\\rating"="0"
+"Record\\SEXP\\1\\disconnects"="0"
+"Record\\SEXP\\1\\losses"="0"
+"Record\\SEXP\\1\\wins"="0"
+
+# Starcraft stats
+"Record\\Star\\0\\last game result"="NONE"
+"Record\\Star\\0\\last game"="0"
+"Record\\Star\\0\\disconnects"="0"
+"Record\\Star\\0\\losses"="0"
+"Record\\Star\\0\\wins"="0"
+"Record\\Star\\1\\last game result"="NONE"
+"Record\\Star\\1\\last game"="0"
+"Record\\Star\\1\\high rank"="0"
+"Record\\Star\\1\\rank"="0"
+"Record\\Star\\1\\high rating"="0"
+"Record\\Star\\1\\rating"="0"
+"Record\\Star\\1\\disconnects"="0"
+"Record\\Star\\1\\losses"="0"
+"Record\\Star\\1\\wins"="0"
+
+# Starcraft Shareware stats
+"Record\\SSHR\\0\\last game result"="NONE"
+"Record\\SSHR\\0\\last game"="0"
+"Record\\SSHR\\0\\disconnects"="0"
+"Record\\SSHR\\0\\losses"="0"
+"Record\\SSHR\\0\\wins"="0"
+
+# Diablo Retail stats
+"BNET\\Record\\DRTL\\0\\level"="0"
+"BNET\\Record\\DRTL\\0\\class"="99"
+"BNET\\Record\\DRTL\\0\\diablo kills"="0"
+"BNET\\Record\\DRTL\\0\\strength"="0"
+"BNET\\Record\\DRTL\\0\\magic"="0"
+"BNET\\Record\\DRTL\\0\\dexterity"="0"
+"BNET\\Record\\DRTL\\0\\vitality"="0"
+"BNET\\Record\\DRTL\\0\\gold"="0"
+
+# WarCraft II BNE stats
+"Record\\W2BN\\0\\last game result"="NONE"
+"Record\\W2BN\\0\\last game"="0"
+"Record\\W2BN\\0\\disconnects"="0"
+"Record\\W2BN\\0\\losses"="0"
+"Record\\W2BN\\0\\wins"="0"
+"Record\\W2BN\\1\\last game result"="NONE"
+"Record\\W2BN\\1\\last game"="0"
+"Record\\W2BN\\1\\high rank"="0"
+"Record\\W2BN\\1\\rank"="0"
+"Record\\W2BN\\1\\high rating"="0"
+"Record\\W2BN\\1\\rating"="0"
+"Record\\W2BN\\1\\disconnects"="0"
+"Record\\W2BN\\1\\losses"="0"
+"Record\\W2BN\\1\\wins"="0"
+# FIXME: what is 2 for?
+"Record\\W2BN\\3\\last game result"="NONE"
+"Record\\W2BN\\3\\last game"="0"
+"Record\\W2BN\\3\\high rank"="0"
+"Record\\W2BN\\3\\rank"="0"
+"Record\\W2BN\\3\\high rating"="0"
+"Record\\W2BN\\3\\rating"="0"
+"Record\\W2BN\\3\\disconnects"="0"
+"Record\\W2BN\\3\\losses"="0"
+"Record\\W2BN\\3\\wins"="0"
+
+#                                                                            #
+##############################################################################
+
+
+##############################################################################
+# Default profile info                                                       #
+#----------------------------------------------------------------------------#
+
+# No good defaults for these :)
+"profile\\description"=""
+"profile\\location"=""
+"profile\\age"=""
+"profile\\sex"=""
+
+# These 3 are ignored in the template, but they make it easier
+# to use this file by hand to create a new account...
+"BNET\\acct\\username"="bnetd_default_user"
+"BNET\\acct\\userid"="0"
+"BNET\\acct\\passhash1"="67452301efcdab8998badcfe10325476c3d2e1f0"
+
+#"BNET\\fakeclienttag"="WAR3"
+
+
+#                                                                            #
+##############################################################################
+
+
+##############################################################################
+# Authorization flags (comments show defaults)                               #
+#----------------------------------------------------------------------------#
+
+# "BNET\\auth\\admin"="false"
+"BNET\\auth\\command_groups"="1"
+# "BNET\\auth\\announce"="false"
+# "BNET\\auth\\botlogin"="false"
+# "BNET\\auth\\operator"="false"
+"BNET\\auth\\normallogin"="true"
+"BNET\\auth\\changepass"="true"
+"BNET\\auth\\changeprofile"="true"
+# "BNET\\auth\\createnormalgame"="true"
+# "BNET\\auth\\joinnormalgame"="true"
+# "BNET\\auth\\createladdergame"="true"
+# "BNET\\auth\\joinladdergame"="true"
+# "BNET\\auth\\lock"="false"
+# Specific channels can be specified to override the
+# channel defaults and the plain operator setting:
+# (use the long channel name)
+# "BNET\\auth\\operator\\example channel"="false"
+"BNET\\auth\\botlogin"="true"
+# "BNET\\auth\\operator"="false"
+
+# Set to "false" to not check IP, set to IP
+# (like: "192.168.1.2" to require an IP to login for warcraft3)
+"BNET\\auth\\w3_require_ip"="false"
+
+#                                                                            #
+##############################################################################

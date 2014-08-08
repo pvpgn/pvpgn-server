@@ -1,0 +1,29 @@
+branches:
+  only:
+    - master
+
+os: Windows Server 2012
+
+clone_folder: c:\pvpgn
+
+install:
+  - cmd: cd c:\
+  - cmd: appveyor DownloadFile https://github.com/HarpyWar/pvpgn-magic-builder/archive/master.zip
+  - cmd: 7z.exe x master.zip >nul
+  - cmd: ren pvpgn-magic-builder-master builder
+  - cmd: mkdir c:\builder\source\
+  - cmd: xcopy /E /R /K /Y /Q "c:\pvpgn" "c:\builder\source\"
+
+build:
+  project: c:\builder\build\pvpgn.sln
+
+build_script:
+  - cmd: cd c:\builder\
+  - cmd: build_pvpgn.bat cmake_only 6 2 1 y
+  - cmd: call "%VS120COMNTOOLS%vsvars32.bat"
+  - cmd: set INCLUDE=c:\builder\module\include\atlmfc\;%INCLUDE%
+  - cmd: call "%FrameworkDir%%FrameworkVersion%\MSBuild.exe" c:\builder\build\pvpgn.sln /t:Rebuild /p:Configuration=Release;UseEnv=true /consoleloggerparameters:Summary;PerformanceSummary;Verbosity=minimal /maxcpucount
+
+test:
+  assemblies:
+    - '**\src\bnetd\Release\bnetd.exe'

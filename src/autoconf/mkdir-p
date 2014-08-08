@@ -1,0 +1,101 @@
+#! /bin/sh
+# $XConsortium: mkdirhier.sh,v 1.7 94/03/24 15:46:34 gildea Exp $
+# Courtesy of Paul Eggert
+
+#
+# Modified by QingLong <qinglong@Yggdrasil.com> for portability. 24-02-97.
+#
+
+
+newline='
+'
+IFS=$newline
+
+#
+# WARNING!  Some ancient shells do not understand `:=' and `:-' expansion.
+#           Use just `=' instead of `:=' if you have lame one.
+#: ${MKDIR:=mkdir} ${TR:=tr}
+#
+
+if test -z "${MKDIR-}" ;
+ then
+  MKDIR=mkdir
+fi
+
+if test -z "${TR-}" ;
+ then
+  TR=tr
+fi
+
+
+case ${1--} in
+  -*) echo >&2 "mkdir-p: usage: mkdir-p directory ..."
+      exit 1
+esac
+
+status=""
+
+for directory
+ do
+  case $directory in
+    '')
+      echo >&2 "mkdir-p: empty directory name"
+      status="1"
+      continue
+      ;;
+    *"$newline"*)
+      echo >&2 "mkdir-p: directory name contains a newline: \`\`$directory''"
+      status="1"
+      continue
+      ;;
+    ///*) prefix="/"      # See POSIX 2.3 "path".
+      ;;
+    //*) prefix="//"
+      ;;
+    /*) prefix="/"
+      ;;
+    -*) prefix="./"
+      ;;
+    *) prefix=""
+  esac
+  #
+  IFS=/
+  set x $directory
+  #
+  case $2 in
+    */*)
+      # IFS parsing is broken
+      IFS=' '
+      set x `echo $directory | ${TR} / ' '`
+      ;;
+  esac
+  #
+  IFS=$newline
+  shift
+  #
+  for filename
+   do
+    path="$prefix$filename"
+    prefix="$path/"
+    shift
+    #
+    test -d "$path" || \
+      {
+       paths=$path
+       for filename
+        do
+         if test "$filename" != "." ;
+          then
+           path="$path/$filename"
+           paths="$paths$newline$path"
+         fi
+       done
+       #
+       ${MKDIR} $paths || status=$?
+       #
+       break
+      }
+  done
+done
+
+exit $status

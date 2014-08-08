@@ -1,0 +1,71 @@
+# this file determines the layout of the PvPGN SQL database
+# the server will create the tables with their columns as specified in here
+# don't forget to create the DB yourself
+# no empty lines allowed, no whitespaces in front of any entries allowed
+# file format:
+# [name_of_a_table]
+# "column_name with format infos","default value" [&& "sqlcommand to execute on success"] [|| "sqlcommand to execute on failure"]
+# :"sqlcommand to execute" [&& "sqlcommand to execute on success"] [|| "sqlcommand to execute on failure"]
+# you might also notice some variables of the form ${variable}. these are 
+# replaced with their meaning when the server starts
+# ${prefix} is replaced with the configured table prefix from bnetd.conf/storage_path
+#
+# For the "sql2" SQL layout
+#
+[${prefix}BNET]
+"uid int NOT NULL","'0'"
+"name varchar(128) NOT NULL","''"
+"value varchar(200) NOT NULL","''"
+:"CREATE UNIQUE INDEX ${prefix}user ON ${prefix}BNET (uid,name)"
+:"CREATE INDEX ${prefix}user2 ON ${prefix}BNET (name,value)"
+:"CREATE INDEX ${prefix}user3 ON ${prefix}BNET (uid)"
+:"INSERT INTO ${prefix}BNET (uid, name, value) VALUES ('0', 'auth\normallogin', 'true')"
+:"INSERT INTO ${prefix}BNET (uid, name, value) VALUES ('0', 'auth\changepass', 'true')"
+:"INSERT INTO ${prefix}BNET (uid, name, value) VALUES ('0', 'auth\changeprofile', 'true')"
+:"INSERT INTO ${prefix}BNET (uid, name, value) VALUES ('0', 'auth\botlogin', 'true')"
+:"INSERT INTO ${prefix}BNET (uid, name, value) VALUES ('0', 'auth\command_groups' ,'1')"
+[${prefix}WOL]
+"uid int NOT NULL","'0'"
+"name varchar(128) NOT NULL","''"
+"value varchar(200) NOT NULL","''"
+:"CREATE UNIQUE INDEX ${prefix}woluser ON ${prefix}WOL (uid,name)"
+[${prefix}friend]
+"uid int NOT NULL","'0'"
+"name varchar(128) NOT NULL","''"
+"value varchar(200) NOT NULL","''"
+:"CREATE UNIQUE INDEX ${prefix}friends ON ${prefix}friend (uid,name)"
+[${prefix}profile]
+"uid int NOT NULL","'0'"
+"name varchar(128) NOT NULL","''"
+"value varchar(200) NOT NULL","''"
+:"CREATE UNIQUE INDEX ${prefix}profiles ON ${prefix}profile (uid,name)"
+[${prefix}Record]
+"uid int NOT NULL","'0'"
+"name varchar(128) NOT NULL","''"
+"value varchar(200) NOT NULL","''"
+:"CREATE UNIQUE INDEX ${prefix}Records ON ${prefix}Record (uid,name)"
+[${prefix}clan]
+"cid int NOT NULL PRIMARY KEY","'0'"
+"short int","'0'"
+"name varchar(32)","NULL"
+"motd varchar(255)","NULL",
+"creation_time int","'0'"
+[${prefix}clanmember]
+"uid int NOT NULL PRIMARY KEY","'0'"
+"cid int","'0'"
+"status int","'0'"
+"join_time int","'0'"
+[${prefix}arrangedteam]
+"teamid int NOT NULL PRIMARY KEY","'0'"
+"size int","0"
+"clienttag varchar(8)","NULL"
+"lastgame int","'0'"
+"member1 int","'0'"
+"member2 int","'0'"
+"member3 int","'0'"
+"member4 int","'0'"
+"wins int","'0'"
+"losses int","'0'"
+"xp int","'0'"
+"level int","'0'"
+"rank int","'0'"

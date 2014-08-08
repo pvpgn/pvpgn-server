@@ -1,0 +1,126 @@
+.\"
+.\" Copyright (C) 1998  Mark Baysinger (mbaysing@ucsd.edu)
+.\" Copyright (C) 1998,1999  Ross Combs (ross@bnetd.org)
+.\" Copyright (C) 1999  Rob Crittenden (rcrit@greyoak.com)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH BNETD 1 "12 June, 2000" "BNETD" "The bnetd Project"
+.SH NAME
+bnetd \- Unix Battle.net daemon
+.SH SYNOPSIS
+.B bnetd
+[\fB-f\fP]
+[\fB-c\fP \fIconfigfile\fP]
+[\fB-d\fP \fIdumpfile\fP]
+.SH DESCRIPTION
+.B bnetd
+is a program that will eventually completely emulate a Blizzard Battle.net
+server.  Currently Starcraft, Brood War, Diablo, and Warcraft II BNE are
+supported as clients.
+.LP
+It is known to work under most versions of Unix and can also be used under
+Windows as a win32 console application.
+.SH OPTIONS
+.TP
+.B \-c --config
+Use this configuration file instead of the compiled-in default location.
+.TP
+.B \-d --hexdump
+Put a hex dump of packets sent and received into the specified file.
+.TP
+.B \-f --foreground
+The server normally acts as a daemon and goes into the background.  This forces
+the server to run in the foreground.
+.TP
+.B \-h --help --usage
+Print server usage information and exit.
+.TP
+.B \-v --version
+Print its version number and exit.
+.SH FILES
+.TP
+.I bnetd.conf
+The main configuration file.  Among other things, it specifies the locations for
+the other files used by the daemon.
+.TP
+.I bnmotd.txt
+The "message of the day" file.  This is displayed when the user enters the
+first chat channel.
+.TP
+.I bnetd_default_user
+This is the default account file.  The contains all default account attributes
+which are used when an attribute is not set on an actual account.
+
+.I channel.list
+This is the permanent channel list.  Short names, target clients, and other
+attributes may be specified here.
+.TP
+.I news.txt
+The contensts of this file are printed when the /news command is used.
+.TP
+.I ad.list
+This is the ad banner list which determines which banners to display at which
+times.  The order of display for the banners may be specified as well as the
+URL which they should follow when clicked.
+.TP
+.I bnban
+The IP ban file can be used to block connections from certain addresses.
+.TP
+.I bnhelp
+This file contains the the chat command help.
+.TP
+.I gametrans
+The game address translation file can be used to allow players from behind a
+NAT firewall to play with those outside of the firewall.
+.TP
+.I autoupdate
+This is the autoupdate MPQ archive list.  It chooses which versions of which
+clients to update.
+.TP
+.I tos.txt
+This is the Terms Of Service file that is displayed before a user can create
+a new account.
+.TP
+.I icons.bni
+The icons which the client displays for players in the chat rooms.
+.TP
+.I ad000001.pcx
+This is the ad Banner. Currently, it says "Welcome to... BNETD".
+.SH NOTES
+The current version is available at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH "SEE ALSO"
+.BR bntrackd (1),
+.BR bnproxy (1),
+.BR bnchat (1),
+.BR bnbot (1),
+.BR bnpass (1),
+.BR bnftp (1),
+.BR bnetd.conf (5),
+.BR bnmotd.txt (5)
+.SH AUTHORS
+Ross Combs (\fIross@bnetd.org\fP),
+Rob Crittenden (\fIrob@bnetd.org\fP), and
+Mark Baysinger (\fImark@bnetd.org\fP)

@@ -1,0 +1,288 @@
+PvPGN CREDITS (also please see the original BNETD credits bellow):
+--------------------------------------------------------------------
+
+CREDITS
+	This file contains the names of people who have contributed to the 
+	development of the PvPGN BNETD mod in some way. This file is not 
+	complete and we would like to thank everyone who helped us in any way.
+
+PROGRAMMING CONTRIBUTORS
+	AmAdEuS a.k.a. amadeo
+	 WIN32GUI-mod, WIN32-Installer, WIN32 services code, initial IRC mods
+
+	Andreas Pickart a.k.a. apic (apic@lehm.name) - initial War3 work, 
+	w3route and anongame support, initial MySQL storage support and others
+
+	Dizzy 
+	 Project release engineering, general code maintenance, storage 
+	 development, fdwatch development, some documentation and lots others.
+
+	Bryan Biedenkapp (gatekeep@gmail.com)
+	 Westwood Online (WOL) support. Lot's of IRC fixes and enhancements. 
+
+	pandaemonium a.k.a. aaron
+	 W3 ladders, binary ladders, commands aliases, channel topics, 
+	 channel tmp ops/voices, anongame infos language support, SQL db 
+	 creator, bnchat cleanup, WIN32 build files maintenance and lots others.
+
+	Pelish (pelish@gmail.com)
+	 WOL/IRC rework and many bugfixes
+
+	Soar
+	 Clans, friends codes optimization, D2 stuff, w3 gameinfo etc.
+
+	TheUndying aka Undy (kainofchaos80@hotmail.com)
+	 PvPGN project starter, initial code maintainance and management, 
+	 initial W3 support codes, etc.
+
+	Zzzoom (servers@3dgames.com.ar)
+	 For persistent SQL connections patch, password brute force attacks 
+	 protection, various bug reports and very usefull profile dumps.
+
+MISC
+	Eggy (eggy@neostats.net)
+	 Win32 binary packager, QA testing/reporting, supporter (IRC, forums), 
+	 misc documentation.
+
+        U-238 (mark@darkterrorsdomain.cjb.net)
+         Webmaster, Mac binary packager, Mac versioncheck maintainer, 
+         PvPGN fink package maintainer, supporter (IRC, forums), tester, 
+         documentation writer.
+
+        David Wilson (dgwilson@paradise.net.nz)
+	 Documentation writer, supporter (IRC, forums).
+
+	Lots of other people who do not wish to be mentioned here.
+
+BINARY PACKAGES:
+- Birzan George Cristian <gcbirzan@wolfheart.ro> (original Debian packager)
+- Dorin Lazar <spooky_cbs@yahoo.com> (RPMs)
+- Mihai Maties <mihai@xcyb.org> (RPMs & src.rpm snapshot script)
+- Radu Radoveneanu <rakware@go.ro> (Slackware packages)
+- Robert Millan <rmh at debian dot org> (official Debian package maintainer)
+- Max E. Kuznecov <mek at mek.uz.ua> (FreeBSD port entry maintainer)
+
+ORIGINAL BNETD CREDITS:
+-------------------------------
+
+CREDITS
+
+	This file contains the names of people who have contributed to the
+	development of the BNETD server in some way.  This project has made an
+	enormous amount of progress since the development has become public,
+	and this is one place where members of the community can be thanked.
+
+
+PROGRAMMING CONTRIBUTORS
+
+	The following people have contributed code, code ideas, bug fixes, and
+	debugging work:
+
+	Mark Baysinger (mbaysing@ucsd.edu)
+	 For the original idea, original implementation, documentation of the
+	 protocol, starhack.ml.org, the tracking server, etc.
+
+	Ross Combs (rocombs@cs.nmsu.edu)
+	 Various cleanups, release coordination, / commands, config files, etc.
+
+	Rob Crittenden (rcrit@greyoak.com)
+	 For many bug fixes, protocol work, file downloads, man pages, user
+	 icons, better channel handling, autoconf, ladder, etc. as well as
+	 working on the FAQ and user support.
+
+	Descolada (dyn1-tnt9-237.chicago.il.ameritech.net)
+	 For the hashing algorithm complete with a sample C implementation.
+
+	Gediminas (gediminas_lt@mailexcite.com)
+	 For work on the client command "readline" code, the initial help
+	 system, and a better /conn command.
+
+	Oleg Drokin (green@ccssu.crimea.ua)
+	 For patches to fix bnchat and bnstat.
+
+	Damien Clermonte (clermond@esiee.fr)
+	 For portability (to cygnus B20.1 on win32) work, testing, and helpful
+	 observations, and the TCP keepalive patch.
+
+	Denis Moreaux (vapula@endor.be)
+	 For working out the correct ladder equations.
+
+	Philippe Dubois (pdubois@matrox.com)
+	 For working on the Win32 port, UDP stuff, auto-update, and the
+	 bnettime code.
+
+	Typhoon [Marco Ziech] (mmz@gmx.net)
+	 For lots of good work on the BNI utilities, BITS (server inter-
+	 connectivity) support, and his bnetmasq.sh script.  He also
+	 answers a lot of user questions and put together most of the
+	 web site.
+
+	Dizzy 
+	 For help with NAT issues, a much improved help system, channel
+	 flooding prevention, new /-commands, a mail system, and more.
+
+	Razvan Jianu (roger@hell.gameover.ro)
+	 For many useful coredumps :)  Also for the /addacct command.
+
+	Qlex (qlex@eoliss.com)
+	 For kick starting the Diablo II stuff, testing thousands quick
+	 changes, moral support, and digging up all the information.
+
+	Kenshin (kenshin_@hotmail.com)
+	 For helping Qlex with the character stuff, fixing some major
+	 bugs in the Diablo II code, and starting work on saving
+	 characters.
+
+	Hakan Tandogan (hakan@gurkensalat.com)
+	 For always making RPMs for bnetd and the tracker and some patches to
+	 correct startup/shutdown issues. Also for continuing Diablo II work.
+
+	Jung-woo Sohn (logout@aeroguy.snu.ac.kr)
+	 For /watch feedback, dobae flooding disconnect, better disconnect
+	 game result handling, and generally for lots of good ideas.  And
+	 also for spotting the failed account creation crashing bug.
+
+	YobGuls (yobguls@yobguls.2ndmail.com)
+	 Actually contributed to the DSBot code, but see next entry.
+
+	Eurijk! (wc2@zefga.net)
+	 For pointing out how the new cdkey hashing works and also how
+	 version checking is performed.  This was some really ugly but
+	 important stuff!  He figured this out working on DSBot but
+	 kindly explained it to us and showed us example code.  He's
+	 also working on the Prolix bot project and has provided lots
+	 of useful bug reports and other commentary.
+
+	Fred Wittekind (rom@twister.dyndns.org)
+	 For autoupdate version range support.  For pointing out all the
+	 update MPQ files we didn't know about.  Also for the message
+	 force-command patch.
+
+	Mathieu Legare (Mathieu_Legare@uqtr.uquebec.ca)
+	 For picking up bnetdStats and making it report all kinds of
+	 statistics.
+
+	Onlyer (onlyer@users.sourceforge.net)
+	 For new commands, Diablo II protocol work, Diablo II closed server
+	 work, FSGS account conversion, etc.
+
+	faster (lqx@cic.tsinghua.edu.cn)
+	 For Diablo II closed communication (S2S) and for finding that
+	 check_alloc bug.
+
+	sousou (liupeng.cs@263.net)
+	 For Diablo II closed database server and ladder.
+
+	esper (esperpale@263.net)
+	 Diablo II closed server gui and ladder.
+
+	sherpya (sherpya@netfarm.it)
+	 For lots of help with adbanners, the d2close merge, reporting
+	 bugs (like the 100% poll() CPU usage bug), and lots of good
+	 suggestions.  Also for work on channel list reloads.
+
+	Yoss (bartek@milc.com.pl)
+	 For helpful suggestions for the mail code and for patching
+	 the emote flooding hole.  Also for the /admin command and for
+	 the patch to fix the "operator can ban admins" bug.  A big
+	 thanks for much improved kill and ban commands and the new
+	 dynamic ipban with better address matching and timeouts.
+
+	Roland Stahn (blue@cs.tu-berlin.de)
+	 For all the work tracking down the versioncheck information
+	 for revision of the STAR and SEXP clients.  For information about
+	 Blizzard's numbering scheme.  For helpful packet information.
+	 Also for the bug reports and simple patches which probably should
+	 have been fixed a long time ago but he was the only person with
+	 enough patience to figure out what was happening.  Specifically,
+	 the "all countries in one channel" feature, the empty game pass
+	 bug, the multiple game with same name bug, and the memory
+	 corruption after autoupdates.  For updated version information.
+	 For diagnosing the autoupdate crash (bug in server.c handling
+	 closed sockets).
+
+	KWS (vizi@csucs.net)
+	 For the nice bug reports on gameinfo parsing on game join, win32
+	 socket and file portability problems.  Also for patches to update
+	 versioncheck info, implement IP storage, the patch for better
+	 eventlogs, and Makefile improvements.
+
+	Jack (jack@takeovertheworld.org)
+	 For Diablo II open game difficulty patch.
+
+	forester (laterk@inbox.lv)
+	 Working on the Win32 port, bnetd GUI for Win32, small patches.
+
+TESTING AND DEBUGGING CONTRIBUTORS
+
+	The following people have sent in ideas, bug reports, and minor
+	patches.
+
+	187 (187@infoceptor.com)
+	 For bug reports and the idea for the /news command.
+
+	Shin DongJun (djshin@oslab.snu.ac.kr)
+	 For some bug reports and patches.
+
+	Jeffery Jones (jeffery_jones@mtlusa.com)
+	 For the game address translation idea.
+
+	Maxim Tereshenkov (max@ostin.ru)
+	 For the stack trace which found the 8-bit account.c bug.
+
+	Yanoch (yanoch@loginnovation.com)
+	 For suggesting the /kill improvement.
+
+	stacker (stacker@mail.ee.ntou.edu.tw)
+	 For lots of bug reports and also the sbnetd front end.
+
+	Mike Hindman (mhindman@bnetd.nmsu.edu)
+	David Fitzpatrick (dfitzpat@bnetd.nmsu.edu)
+	 For lots of ideas and all the help with Diablo.
+
+	Homer (homer@ogn.de)
+	 For the helpful info on game info strings and ladder maps.
+
+	Alvin Sim (elflord@faerie.cx)
+	 For lots of testing and figuring out that Diablo II open gameplay was
+	 actually not too hard to implement.
+
+	AsmodeusB
+	 For finding annoying the gameinfo bug in connection.c :)
+
+	forester (http://forester.yo.lv)
+	 For pointing out what gameresult 5 means.
+
+	jerome (imeepmeep@mac.com)
+	 For the MacOS X package.
+
+	acbcdde (acbcdde@hotmail.com)
+	 For Win32 Makefile and config.h fixes.
+
+	mojohead ( Andrey Ilyin )
+	 For d2dbs/d2ladder.c fixes.
+
+
+OTHER CONTRIBUTORS
+
+	The following people have contributed their time, talent, and other
+	resources to the project:
+
+	Josh (josh@bnetd.org)
+	 For a wonderful web site, quick mirroring of new releases, testing,
+	 organization, documentation, and user support.
+
+	Tim Jung (tjung@igateway.net)
+	 For kindly hosting our mailing lists, domain, web pages, etc. as well
+	 as regular feedback and testing.
+
+	Allan Clark (allanc@sco.com)
+	 For putting together some nice RPMs.
+
+
+NOTE
+
+	This list is not complete.  I have lost track of the names of some
+	people who have contributed, and likely forgotten about others.  If you
+	think you should be listed here but aren't, please contact the
+	bnetd-dev mailing list and we will take care of it right away.

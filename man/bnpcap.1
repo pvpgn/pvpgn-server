@@ -1,0 +1,64 @@
+.\"
+.\" Copyright (C) 2001  Hakan Tandogan (hakan@gurkensalat.com)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH BNPCAP 1 "07 July, 2001" "BNETD" "BNETD Developers's Manual"
+.SH NAME
+bnpcap
+.SH SYNOPSIS
+.B bnpcap
+[\fB-d\fP]
+[\fB-v\fP]
+<\fIpcap-filename\fP>
+.SH DESCRIPTION
+.B bnpcap
+is a utility to decode packet dumps from
+.B tcpdump
+into a developer-readable format
+.SH OPTTIONS
+.TP
+.B \-h
+Print usage information and exit
+.TP
+.B \-d
+Print out debugging information
+.TP
+.B \-v
+Be more verbose
+.LP
+You have to generate the dumps with
+.B tcpdump
+\-i <\fIyour_interface\fP>
+\-s 2000
+\-w <\fIpcap-filename\fP>
+.SH NOTES
+The current version is available with the bnetd distribution at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH "SEE ALSO"
+.BR bnetd (1),
+.BR tcpdump (1)
+.SH AUTHOR
+Marco Ziech (\fmmz@gmx.net\fP)
+

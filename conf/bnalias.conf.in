@@ -1,0 +1,58 @@
+##############################################################################
+# bnalias.list  -  List of Locally Defined Alias Commands                    #
+#----------------------------------------------------------------------------#
+#                                                                            #
+# This file can be used to define shortcuts for often-used commands or for   #
+# unusually long commands.  It can also be used to make custom emotes which  #
+# are especially useful for non-English servers.                             #
+#                                                                            #
+# Lines starting with a # are considered to be comments.                     #
+# The format is:                                                             #
+# @                                                                          #
+# aliasname [aliasshortcut1 [aliasshortcut2 [...]]]                          #
+# [!]text or command to type as if the player typed it                       #
+# [!]%Iinformation to print to the player                                    #
+# [!]%Eerror to print to the player                                          #
+#                                                                            #
+# Where ! is either an integer representing the number of arguments given to #
+# the alias by the user or an asterisk (*) meaning it will match any number  #
+# of arguments.  The plus sign (+) will match with any non-zero number of    #
+# arguments.                                                                 #
+#                                                                            #
+# There may be as many lines as you want following the aliasname.  If        #
+# multiple lines match they will be executed in the order they are listed.   #
+#                                                                            #
+# The text or command is actually formatted text as used in the bnmotd file. #
+# It contains special formatting characters which can be used to specify the #
+# type of message or substitue special values (the hostname, the player's    #
+# own name, and many more).  These all start with a percent sign (%).  There #
+# are also special formatters which subsitute arguments which were entered   #
+# by the user.  These start with a dollar sign.                              #
+#                                                                            #
+# $*             -  substitute all arguments here                            #
+# $0 through $9  -  substitute that argument here (0 means the command)      #
+# ${43}          -  substitute that argument here (0 means the command)      #
+# ${-19}         -  substitute arguments 0-19 here                           #
+# ${2-}          -  substitue all arguments from 2 until the end here        #
+#                                                                            #
+@
+//doubt //dt //d
+[0]/me looks with doubt
+[1+]/me looks at ${1-} with doubt
+@
+//numusers //nu
+[0]%IThere are %u users online.
+[0]%IThere are %g games online.
+[0]%IThere are %c channels online.
+[1+]%EThat command does not take any arguments.
+@
+//askban //ab
+[2+]/w $1 Please ban ${2-}.
+@
+//statsme //sm
+[0]/stats %u
+@
+//pvpgn
+[*]/announce PVPGN rulez!
+#                                                                            #
+##############################################################################

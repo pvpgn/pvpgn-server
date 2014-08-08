@@ -1,0 +1,51 @@
+# -*- sh -*-
+#
+# bnetd         Script to control the Unix Battle.net Daemon
+#
+# Author:       Hakan Tandogan <hakan@gurkensalat.com>
+#
+# chkconfig: 2345 21 79
+# description: bnetd is a Unix clone of the Battle.net Daemon
+#
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+  start)
+        # Start daemons.
+        echo -n "Starting bnetd: "
+        daemon bnetd
+        echo
+        touch /var/lock/subsys/bnetd
+        ;;
+
+  stop)
+        # Stop daemons.
+        echo -n "Shutting down bnetd: "
+	killproc bnetd
+        echo
+        rm -f /var/lock/subsys/bnetd
+        ;;
+
+  reload)
+	$0 stop
+	$0 start
+	;;
+
+  restart)
+	$0 stop
+	$0 start
+	;;
+
+  status)
+	status bnetd
+	;;
+
+  *)
+        echo "Usage: bnetd {start|stop|restart|reload|status}"
+        exit 1
+esac
+
+exit 0

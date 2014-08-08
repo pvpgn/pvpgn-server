@@ -1,0 +1,6 @@
+**************************************************
+Custom maps that can be hosted using /chost
+**************************************************
+
+DOTA = DotA|DotA v6.80c.w3x
+MW = Mirana Wars Final|Mirana Wars Final.w3x

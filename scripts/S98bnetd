@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# A semi-RedHat style init script for staring bnetd
+
+. /etc/rc.d/init.d/functions
+
+bnetduser="bnetd"
+bnetdhome="/home/bnetd"
+bnetdpid="${bnetdhome}/bnetd.pid"
+bnetdexe="${bnetdhome}/sbin/bnetd"
+
+case "$1" in
+  start)
+	echo -n "Starting bnetd: "
+	if [ -r "${bnetdpid}" ] && kill -0 `cat "${bnetdpid}"`; then
+		echo "${bnetdpid} exists and the pid is still valid."
+	else
+		if [ -d "${bnetdhome}" ]; then
+			if [ -x "${bnetdexe}" ]; then
+#				su -c "cd ${bnetdhome}; ${bnetdexe} -f &" - "${bnetduser}" 2>&1 > /dev/null
+				su -c "${bnetdexe}" - "${bnetduser}" 2>&1 > /dev/null
+#				"${bnetdexe}"
+				echo bnetd
+			else
+				echo "${bnetdexe} is not an executable."
+			fi
+		else
+			echo "${bnetdhome} is not a directory."
+		fi
+	fi
+	;;
+  restart)
+	echo -n "Restarting bnetd: "
+	if [ -f "${bnetdpid}" ] && kill -0 `cat "${bnetdpid}"`; then
+		kill -HUP `cat "${bnetdpid}"`
+		echo "bnetd"
+	else
+		echo "bnetd is not running."
+	fi
+	;;
+  stop)
+	echo -n "Stopping bnetd: "
+	if [ -f "${bnetdpid}" ]; then
+		kill -TERM `cat "${bnetdpid}"`
+		sleep 1
+		if [ -f "${bnetdpid}" ] && kill -0 `cat "${bnetdpid}"` 2>&1 > /dev/null; then
+			echo "waiting for users to log out."
+		else
+			rm -f "${bnetdpid}" 
+			echo "bnetd"
+		fi
+	else
+		echo "bnetd is not running."
+	fi
+	;;
+  status)
+	status bnetd
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|status}"
+	exit 1
+esac
+
+exit 0
+

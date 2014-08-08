@@ -1,0 +1,106 @@
+==========================
+ PVPGN UPDATE INFORMATION
+==========================
+
+This file contains a summary of all changes from previous version you need to 
+take care of when updating your server to the current version.
+It should contain:
+-- info's about all new/changed parameters in bnetd.conf
+-- all new/changed config files in the conf/ subfolder
+The path's specified are those of the default unix installation
+
+NOTE: If updating through several versions (example if updating from 1.7.1 to 
+1.7.5) you HAVE to go through ALL the update information listed for every 
+version in between and including the last one (ex. you have to go through 
+1.7.1 to 1.7.2 update info, then 1.7.2 to 1.7.3, and so on until 1.7.4 to 1.7.5)
+
+ Updating from 1.99.0-CVS
+=========================
+Configuration files changed:
+- conf/d2cs.conf : added optional: "game_maxlevel" config option which
+	which needs to be given in the case of Diablo MODs with a level > 255
+
+ Updating from 1.7.9 to 1.7.10
+===============================
+Configuration files changed:
+- conf/sql_DB_layout2.conf : added creation of two additional indices
+- conf/versioncheck.conf : added D2 / W3 entries + cleanups
+- conf/autoupdate.conf : general cleanup/update
+
+ Updating from 1.7.8 to 1.7.9
+==============================
+Configuration files changed:
+- conf/d2cs.conf : added pid entry
+- conf/d2dbs.conf : added pid entry
+- conf/bnetd.conf : added examples for sql2 usage
+- conf/versioncheck.conf : added many SC/BW vchecks (yeah seems they have been 
+    busy lately) and W3 vchecks
+- conf/command_groups.conf : added entry for the new "/tos" command
+
+Configuration files added:
+- conf/sql_DB_layout2.conf : contains database structure initialization SQL 
+    statements for sql2 mode
+
+ Updating from 1.7.7 to 1.7.8
+==============================
+Configuration files changed:
+- conf/sql_DB_layout.conf : includes changes needed for the new "username" SQL 
+    field used to fix a MAJOR bug that shows up with case sensitive SQL engines
+    (almost ALL non-MySQL engines); if you update to 1.7.8 YOU MUST update this 
+    file too if you have your accounts on SQL
+- conf/bnetd.conf : added Westwood Online (WOL) configuration options; woladdr
+    to specify the address to listen for WOL clients, woltimezone for the 
+    server timezone to send to clients, wollong for the server longitute, 
+    wollat for the server latitude
+- conf/bnetd.conf : changed "servaddrs" directive to not be totally commented 
+    and be as ":" by default in bnetd.conf (if "servaddrs" is commented this 
+    means "bnetd" will not listen for b.net services at all)
+- conf/channels.conf : added channels needed by WOL clients
+- conf/versioncheck.conf : updated with latest client versions (War3 1.18a, 
+    SC/BW 1.13 and 1.13b)
+- conf/bnmaps.conf : updated with the maps used now on b.net
+
+ Updating from 1.7.5 to 1.7.6
+==============================
+
+Configuration files changed:
+- conf/bnetd.conf : moved the old "servername" parameter to "hostname" 
+- conf/bnetd.conf : introduced "servername" parameter for server identification
+
+ Updating from 1.7.3 to 1.7.4
+==============================
+- conf/bnetd.conf : added "ladder_prefix" parameter to allow only games with 
+    matching gamename to be counted as ladder (applies only to alternative 
+    ladder game types as specified by "ladder_games" directive)
+
+ Updating from 1.7.1 to 1.7.2
+==============================
+
+Configuration files changed:
+- conf/bnetd.conf : added "sync_on_logoff" parameter to have account data 
+    saved to disk on user's logoff
+- conf/d2cs.conf : added "bak_charsavedir" & "bak_charinfodir" parameter so
+    d2cs can delete the backup copy of charactars deleted by the client.
+    these settings need to be set the same as the d2dbs.conf parameters
+    of the same name
+
+ Updating from 1.7.0 to 1.7.1
+==============================
+
+Configuration files changed:
+- conf/bnetd.conf : added "max_connections" parameter to set up the max 
+    allowed number of connections to the bnetd daemon
+- conf/d2cs.conf : added "max_connections" parameter to set up the max 
+    allowed number of connections to the d2cs daemon
+- conf/d2dbs.conf : added "difficulty_hack" parameter to activate the
+    Diablo II level 100 workaround
+
+ Updating from 1.6.x to 1.7.0
+==============================
+
+Because of the many changes in 1.7.0 we recommend to use a clean install 
+and update the configuration files as necesarry. Things to note:
+1. you now need GNU make to build PvPGN on POSIX systems (on Linux this is 
+just "make" but on *BSD is "gmake")
+2. d2trans,gametrans,w3trans have been unified under address_translation.conf 
+file which has a complete new syntax so take care with that

@@ -1,0 +1,12 @@
+Welcome to the greatest PvPGN server!
+
+|c00FF0000Here |c00FF9933you |c0000CCFFcan |c00A8A8A8 use |c0000CC00coloured |c00FFFF00text |c009999FFas |c00FF66FFfollow|c00FFFFFF:
+"|00HEXCOLOR your text here"
+
+
+
+
+
+(edit this text in conf/bnmotd_w3.txt)
+
+This text will not displayed, because there is limitation of 11 lines

@@ -1,0 +1,12 @@
+%EHej %l, välkommen till %s!
+%IKör version %v på %h.
+%IVärden för den här servern är %H
+%I
+%IDet finns %a användarkonton på denna server.
+%IDet finns förnärvarande %U användare i %G spel av %N,
+%Ioch %u användare som spelar %g spel och chattar i %c kanaler.
+%IHar du problem med ett kommando? Skriv /help för
+%Iatt lära dig mer om det.
+%IType /language to switch translation.
+%I
+%M%m

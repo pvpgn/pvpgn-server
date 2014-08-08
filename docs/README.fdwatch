@@ -1,0 +1,140 @@
+	PvPGN Abstract socket event notification API ie fdwatch
+	    v.01 (C) 2003 Dizzy <>
+
+
+1. The problem:
+
+    I wanted to design and implement a general API to have PvPGN inspect
+socket status (read/write availability) in the best possible way that the
+host OS may offer (select()/poll()/kqueue()/epoll()/etc..).
+    Also the old PvPGN code to do such things was doing them in a very 
+slow way, especially if the system was using poll() (which was the default
+with most Unices). When the server started to have lots of active connections 
+the CPU used in PvPGN to inspect and handle them was increasing very much (the
+code complexity of the code executed each main loop run was of O(n^2) complexity,
+where n is the number of connections to the server, and the main loop is cycling
+at least 1000/BNETD_POLL_INTERVAL times per second ie at least 50 times per second).
+
+2. The fdwatch API:
+
+    I started by reading the fdwatch code from the thttpd project, I used the 
+ideeas found on that code as a start point, but I got much far from those :).
+    The fdwatch API is described in fdwatch.h as follows:
+
+extern int fdwatch_init(void);
+extern int fdwatch_close(void);
+extern int fdwatch_add_fd(int fd, t_fdwatch_type rw, fdwatch_handler h, void *data);
+extern int fdwatch_update_fd(int fd, t_fdwatch_type rw);
+extern int fdwatch_del_fd(int fd);
+extern int fdwatch(long timeout_msecs);
+extern int fdwatch_check_fd(int fd, t_fdwatch_type rw);
+extern void fdwatch_handle(void);
+
+    The name of the functions should be self explanatory to what those functions
+do.
+
+3. The changed code flow:
+A. the code flow before fdwatch
+    - main() calls server_process() 
+    - server_process() after doing some single time initializations, entered
+    the main loop
+    - in the main loop after handing the events it starts to prepare the sockets
+    for select/poll
+    - it starts a loop cycling through each address configured in bnetd.conf 
+    to listen on them and adds their sockets to the socket inspection list
+    - after this, it does a O(n) cycle where it populates the socket inspection list
+    with the sockets of every t_connection the server has (read availability)
+    - if any of this t_connections have packets in the outqueue (they need to 
+    send data) then the sockets are also added for write availability
+    - then pvpgn calls select()/poll() on the socket inspection list
+    - after the syscall returns, pvpgn cycles through each address configured
+    in bnetd.conf and checks if they are read available (if a new connection 
+    is to be made)
+    - pvpgn doesnt want to accept new connections when in shutdown phase but 
+    it did it the wrong way: it completly ignored the listening sockets if 
+    in shutdown phase, this made that once a connection was pending while in 
+    shutdown phase, select/poll imediatly returns because it has it in the read 
+    availability list and thus pvpgn was using 99% cpu while in shutdown phase
+    - anyway, after this, pvpgn does a O(n) cycle through each t_connection to 
+    check if its socket is read/write available
+    - problem is that when it was using poll() (the common case on Unices) to 
+    check if a socket was returned as read/write available by poll() it was 
+    using another O(n) function thus making the total cycle of O(n^2)
+    - while cycling through each connection to inspect if its socket was 
+    returned available by select/poll , pvpgn also checks if the connection 
+    is in destroy state (conn_state_destroy) and if so it destroys it
+
+B. the code flow after fdwatch
+    - I have tried to get every bit of speed I could from the design, so some 
+    things while it may look complex they have the reason of speed behind
+    - just like the old code flow main calls server_process()
+    - here pvpgn does some single time initializations
+    - different than before, here, in the single time intializations code I also 
+    add the listening sockets to the fdwatch socket inspection list (also 
+    the code will need to update this list when receiving SIGHUP)
+    - then pvpgn enters main server loop
+    - the code first treats any received events (just like the old code)
+    - then it calls fdwatch() to inspect the sockets state
+    - then it calls conn_reap() to destroy the conn_state_destroy connections
+    - then it calls fdwatch_handle() to cycle through each ready socket and handle
+    its changed status
+
+This is it! :)
+No cycles, no O(n^2), not even a O(n) there (well in fact there is something 
+similar to a O(n) inside fdwatch() but about that read bellow).
+
+FAQ:
+1. Q: but where do the new connections get into the fdwatch inspection 
+list ? 
+A: they get in there when they are created, that means in the 
+function sd_accept() from server.c
+the reason is: why add the connection sockets each time before poll() when the 
+event of having a new connection, so a new socket to inspect is very very rare 
+compared to the number of times we call select/poll).
+
+2. Q: where are the connections removed from the fdwatch inspection list ?
+A: where they should be, in conn_destroy() just before calling close() on the 
+socket
+
+3. Q: where do we manifest our interest for write availability of a socket if 
+we have data to send to it ?
+A: in conn_push_outuque. the ideea is if we got data to send, ok update fdwatch 
+socket inspection list to look for write availability of the socket where we 
+need to send data
+
+4. Q: what does fdwatch() do ?
+A: depending on the chosen backend it calls select or poll, or kqueue etc...
+For some backends it has to do some work before calling the syscall. Ex. for 
+select() and poll() it needs to copy from a template list of sockets to inspect 
+to the actual working set. The reason why depends on the backend but it really is
+a limitation of the how the syscall works and there is nothing pvpgn that can be
+made to not do that. For example in the poll backend, one might argue that 
+instead of updating a template and copy it to a working array before each poll(), 
+we should update the working set. But that also means that before calling poll(),
+we must set all "revents" field of each fd_struct to 0 , and my tests show that 
+a cycle through 1000 elements of poll fd structs setting revents to 0 is 5 times 
+slower than using a memcpy() to copy the whole array from a source.
+
+5. Q: what does conn_reap() do ?
+A: to get the maximum from each possible backend (kqueue was the main reason here)
+ I moved the cycling through each ready socket and calling the handling function 
+for it, outside server.c and inside fdwatch backends. Because the old code used 
+that cycle from server.c to also check if connections are dead and need destroyed 
+I had to find another way to do it. The best way I found was to have in connection.c
+besides the connlist, another list, conn_dead, which will contain the current
+connections which have the state set to conn_set_state. Then conn_reap() just 
+cycles through each element of conn_dead and destroys them. This was the fastest 
+solution I could find out.
+
+6. Q: what does fdwatch_handle() do ?
+A: it calls the backend's handle function. To get the max from each backend I 
+had to move the handling cycle as a backend specific function. In general this 
+functions cycle through each socket which was returned ready by the last 
+fdwatch() call, and calls the handler function (which was set when the socket 
+was added to the socket inspection list) giving it arguments a void * parameter 
+(also set when socket was added to the inspection list), and the type of readiness
+(read/write). Currently, pvpgn has 3 possible handlers: handle_tcp, handle_udp 
+and handle_accept. Each of this calls acordingly sd_accept, sd_tcpinput, 
+sd_tcpoutput, sd_udpinput (UDP sends are done directly, not queueing them and 
+checking for socket readiness to write, maybe this is another bug ?)
+

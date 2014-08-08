@@ -1,0 +1,8 @@
+- README.storage : how to use PvPGN with the various storage drivers (MySQL, 
+PGSQL, cdb, files etc..)
+- INSTALL.unix : how to compile and install on Unix/POSIX operating systems
+- FAQ : frequently asked questions
+- Compile.Instructions.Win32.Borland.txt : as the filename says
+- Compile.Instructions.Win32.VS.Net.txt : same for this one
+- PORTS : PvPGN porting status file, check to see if your platform/operating 
+system is supported

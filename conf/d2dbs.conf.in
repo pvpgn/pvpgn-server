@@ -1,0 +1,118 @@
+#################################################################################
+# d2dbs.conf  -  Configuration file for the Diablo2 Game database server	#
+#-------------------------------------------------------------------------------#
+#										#
+# This file is an example configuration and may require modification to		#
+# suit your needs or your site.  Blank lines and lines starting with a "#"	#
+# are ignored.  Use quotes around values that contain spaces.			#
+#										#
+#################################################################################
+
+#################################################################################
+# Server Major Settings								#
+#-------------------------------------------------------------------------------#
+# This is a comma delimited list of hostnames that the server should
+# listen on.  Generally, YOU DONT NEED TO TOUCH THIS but it might be useful 
+# to make an internal-only server on a gateway machine for example.  If the 
+# list is not set or if it has a entry with no host component, the server will 
+# bind to that port on all interfaces.
+# d2dbs default listening port is 6114
+# WARNING!! DO NOT USE "127.0.0.1" or "localhost" !!!
+servaddrs	= 0.0.0.0:6114
+
+# Put here EXACTLY the same thing you put in d2cs.conf gameservlist setting.
+# For more information about this setting consult the d2cs.conf comments
+# above it.
+#
+# YOU MUST CHANGE THIS OR D2DBS WON'T WORK PROPERLY
+#
+# WARNING!! DO NOT USE "127.0.0.1" or "localhost" !!!
+gameservlist            =       <d2gs-IP>,<another-d2gs-IP>
+
+#										#
+#################################################################################
+
+#################################################################################
+# Message logs                                                                  #
+#-------------------------------------------------------------------------------#
+# Multiple log levels can be defined by connecting them with a comma (,)
+# Available loglevels are:
+#   none
+#   trace
+#   debug
+#   info
+#   warn
+#   error
+#   fatal
+#loglevels = fatal,error,warn,info
+loglevels = fatal,error,warn,info,debug,trace
+
+#                                                                               #
+#################################################################################
+
+#################################################################################
+# File and Path section								#
+# Use absolute paths in these lines to avoid problems!				#
+#-------------------------------------------------------------------------------#
+logfile		=	"${LOCALSTATEDIR}/d2dbs.log"
+logfile-gs	=	"${LOCALSTATEDIR}/d2dbs-gs.log"
+charsavedir	=	"${LOCALSTATEDIR}/charsave"
+charinfodir	=	"${LOCALSTATEDIR}/charinfo"
+ladderdir	=	"${LOCALSTATEDIR}/ladders"
+bak_charsavedir	=	"${LOCALSTATEDIR}/bak/charsave"
+bak_charinfodir	=	"${LOCALSTATEDIR}/bak/charinfo"
+#pidfile	=	"${LOCALSTATEDIR}/d2dbs.pid"
+
+#										#
+#################################################################################
+
+#################################################################################
+# Misc										#
+#-------------------------------------------------------------------------------#
+#										#
+# Ladder save interval
+laddersave_interval	=	3600
+
+# Time that allow characters create after it insert into ladder
+# These code should be rewritted to support string formmated time
+ladderinit_time		=	0
+
+# create extra ladder file in XML format that can be parsed more easy
+# 0 = turn extra output off (default)
+# 1 = turn on the XML output
+XML_ladder_output       =       0
+
+# Amount of time to delay shutting down server in seconds.
+shutdown_delay          =       360
+
+# Amount of time delay period is decremented by either a SIGTERM or SIGINT
+# (control-c) signal in seconds.
+shutdown_decr           =       60
+
+# connection max idle time in seconds
+idletime		=	300
+
+# connection keep alive interval
+keepalive_interval	=	60
+
+# connection time out check interval
+timeout_checkinterval	=	60
+
+# experience threshold, minimum experience needed to register on the ladder
+ladderupdate_threshold	=	0
+
+# What chars will be added to ladder?
+# 0 = ladder and non-ladder chars
+# 1 = only ladder chars
+ladder_chars_only	=	1
+
+# This setting activates a workaround for the well known "Lvl 100" bug.
+# It should be activated for mods where the max level is greater than 99.
+# Activating this should work for mods with any max level
+# If level is greater than 255, it will be set to 255
+# 0 = deactivated
+# 1 = activated
+difficulty_hack         =       0
+
+#										#
+#################################################################################

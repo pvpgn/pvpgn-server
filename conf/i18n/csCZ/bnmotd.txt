@@ -1,0 +1,13 @@
+%EAhoj %l,
+%IVitej na serveru %s, verze %v.
+%I
+%IMomentalne je zde registrovanych %a uzivatelu, z toho je %u online, hrajicich %g hry.
+%I
+%I%N si muzes zahrat s %U hraci, v %G prave probihajicich hrach nebo si muzes pokecat v %c chatech.
+%I
+%INevis si rady ? Napis /help pro napovedu.
+%I
+%ITvoje IP adresa: %r, tvoje ID %i a tvuj klient %t.
+%IType /language to switch translation.
+%I
+%M%m

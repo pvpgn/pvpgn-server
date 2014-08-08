@@ -1,0 +1,15 @@
+Commandes d'aides du salon de discussions de PvPGN(serveur Emulateur Bnet)
+
+Nouvelles commandes:
+
+utiliser /f pour afficher la liste d'amis
+utiliser /users pour voir les utilisateur en ligne
+utiliser /w ou /msg <utilisateur> pour chuchoter a une personne
+utiliser /join <canal> pour joindre un canal de discussions
+
+Pour les opйrateurs du canal:
+
+utiliser /ban <utilisateur> banni l'utilisateur du canal de discussions
+utiliser /kick <utilisateur> pour sortir un utilisateur du canal de discussions
+
+pour une aide plus dйtaillй taper: /help

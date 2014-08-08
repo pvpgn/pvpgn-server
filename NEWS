@@ -1,0 +1,113 @@
+
+		    PvPGN 1.7.x Major Changes And New Features
+		  ==============================================
+
+ o Westwood Online (WOL) support
+
+    This is a historic moment in the life of the PvPGN project. For the first 
+    time a different gaming network than Battle.net is supported with PvPGN. 
+    Current supports includes almost complete support for Tiberian Sun (TS) 
+    and basic support for Red Alert 2 (RA2) and Yuri's Revenge (YR).
+
+ o WIN32 GUI for d2cs and d2dbs
+
+    d2cs and d2bs now feature a new slick GUI if build under WIN32.
+
+ o Instant startup (partial)
+
+    PvPGN now can startup in a lot lesser time than before, this is due to 
+    code changes which make it not load all accounts at startup. This 
+    improvement should be mostly noticed on very high number of accounts 
+    servers. Note that currently this happens only to SQL storage types 
+    (the file based storage types still load all accounts at startup).
+
+ o Optimized account loading/saving codes
+
+    Account loading/saving codes have been rewritten allowing PvPGN to scale 
+    a lot better with a high number of online users (ie lower CPU usage).
+
+ o Better game result calculation
+
+    Game result decision has been completly changed to use a democratic 
+    ellection scheme (ie it bases the decision on the oppinions of the most 
+    results). This should solve problems with game results beeing wrong under 
+    some situations (like team games).
+
+ o New WIN32 compiler/enviroment support
+
+    Now you can compile PvPGN under WIN32 using complete GPL/free build tools 
+    by using Dev-C++ project and additional tools (mingw, etc).
+
+ o Optimized handling of D2 clients
+
+    Replaced a O(n) search algorithm through the client connection list used 
+    mostly by D2 handling functions with a O(1) algorithm.
+
+ o Optimized timers codes
+
+    Timers codes have been rewritten so the most used functions complete a 
+    lot faster than before. This improves PvPGN CPU usage a lot because some 
+    timers functions are used very often inside PvPGN.
+
+ o Memory management changes and optimizations
+
+    There has been added some memory management wrappers functions which 
+    never fail and thus the calling codes were simplified a lot by removing 
+    checks to memory allocation failures. If memory allocation fails PvPGN 
+    tries to recover by programming an immediate shutdown and cleaning up 
+    some safe memory.
+
+ o Changed codes to use logged in username instead of account username
+
+    This change makes PvPGN use the username introduced at login (with the 
+    exact case as in login) instead of the account name. This solves some 
+    bugs (like could not edit profile in D2 if logged in with different case) 
+    and also gets us more close to Battle.Net.
+
+ o Switched from string based tags to integer based tags
+
+    Codes have been dramatically changed to use integers for storing of tags 
+    (client tags, architecture tags, etc) and thus when comparing tags we use 
+    plain integer comparation instead of string comparation. This should 
+    reduce CPU usage a lot.
+
+ o Optimized list handling codes
+
+    The list API has been changed and the codes have been optimized so it 
+    will remove elements from the list upon request and not later, thus 
+    eliminating a O(n) search and thus making PvPGN a lot faster.
+
+ o Unified and extended address translation system
+
+    We have unified all address translation files and codes to use a single 
+    address_translation.conf file for this job. Also the file syntax has 
+    been completly changed to be more flexible and allow configuration of 
+    almost any thinkable NAT setup.
+
+ o IRC support reworked
+
+    IRC client support has been bugfixed, optimized and made to work with a 
+    lot more IRC clients.
+
+ o Unified file based storage
+
+    File based storage (plain and cdb) have been unified into a single storage 
+    backend (called "file") and the mode (plain/cdb) is just a parameter.
+
+ o Rewritten low level socket multiplexing codes (fdwatch2)
+
+    The codes which deal with how PvPGN knows which sockets are available for 
+    reading/writing have been rewritten with a new interface which does not 
+    presume (like the old codes) that the underlying OS allocates socket 
+    values "close" (ex. WIN32 systems do not while most Unix based systems do 
+    so). The new codes eliminates this presumtion and thus allows WIN32 hosts 
+    to support a large number of connections as PvPGN supported Unix based 
+    platforms.
+
+ o Added more storage types: SQLite3 and ODBC
+
+    With 1.7.x PvPGN now supports besides the MySQL/PostgreSQL SQL backends 
+    also SQLite3 (www.sqlite.org) and ... ODBC SQL engine !! This means that 
+    theoretically now you should be able to use PvPGN with almost any SQL 
+    engine as long as an ODBC driver exists for it.
+ 

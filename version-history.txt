@@ -1,0 +1,467 @@
+PvPGN Version History:
+
+ Changelog for SVN TRUNK (since 1.8.5)
+=========================================
+ -- The list of changes mentioned in here is most probably incomplete.
+ For more details also take a peek view into conversion-changelog.
+
+[CMAKE]
+  -- added cmake build system support
+
+[WOL]
+  -- completed support for all WOL clients (read IGNOREME.TXT)
+  -- disable account creation via irc/wol when new_accounts=false
+  -- added support to allow/deny WOL clients in bnetd.conf
+  -- added support for battle clans
+  -- added various protocol related fixes
+  -- added apiregister support
+  -- added autoupdate support for WOLv2 clients
+  -- added variables into bnetd.conf for wol FTP update server specification
+  -- fixed voice flag not shown for clients in channel
+  -- fixed bug in RedAlert2/Yuri when game owner changes maximum players
+  -- added QuickMatch support for RA2/YURI
+  -- added Ladders support for Tiberian Sun, Firestorm, Red Alert 2
+     and Yuri's Revenge clients
+
+[WAR3]
+  -- added support for SRP3 based account creation/login
+  -- added support for passchange for SRP3 based accounts
+
+[MISC]
+  -- added /muteacct and /unmuteacct commands for admins
+  -- added /clan whisper subcommand
+  -- added /clan create/invite/disband subcommands
+  -- added clan_min_invites to bnetd.conf for miminum accepted
+     invitations need in clan-creating process (default is 2)
+  -- added support for multilingual motd
+  -- added /ipscan command for admins
+
+ ChangeLog for 1.8.5 (since 1.8.4)
+=========================================
+
+[VCHECK]
+  -- added STAR/SEXP IX86 1.16 and 1.16.1 vcheck entries
+
+[WAR3]
+  -- fixed bug when saved games could not be loaded
+  -- fixed bug when clanmember can promote/demote any
+     member of his clan by sending proper rankupdate packet
+  -- fixed bug when a hosting bot was able to create a 
+     custom game which caused clients to disconect
+
+[MISC]
+  -- updated IX86 autoupdate according to STAR/SEXP 1.16.1
+
+ ChangeLog for 1.8.4 (since 1.8.3)
+=========================================
+
+[WAR3]
+  -- fixed possible server crash on many ill-formated packets
+  
+[SQL]
+  -- fixed MySQL reconnection issues for MySQL >= 5.0.19
+
+[IRC/WOL]
+  -- fixed bug when client does not got proper information
+     when account is already in use
+
+[MISC]
+  -- fixed bug when Voiced client was not possible to talk in
+     moderated channels
+
+ 
+ ChangeLog for 1.8.3 (since 1.8.2)
+=========================================
+
+[WOL]
+  -- added Dune 2000 Support
+  -- fixed malformed time format in startgame message
+  -- fixed log warnings/errors rising in login process
+
+[MISC]
+  -- fixed malformed output by /cg list command
+
+[VCHECK]
+  -- added WAR3/W3XP IX86 1.21b vcheck entries
+  -- added STAR/SEXP IX86 1.51.2 vcheck entries
+  -- rewrited all STAR/SEXP/W2BN/DRTL IX86 vcheck entries
+     to match new ver-ix86-1.mpq file (this fixes connecting
+     problems on Windows Vista systems)
+
+ ChangeLog for 1.8.2 (since 1.8.1)
+=========================================
+
+[WOL]
+  -- fixed possible server crash on raw list command
+
+[SC/BW]
+  -- fixed client crash when was showed Friends without any item
+
+[VCHECK]
+  -- added SC/BW IX86 and XMAC 1.15.1 version check entries
+
+ ChangeLog for 1.8.1 (since 1.8.0)
+=========================================
+
+[WOL]
+  -- fixed bug trying to join unexistent games
+  -- fixed bug overflowing the max players game limit
+  -- fixed bug of not showing Yuri's revenge channels
+  -- added address translation support to servserv sent addresses
+  -- added support for usage of /commands
+
+[WAR3]
+  -- fixed possible server crash on ill-formated clan invitation reply packet
+  -- properly display tourney wins/losses in account profile
+
+[MISC]
+  -- fixed d2dbs accepting d2gs connections from any ip
+  -- fixed IRC /notice disc bug
+  -- fixed warning and reactivated reconnecting when using mysql>=5.0.13
+  -- fixed SC:BW string representation from "StarCraft: Broodwars"
+  to "StarCraft: Brood War" (to better match battle.net behaviour)
+  -- fixed possible server crash caused by /ipban command
+  -- enforce (stricter) limit for maximum channel name length 
+  -- fixed problems caused by login via uid
+  -- added new "account_force_username" option to bnetd.conf
+  -- fixed malformed tracker packets on 64bit machines
+
+[VCHECK]
+  -- added WAR3/W3XP IX86 1.21 vcheck entries
+  -- added sc/bw IX86 and XMAC 1.15 version check entries
+
+ ChangeLog for 1.8.0 (since 1.8.0rc2)
+=========================================
+[VCHECK]
+  -- added sc/bw 1.13f/1.14 version check entries
+  -- added WAR3/W3XP IX86 1.20d/1.20e vcheck entries
+
+[D2]
+  -- cleaned up some mess about dealing with D2 1.08 auth reply packets which 
+  we don't need to support according to our minimum D2 version required
+  -- fixed joining of D2 channels by non-D2 clients
+
+[WOL]
+  -- fixed a bug where players couldn't join newly created channels
+
+[MISC]
+  -- fixed logging of invalid strings for client tags
+  -- fixed /ladderinfo command, fix usage of uninitilized variables
+  -- fixed corruption of account data when using files storage and when there 
+  where already broken UID accounts
+  -- fixed the clan max members to be 100 not 255
+  -- fixed loading of all accounts in sql2 (ex. when doing a ladder rebuild)
+  -- reverted dynamic SQL lib support that was creating problems
+  -- properly fixed "sql" ("sql2" is not affected) friend list bugs (reverted 
+  the old fix which was creating new problems); might still be problems if
+  using old versions of sqlite3 (that dont support ` quoting) or using ODBC
+  -- fixed connection loss problems with mysql>=5.0.12 (mysql versions starting 
+  with 5.0.3 but lower than 5.0.12 will still have the issue, upgrade mysql!)
+
+
+ Changelog for 1.8.0rc2 (since 1.8.0rc1)
+=========================================
+[SQL]
+  -- fixed friendslist-related (my)SQL problems
+  
+[VERSIONCHECK]
+  -- added W3 1.20c entries
+
+[MISC]
+  -- updated bnmaps.conf with the latest Battle.net maps
+
+ ChangeLog for 1.8.0rc1 (since 1.7.9)
+=======================================
+[SQL]
+  -- inserted additional indices for BNET table in sql2 layout
+  -- added runtime loading of shared library files (DLLs)
+
+[SC/BW/W2BNE]
+  -- fixed problem with parsing gameresults with unexpected order of players
+
+[WAR3]
+  -- fixed "clan membership lost after invitation" bug.
+
+[IRC]
+  -- fixed PING problem occouring after about 25 days uptime
+  
+[VERSIONCHECK]
+  -- added SC/BW 1.13e entries (XMAC & PMAC)
+  -- added D2/D2XP 1.11b entries
+  -- added W3 1.20b entries
+
+[MISC]
+  -- enforce limit for topic message max length
+
+ ChangeLog for 1.7.9 (since 1.7.8)
+=======================================
+
+[D2CS/D2DBS]
+  -- added pid files to the confs
+  -- fixed a bug where server could not be (un)installed as a win32 service
+  -- added check and modified the default motd to not have a too big motd that 
+  was crashing the clients just after character selection
+
+[VERSIONCHECK]
+  -- added SC/BW 1.13c entries
+  -- added SC/BW 1.13d entries
+  -- added SC/BW 1.13e entries
+  -- added W3 1.20a entries
+
+[SQL]
+  -- reorganized optimized and made more safe the existent codes
+  -- added a new sql layout called "sql2" in config
+
+[MISC]
+  -- fixed security issue where an op of a channel was able to set the topic 
+  of any other channel
+  -- added more information to "/finger" display (if issued by an admin)
+  -- added a new command, "/tos" to display the Terms Of Service on request
+
+ ChangeLog for 1.7.8 (since 1.7.7)
+=======================================
+
+[D2CS/D2DBS]
+  -- usage of the new conf API
+
+[SQL]
+  -- fixed a bug where case sensitive string lookup SQL backends whould not 
+  see old accounts when searched with different case; this is a major problem 
+  and if you are running any non-MySQL SQL backend you MUST upgrade; make sure 
+  you read UPDATE too as it contains very important information for this bugfix
+
+[WOL]
+  -- initial support (HURRAY!!); almost complete Tiberian Sun (TA) support, 
+  basic Red Alert 2 (RA2) and Yuri's Revenge (YR) support
+  
+[DRTL]
+  -- fixed problem with joining games of level 50 characters
+
+[BNPCAP]
+  -- 64 bit arch compatibility changes
+
+[BNCHAT]
+  -- added --arch parameter to specify architecture
+  -- added --lang parameter to specify "gamelang" field of COUNTRYINFO packet
+
+[MISC]
+  -- changed that if "servaddrs" option in bnetd.conf is commented server 
+  should not listen on bnet addresses (now that we have WOL b.net is not a 
+  priority anymore)
+  -- optimized some "compat" codes
+  -- updated more places where people get directed to IRC with the other 
+  support channels (should reduce the "n00b" infestation that PvPGN 
+  IRC suffers of)
+  -- added versioncheck for D2 LOD 1.11 and D2 classic 1.11
+  -- updated versioncheck with latest client versions (War3 1.18a, SC/BW 1.13 
+  and 1.13b)
+  -- updated bnmaps.conf with latest maps used on b.net
+
+ ChangeLog for 1.7.7 (since 1.7.6)
+===================================
+[STORAGE]
+ -- fixed account corruption bug happening when trying to register new 
+ accounts with existent accounts usernames and using plain/cdb file storage
+
+ Changelog for 1.7.6 (since 1.7.5)
+===================================
+[MISC]
+ -- renamed old config variable 'servername' to 'hostname' in bnetd.conf
+ -- added 'servername' config variable in bnetd.conf for server identification
+ -- expanded bnmotd.conf to use 'servername'
+ -- made the hardcoded WAR3 motd use 'servername'
+ -- fixed friends join/leave whispers to come from 'servername'
+ -- fixed bug where d2cs was not able to set realmname even
+ when 'allow_d2cs_setname' was set to 'true' in bnetd.conf
+
+[STORAGE]
+ -- updated sql_DB_layout.conf and the code handling it
+ -- SQL storage types now use a unique index for 'acct_username' (speedup)
+ -- added sqlite3 storage support
+ -- added ODBC storage support
+
+[DRTL]
+ -- fixed handling of gametypes (character levels)
+ 
+ Changelog for 1.7.5 (since 1.7.4)
+===================================
+
+[BNCHAT]
+ -- fixed win32 specific problem (can't read while writing)
+ 
+[D2CS]
+ -- reduce enforced maxchar value down to 18 (fixing possible
+ problems when having many chars with long charnames)
+
+[WAR3]
+ -- wins required for specific chat icons now also configurable
+ via anongame_infos.conf (previously only affected profile icons)
+ -- discard games with no winners at all
+ 
+[SC/BW/W2BNE]
+ -- fixed parsing of ladder_games option in bnetd.conf
+
+ Changelog for 1.7.4 (since 1.7.3)
+===================================
+
+[SC/BW/W2BNE]
+ -- write a message to creators/joiners of ladder games of alternative types
+ (those specified with "ladder_games" in bnetd.conf)
+ -- adder "ladder_prefix" to allow only matching game names to be counted as 
+ ladder games for the alternative ladder game types
+ -- fixed ELO calculation for top-vs-bottom team ladder games
+
+[D2DBS]
+ -- changed codes to use the common network API for send/recv on sockets and 
+ error checking thus hopefully fixing bugs of not ignoring properly some errors 
+
+[BNETD]
+  -- made difficulty of a closed D2 game known to bnetd
+  -- various clan related bugfixes
+  -- enforced max password length (was creating problems in some cases with 
+  very long passwords)
+
+[MISC]
+  -- lots of optimizations (lowers CPU footprint)
+  -- improved win32 winsock error reporting
+  -- fixed many clan code related crashes
+  -- optimized plain file account loading
+
+ Changelog for 1.7.3 (since 1.7.2)
+===================================
+
+[D2CS/D2DBS]
+  -- fixed problem with d2cs and d2dbs not exiting when exit signal is
+  received and exit_time has expired
+
+[FDWATCH]
+  -- fixed a bug which created problems with some backends because of reused sockets
+  not being cleaned properly
+
+[STAR/SEXP/W2BN]
+  -- fixed problem with topvbot "team game"-results being discarded
+  -- fixed possible overflow with malformed gamereport packets
+
+[D2DV/D2XP]
+  -- added workarround for D2 classic client side bug 
+     (open bnet games being listed as closed bnet games)
+
+[MISC]
+  -- made topics.conf being reloaded on SIGHUP
+  -- made '/games all' display clienttag of a game
+  -- fixed problem with language specific channels with limited user count
+
+ Changelog for 1.7.2 (since 1.7.1)
+===================================
+[WIN32 GUI]
+  -- fixed problem with running d2cs & d2dbs as services (gui versions)
+
+[D2CS]
+  -- The backup copy of the charsave file and charinfo file are now deleted
+  when client deletes one of thier charactars
+
+[MISC]
+  -- fixed problem with language specific channels
+  -- added UNIX build configure options to disable bnetd/d2cs/d2dbs builds
+  -- added "sync_on_logoff" bnetd.conf directive to enable saving of account 
+  data on user's logoff
+  -- fixed crash with short/broken cdb user files
+  -- fixed trying to load invalid usernames (like "")
+
+ ChangeLog for 1.7.1 (since 1.7.0)
+===================================
+
+[FDWATCH]
+  -- redesigned and rewritten most of the fdwatch codes (the new codes are now 
+  called fdwatch2) to better support OS which have sparse values for sockets 
+  (ex. this should help busy WIN32 systems)
+
+[STAR/SEXP/W2BN]
+  -- fixed problem with topvbot game-results being discarded
+
+[DEV-C++]
+  -- fixed compilation problems
+
+[D2XP/D2DV]
+  -- added "Diablo II Level 100 Workaround" for mods with a max level
+  greater than 99. Option in d2dbs.conf to activate.
+
+ ChangeLog for 1.7.0 (since 1.6.2)
+===================================
+
+[D2CS]
+  -- made ordering of chars on char-selection screen configurable
+  -- fixed "d2cs not trying to reconnect" issue
+  -- made sure maxchar limit for an account is enforced
+  -- added WIN32 GUI feature
+
+[D2DBS]
+  -- fixed "deleted a ladder char and created one with the same name
+     breaks the ladder" problem. If your ladder is broken, delete it.
+     If your players want their chars to stay in ladder they shouldn't
+     delete them cause new chars with same name will remove the old entry
+  -- added WIN32 GUI feature
+
+[STAR/SEXP/W2BN]:
+  -- changed handling of gameresults to be democratic
+  -- fixed problem with win/games ladder
+
+[STAR/SEXP] : fixed "v1.11 can't play ladder games"-problem
+
+[IRC]: major cleanup of handle_irc.c
+  -- hiding IP on channel join/leave to non admins when hide_addr=true
+  -- now on IRC channel topics are supported (at least their output)
+  -- PvPGN can only handle being in one channel at once, so the server
+  now makes sure you leave the channel you were previously in.
+  -- added /NOTICE, /ISON and /WHOIS handling
+  -- now the real MOTD displays when connecting via IRC
+  -- allow changing /nick before login
+  -- allow another try on a wrong /msg nickserv identify <pass>
+  -- added passfail count to IRC connections to prevent bruteforce logins
+
+[D2]
+  -- added the option to supply norm, night, hell to /games d2xp command
+  for finding a game of a specific difficulty.
+
+[WAR3]: 
+  -- droped <1.13 support, added 1.15 support (CG,PG,AT, clan profile view)
+  -- added code to detect the right w3routeip if is set to 0.0.0.0
+  -- redone major parts of the AT code (old AT teams will be lost)
+
+[LADDERS]:
+  -- added .dat/.xml ladder output for STAR/SEXP/W2BN rating based ladder
+  -- moved textual ladder files from ladderdir to statusdir
+
+[PREFS]
+  -- fixed handling of comments (previously it skipped the whole line no 
+  matter where '#' was)
+
+[FDWATCH]
+  -- removed useless template usage because events field is r/o for pollfd
+  structs
+
+[MISC]:
+  -- updated autoupdate with latest clients versions
+  -- fixed "message_cache_lookup: unsupported connection class" errors when 
+  broadcasting message (ex /ann) and having any connection different than 
+  irc/telnet/bot/bnet (ex d2cs etc)
+  -- added client, version and country info to the /finger command
+  -- added clan and clan rank info to the /finger command
+  -- added option to bnmotd.txt to display info about new mail
+  -- adjusted /whois command to be more like on battle.net
+  -- massivly renamed configuration files so each has an extension
+  -- added scripts/pvpgn_hash.inc.php so everyone who needs has a php-
+     implementation of the commonly used passhash algorithm
+  -- fixed problem with topaz-chat (and maybe other clients, too)
+     not propperly displaying tmpOP on initial channel join
+  -- adjusted friends/watch game/server join/leave message to be more like b.net
+     (changed message type from info to whisper)
+  -- fixed channel behaviour to now really allow a common channel for all clients
+     (different shortname, same special name)
+  -- changed all 4 bytes tags (clienttags, archtags, etc) to use internally 
+     integers for comparations instead of strings
+  -- changed almost every place where sending username to send the logged in 
+  username (if differs in case) than the account username (this fixes some bugs 
+  like modifying some account data when logged in with different case and also 
+  gets us to closer Battle.net behaivour)
+  -- added /moderate command to moderate/unmoderate a channel

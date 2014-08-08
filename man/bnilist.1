@@ -1,0 +1,73 @@
+.\"
+.\" Copyright (C) 2000  Ross Combs (ross@bnetd.org)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH BNILIST 1 "6 November, 2000" "BNETD" "BNETD User's Manual"
+.SH NAME
+bnilist \- list contents of a Battle.net icon file
+.SH SYNOPSIS
+.B bnilist
+[\fIoptions\fP]
+[--]
+[\fIbnifile\fP]
+.SH DESCRIPTION
+.B bnilist
+is a simple program which will list all the icons stored in a BNI file along
+with their attributes.  Additionally, information is displayed from the TGA
+header in the same format as
+.BR tgainfo (1)
+would use.  Some simple sanity checks are also done to verify the file is
+using the same format as expected by the other bni utilities.
+.LP
+If
+.I bnifile
+is not specified or is specified as "-", the standard input will be used.
+.SH OPTIONS
+.TP
+.B \-h --help --usage
+Print usage information and exit.
+.TP
+.B \-v --version
+Print its version number and exit.
+.TP
+.B --
+Signal end of options.  Any further arguments will be treated as filenames
+even if they begin with a "-".
+.SH NOTES
+The current version is available with the bnetd distribution at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH BUGS
+The purpose of some of the fields in the BNI format are not known.  Only
+true-color formats are currently supported.
+.SH "SEE ALSO"
+.BR bnetd (1),
+.BR bni2tga (1),
+.BR bnibuild (1),
+.BR bniextract (1),
+.BR tgainfo (1)
+.SH AUTHORS
+.TP
+Marco Ziech (\fImmz@gmx.net\fP) and
+Ross Combs (\fIross@bnetd.org\fP)

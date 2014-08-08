@@ -1,0 +1,12 @@
+%IHallo %l, welom bij %s!
+%EWe draaien versie %v op %h.
+%IDeze server wordt gehost bij %H
+%I
+%IEr zijn %a gebruikers accounts op deze server.
+%IEr zijn momenteel %U gebruikers in %G games van %N,
+%Ien %u gebruikers spelen %g spellen en chatten in %c channels.
+%IProblemen met een commando? Type /help om
+%Ier meer te weten over te komen.
+%IType /language to switch translation.
+%I
+%M%m

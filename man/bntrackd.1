@@ -1,0 +1,107 @@
+.\"
+.\" Copyright (C) 2000  Ross Combs (ross@bnetd.org)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH BNPROXY 1 "12 September, 2000" "BNETD" "BNETD User's Manual"
+.SH NAME
+bnproxy \- bnetd tracking daemon
+.SH SYNOPSIS
+.B bntrackd
+[\fIoptions\fP]
+.BR
+.SH DESCRIPTION
+.B bntrackd
+is a simple daemon which will listen for UDP announcement packets sent by
+.BR bnetd (1)
+servers.  The list of servers and their statistics is written to a text
+file an optionally processed by an external program.  A
+.BR perl (1)
+script is
+provided which processes this information to produce an HTML document
+suitable for display on the web.
+.LP
+.BR bnetd (1)
+servers must be configured to report to tracking servers.  The
+.BR bnetd.conf (5)
+file allows for multiple tracking servers to be listed separated by commas.
+The master server is track.bnetd.org.  Please consider including that server
+in your configuration.
+.SH OPTIONS
+.TP
+.B \-c --command
+Run the specified command after writing server information to \fIoutfile\fP.
+If this option is not specified, the command "scripts/process.pl" is executed
+from the directory that
+.B bntrackd
+was started.  If an empty string is provided for \fIcommand\fP, no command
+will be executed.
+.TP
+.B \-e --expire
+Set the period of time in seconds to keep server information without receiving
+new updates.  If this option is not specified, 600 seconds is used.
+.TP
+.B \-d --debug
+Place additional informational messages in the event log.
+.TP
+.B \-h --help --usage
+Print usage information and exit.
+.TP
+.B \-l --logfile
+Put the event log messages into the specified file.  If this option is not
+specified, the file "logs/bntrackd.log" will be written from the directory
+that
+.B bntrackd
+was started.  If an empty string is provided for \fIlogfile\fP, no event
+messages will be written.
+.TP
+.TP
+.B \-o --outfile
+Put the server information into the specified file \fIoutfile\fP..
+.TP
+.B \-p --port
+Listen for announcements on the specified UDP port number.  If this option
+is not specified, the port number defaults to 6114.
+.TP
+.B \-P --pidfile
+Record the process ID of the tracking daemon in the specified file.  If this
+option is not specified, this information is not written to any file.
+.TP
+.B \-u --update
+Set the period of time in seconds between updates of the \fIoutfile\fP.  If
+this option is not specified, 150 seconds is used.
+.TP
+.B \-v --version
+Causes
+.B bntrackd
+to print its version number and exit.
+.SH NOTES
+.TP
+The current version is available at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH "SEE ALSO"
+.BR bnetd (1),
+.BR perl (1)
+.SH AUTHOR
+Ross Combs (\fIross@bnetd.org\fP)

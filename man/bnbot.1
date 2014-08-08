@@ -1,0 +1,92 @@
+.\"
+.\" Copyright (C) 2000  Ross Combs (ross@bnetd.org)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH BNBOT 1 "11 June, 2000" "BNETD" "BNETD User's Manual"
+.SH NAME
+bnbot \- Battle.net text-based chat bot client
+.SH SYNOPSIS
+.B bnbot
+[\fIoptions\fP]
+\fIservername\fP
+[\fIserverport\fP]
+.SH DESCRIPTION
+.B bnbot
+is a simple program which will allow communication through the bot protocol of a
+Battle.net server from the command line.  Input from stdin is sent to the server and
+output from the server is send to stdout.  The interface is so simple that
+.BR telnet (1)
+could be used.  The only complicating factor is that a control-C character must be sent
+to the server before any other input.
+.LP
+It is hoped that this program can be used with a scripting language like
+.BR expect (1)
+to make creation of chat bots for Unix easier.  To date, I don't know of anyone doing
+this.  This program may also be used to test bot login permissions for accounts.
+.LP
+If no \fIservername\fP is specified, localhost is assumed.  If no \fIserverport\fP is
+specified, 6112 is assumed.
+.SH OPTIONS
+.TP
+.B \-h --help --usage
+Print usage information and exit.
+.TP
+.B \-v --version
+Print its version number and exit.
+.SH NOTES
+The current version is available with the bnetd distribution at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH BUGS
+The terminal settings are not consulted for keybindings.  The following are assumed:
+.TP
+^H
+delete the character to the left of the cursor
+.TP
+^J
+accept current line
+.TP
+^M (return)
+accept current line
+.TP
+^T
+transpose the last two characters
+.TP
+^W
+delete word to the left of the cursor
+.TP
+^U
+delete the whole input line
+.TP
+^[ (escape)
+cancel the current input line
+.TP
+^? (delete)
+delete the character to the left of the cursor
+.SH "SEE ALSO"
+.BR bnetd (1),
+.BR bnchat (1)
+.SH AUTHOR
+.TP
+Ross Combs (\fIross@bnetd.org\fP)

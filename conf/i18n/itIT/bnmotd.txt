@@ -1,0 +1,12 @@
+%EHello %l, welcome to %s!
+%IRunning version %v on %h.
+%IThis server is hosted by %H
+%I
+%IThere are %a user accounts on this server.
+%IThere are currently %U users in %G games of %N,
+%Iand %u users playing %g games and chatting in %c channels.
+%IHaving trouble with a command? Type /help to
+%Ilearn more about it.
+%IType /language to switch translation.
+%I
+%M%m

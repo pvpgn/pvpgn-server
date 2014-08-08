@@ -1,0 +1,143 @@
+########################################################################################################
+#------------------------------------------------------------------------------------------------------#
+# Address Translation table                                                                            #
+#----------------------------------------------------------------------------
+#
+# DO NOT, I REPEAT, DO NOT TOUCH THIS FILE UNLESS YOU RUN THE SERVER ON A 
+# COMPUTER INSIDE A LAN AND YOU NEED TO HAVE PLAYERS FROM "OUTSIDE" YOUR LAN
+#
+# This is a list of ip:port addresses that get translated
+# EVERYTHING AFTER A "#" IS IGNORED (ie COMMENTED)
+#
+# The entries are broken into four parts:
+#
+# * the IP address w/port to be translated (what pvpgn wants to send initially)
+# * the output IP address w/port (what pvpgn WILL send after translation)
+# * comma delimited list of networks to be excluded from translation
+# * comma delimited list of networks to be included in translation
+#
+# Each line must contain all four parts or the entire entry will be rejected
+# There are no default ports, make sure input and output include the port number
+#
+# The entries are searched in the order listed in this file
+# Exclude networks are searched before include networks
+# Only the first matching line is used
+# Lines begining with '#' are ignored
+#
+# If no match is found, the input ip will be returned.
+#
+# Network specification can be either NONE, ANY or x.y.z.t/bitlen:
+# - NONE = no neworks (same as 0.0.0.0/32)
+# - ANY = All networks (same as 0.0.0.0/0)
+# x.y.z.t/bitlen : means matching the first bitlen bits from the x.y.z.t value
+# Example: if you have the network 192.168.0.x (where x is from 1 to 255) to 
+# match any IP in it you use "192.168.0.0/24" meaning the first 24 bits of 
+# 192.168.0.0 HAVE TO match (the first 24 bits means the first 3 digits)
+#
+#################################################################################
+
+################################################################################
+# w3route server ip translation
+#
+# Here you can translate the IP/port of the w3route IP/port as sent by pvpgn
+# to the WAR3 clients. You need this ONLY if you want to have external W3 
+# players that will play PlayGame/ArrangedTeam games.
+# Set exclude to the range of clients you want to recieve the input address
+#    instead of the output address
+# Set include to the range of clients you want to recieve the output address
+#
+# input (ip:port)   output (ip:port)   exclude (ip/netmask)    include (ip/netmask)
+#----------------- ------------------ ----------------------  ----------------------
+
+# Example, if you left w3route = 0.0.0.0:6200 as it is by default in bnetd.conf
+# AND you have the external IP 1.2.3.4 AND you want to exclude from translation 
+# the internal W3 clients (those with IPs 192.168.0.x) AND you port forward 
+# port 6200 TCP from your router to the pvpgn server port 6200 then here put:
+
+# 0.0.0.0:6200      1.2.3.4:6200      192.168.0.0/24           ANY
+
+
+###############################################################################
+# Game Translations for clients/games (client data ports)
+#
+# You need this ONLY if you will have internal players that want to play with 
+# external ones.
+#
+# This setting is NOT NEEDED for D2 closed realm clients (they connect to d2gs 
+# to play games not to eachover).
+#
+# Set input address to the client to be translated 
+# Set output address to the address to be sent to the other clients 
+# Set exclude to the range of clients you want to recieve the input address 
+#    instead of the output address 
+# Set include to the range of clients you want to recieve the output address 
+#
+# input (ip:port)    output (ip:port)    exclude (ip/netmask)    include (ip/netmask)
+#-----------------  ------------------  ----------------------  ----------------------
+
+# Example, if you have an internal client on IP 192.168.1.10 AND you have the 
+# external IP 1.2.3.4 AND you want to exclude from translation the internal 
+# clients (those with IPs 192.168.1.x and 10.x.y.z) AND you port forward 
+# port 6118 TCP AND UDP from your router to the client IP and port 6112 then 
+# here put:
+
+#192.168.1.10:6112   1.2.3.4:6118      192.168.1.0/24,10.0.0.0/8  ANY
+
+
+
+################################################################################
+# Diablo II Character Server translation (d2cs)
+#
+# You need this ONLY if you run a d2cs (ie ONLY if you will host a Diablo2 
+# closed realm).
+#
+# Set input address to the ip of d2cs (same as the ip in the realm.conf)
+# Set output address to the address to be sent to the clients
+# Set exclude to the range of clients you want to recieve the input address
+#    instead of the output address
+# Set include to the range of client you want to recieve the output address
+#
+# input (ip:port)    output (ip:port)    exclude (ip/netmask)    include (ip/netmask)
+#-----------------  ------------------  ----------------------  ----------------------
+
+# Example, if you run a d2cs on IP 192.168.1.10 port 6113 and you have put the 
+# same IP/port in realm.conf AND you have the external IP 1.2.3.4 AND you want 
+# to exclude from translation the internal clients (those with IPs 192.168.1.x) 
+# AND you port forward port 6113 TCP from your router to the machine running 
+# d2cs and port 6113 then here put:
+
+#192.168.1.10:6113   1.2.3.4:6113       192.168.1.0/24          ANY
+
+
+
+################################################################################
+# Diablo II Game Server Translation (d2gs)
+#
+# Set input address to the ip of d2gs (same as the gameservlist in d2cs.conf)
+# Set output address to the address to be sent to the clients
+# Set exclude to the range of clients you want to recieve the input address
+#    instead of the output address
+# Set include to the range of client you want to recieve the output address
+#
+# input (ip:port)    output (ip:port)    exclude (ip/netmask)    include (ip/netmask)
+#-----------------  ------------------  ----------------------  ----------------------
+
+# Example, if you run a d2gs on IP 192.168.1.100 (and port 4000, d2gs cannot 
+# listen on other port, it will automatically listen on port 4000) and you have 
+# put the same IP in d2cs.conf and d2dbs.conf gameservlist setting AND you have 
+# the external IP 1.2.3.4 AND you dont want to exclude from translation anyone 
+# AND you port forward port 4000 TCP from your router to the machine running 
+# d2gs and port 4000 then here put:
+
+#192.168.1.100:4000  1.2.3.4:4000       NONE                    ANY
+
+
+
+################################################################################
+# Westwood Online Game Server Translation (wwol)
+#
+#
+# input (ip:port)    output (ip:port)    exclude (ip/netmask)    include (ip/netmask)
+#-----------------  ------------------  ----------------------  ----------------------
+
+#192.168.1.10:4005   1.2.3.4:4005       192.168.1.0/24          ANY

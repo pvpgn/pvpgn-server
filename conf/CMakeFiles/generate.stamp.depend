@@ -1,0 +1,26 @@
+# CMake generation dependency list for this directory.
+C:/git/pvpgn-harpywar/conf/CMakeLists.txt
+C:/git/pvpgn-harpywar/conf/ad.conf.in
+C:/git/pvpgn-harpywar/conf/anongame_infos.conf.in
+C:/git/pvpgn-harpywar/conf/address_translation.conf.in
+C:/git/pvpgn-harpywar/conf/autoupdate.conf.in
+C:/git/pvpgn-harpywar/conf/bnalias.conf.in
+C:/git/pvpgn-harpywar/conf/bnban.conf.in
+C:/git/pvpgn-harpywar/conf/bnetd_default_user.plain.in
+C:/git/pvpgn-harpywar/conf/bnissue.txt.in
+C:/git/pvpgn-harpywar/conf/bnmaps.conf.in
+C:/git/pvpgn-harpywar/conf/bnxpcalc.conf.in
+C:/git/pvpgn-harpywar/conf/bnxplevel.conf.in
+C:/git/pvpgn-harpywar/conf/channel.conf.in
+C:/git/pvpgn-harpywar/conf/command_groups.conf.in
+C:/git/pvpgn-harpywar/conf/realm.conf.in
+C:/git/pvpgn-harpywar/conf/sql_DB_layout2.conf.in
+C:/git/pvpgn-harpywar/conf/sql_DB_layout.conf.in
+C:/git/pvpgn-harpywar/conf/supportfile.conf.in
+C:/git/pvpgn-harpywar/conf/topics.conf.in
+C:/git/pvpgn-harpywar/conf/tournament.conf.in
+C:/git/pvpgn-harpywar/conf/versioncheck.conf.in
+C:/git/pvpgn-harpywar/conf/icons.conf.in
+C:/git/pvpgn-harpywar/conf/bnetd.conf.in
+C:/git/pvpgn-harpywar/conf/d2cs.conf.in
+C:/git/pvpgn-harpywar/conf/d2dbs.conf.in

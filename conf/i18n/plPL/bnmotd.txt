@@ -1,0 +1,12 @@
+%ECześć %l, witaj w %s!
+%IWersja serwera %v uruchomiona na %h.
+%ISerwer obsługuje %H
+%I
+%IDo tej pory zarejestrowaliśmy %a kont.
+%IAktualnie jest %U użytkowników zalogowanych, w %G grach, z pośród %N,
+%I%u użytkowników gra w %g gier, i rozmawia na %c kanałach.
+%IJeśli masz jakieś problemy z poleceniami, to napiszsz /help aby
+%Idowiedzieć się wiecej.
+%IType /language to switch translation.
+%I
+%M%m

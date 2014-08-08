@@ -1,0 +1,32 @@
+{03/28/2014}
+(edit this text in conf/news.txt)
+ 
+ 
+Note that Warcraft 3 client caches news in bncache.dat
+(remove the file on the client side before login to see the changes immediately)
+
+ 
+New support channel at:
+http://pvpgn.pro
+
+
+{10/01/2004}
+Welcome To The Player-vs-Player Gaming Network!
+Bringing Emulation To New Levels!
+ 
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=
+ 
+** IF YOU EXPERIENCE PROBLEMS USING THIS SERVER PLEASE REPORT IT TO THE **
+*********  ADMINISTRATOR OF THE SERVER NOT TO THE PVPGN TEAM  ************
+ 
+Project development homepage: http://pvpgn.berlios.de
+ 
+Support channels (ONLY for the admins):
+========================================
+ 
+1. Forums: http://forums.pvpgn.org
+ 
+2. IRC live support: #pvpgn on irc.pvpgn.org
+ 
+Enjoy!
+The PvPGN Team

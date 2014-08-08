@@ -1,0 +1,164 @@
+        	PvPGN storage configuration README File
+	       -----------------------------------------
+
+
+1. What is this "storage" ?
+
+    "storage" is what we call in PvPGN the way to save account files data
+(usernames, passwords, many other stuff). Thus it is a very important part of
+PvPGN and can drastically improve speed of the server depending on the chosen 
+method. Because we wanted to be easy to add new storage types we designed a 
+modular solution, like this:
+
+                   <pvpgn account code>  (mostly in bnetd/account.c)
+		            |
+		            |
+		  <general storage code> (mostly wrappers, in bnetd/storage.c)
+		       /         \
+		      /           \
+		     /             \
+		<file>            <sql> (bnetd/storage_filc, bnetd/storage_sql.c)
+		 /\                 /\
+		/  \		   /  \
+	       /    \		  /    \
+	    <plain> <cdb>     <mysql> <pgsql>
+
+Thus PvPGN can be compiled with support for more than one storage type but 
+(of course) at runtime it will only use one (as chosen by the server admin 
+from the configuration file).
+
+2. First you will need to make sure your PvPGN version has support 
+compiled in for the type of storage you want to use.
+
+2.1 file (plain and cdb)
+
+"file" storage support means to store accounts data directly in files in either 
+plain text files or cdb files (but its easy to add any other support in the 
+future) and is compiled by default, chosen by default (with the "plain" mode) 
+in configuration file (and the oldest and most used storage type). 
+
+The only advantages of the plain files storage type are that the account files 
+beeing human readable text are easy to read/write. It has the drawback of 
+beeing the slowest one.
+
+Starting with PvPGN version 1.6.0 (and their prereleases) we offer "cdb" 
+userfiles support. For who dont know, cdb is a constant non-relational 
+database. We included and adapted code from the tinycdb project to achieve this.
+Because cdb doesnt have any external dependencies and is pretty stable it is 
+(as the "file" driver) compiled by default. It has the advantage of potentially 
+beeing a lot faster than "file" storage driver (I say potentially because at 
+this moment there are other things in the code which make cdb slow almost as 
+plain files, but this things will get soon fixed). It has the drawback of having 
+to use a separate tool to read/write this files outside PvPGN.
+
+2.2 MySQL/PGSQL
+
+For unix if you compiled your own source you need to add --with-mysql or 
+--with-pgsql to configure command line (read INSTALL.unix for general UNIX 
+installation details). Even if you give configure --with-mysql/--with-pgsql 
+parameter it will NOT compile MySQL/PGSQL support if it doesnt detect the 
+MySQL/PGSQL includes and libraries. Check the configure output where it detects 
+the mysql/pgsql paths, it should find the right locations of your MySQL/PGSQL 
+includes and libs.
+
+If you got binary unix packages you will need to know if the packet you got 
+was compiled with MySQL/PGSQL support (ex a MySQL rpm file should have "mysql" 
+in the name of file). 
+
+A more general way to tell if you have a PvPGN with MySQL/PGSQL on Unix is to 
+use the "ldd" command on the "bnetd" file (the main PvPGN server daemon) and see 
+if the output shows usage of the SQL library (libmysqlclient for MySQL, libpq 
+for PGSQL).
+
+If you got a binary Windows package/installer just check from where you got it 
+if it tells you if it has MySQL/PGSQL support or not.
+
+No matter on what OS you are and how you got PvPGN, when you run PvPGN it will 
+log a message like this:
+
+Nov 26 16:07:20 [info ] storage_init: initializing storage layer (available drivers: file, cdb, mysql)
+
+If in the list of available drivers you see mysql/pgsql then all is fine.
+
+3. Even if your PvPGN has support for your chosen storage driver compiled in 
+(you see it in the list of available drivers from above) you will need to 
+configure PvPGN and tell to use your chosen storage type (default PvPGN uses 
+plain files, the "file" driver).
+
+You will need to locate the file bnetd.conf and edit it (note that in the 
+configuration files all characters that follows a first # character on a line 
+are ignored, they are comments). Find the line storage_path (which is not 
+commented) in the bnetd.conf file. Edit it to use your chosen storage type as 
+in the examples in the config file which I paste them here:
+
+Syntax:
+- for plain file driver:
+storage_path = file:dir=<path_to_user_files>;clan=<path_to_clan_files>;default=/path/to/default/account
+
+- for cdb file driver:
+storage_path = cdb:dir=<path_to_cdb_files>;clan=<path_to_clan_files>;default=/path/to/default/account
+
+- for sql driver:
+storage_path = sql:variable=value;...;default=0 (0 is the default uid)
+
+ The "sql" variables can be:
+  - "mode" : tells PVPGN the sql mode you will use (mysql/pgsql/etc..)
+  - "host" : the database host
+  - "port" : the TCP/IP port if needed
+  - "socket" : the UNIX local socket if needed
+  - "name" : database name
+  - "user" : db username
+  - "pass" : db password
+
+Examples:
+storage_path = file:dir=/usr/local/pvpgn/var/users;clan=/usr/local/pvpgn/var/clans;default=/usr/local/pvpgn/etc/bnetd_default_user
+
+storage_path = cdb:dir=/usr/local/pvpgn/var/userscdb;clan=/usr/local/pvpgn/var/clanscdb;default=/usr/local/pvpgn/etc/bnetd_default_user.cdb
+
+storage_path = sql:mode=mysql;host=127.0.0.1;name=PVPGN;user=pvpgn;pass=pvpgnrocks;default=0
+
+storage_path = sql:mode=pgsql;host=127.0.0.1;name=pvpgn;user=pvpgn;pass=pvpgnrocks;default=0
+
+
+3. Start PvPGN. If all is well you should see a line similare to the one bellow 
+in your pvpgn logs:
+
+Nov 26 16:07:20 [info ] storage_init: using <driver> storage driver
+
+where <driver> is your chosen storage driver.
+
+4. Troubleshooting:
+
+Q: I am compiling the UNIX source and using ./configure --with-mysql but somehow 
+I dont see from configure output that it detects the MySQL libs and includes
+A. Did you installed MySQL devel package (on some systems is separate from the 
+main MySQL package) ? locate the following files on your system
+$ locate mysql.h
+$ locate libmysqlclient.so
+$ locate libmysqlclient.a
+
+If you dont have mysql.h and one at least of the libmysqlclient.so or 
+libmysqlclient.a then you should install them (ask your local linux community 
+how).
+
+Q: I dont see mysql in the available drivers list in the log ?
+A: That means your PvPGN has no MySQL support compiled in. Go to step 2 of this 
+document.
+
+Q: I see something like this in the logs "no known driver specified(sql)", what 
+does it mean ?
+A: Just like the previous question, means your PvPGN has no MySQL support 
+compiled in. Go to step 2 of this document.
+
+Q: I see something like this in the logs "no known driver specified(<text>)", 
+where <text> is not the driver I want, what should I do ?
+A: Somehow you did not configured in bnetd.conf to use your chosen driver . 
+Please see step 3 of this document. Make sure to have a SINGLE UNCOMMENTED 
+storage_path line (a SINGLE line which starts with storage_path and which DOESNT 
+have a # character in front of it)
+
+Q: I see sql in the list of available drivers but I get an error "error 
+connecting to database" in the logs.
+A: You did not configured properly the <dbhost>, <dbname>, <dbuser>, <dbpass> 
+from step 3 of this document OR your db server has a problem (is it started ? 
+is it firewalled ? did you gave the right privileges to <dbuser> sql user ? etc)

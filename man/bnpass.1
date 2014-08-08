@@ -1,0 +1,65 @@
+.\"
+.\" Copyright (C) 1998,1999,2000  Ross Combs (ross@bnetd.org)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH BNPASS 1 "09 April, 1999" "BNETD" "BNETD User's Manual"
+.SH NAME
+bnpass \- bnetd password utility
+.SH SYNOPSIS
+.B bnpass
+[\fIoptions\fP]
+[--]
+[\fIcleartextpassword\fP]
+.SH DESCRIPTION
+.B bnpass
+is a small utility which will output the ASCII hashed version of the
+clear text password in the same format as used in bnetd account files.
+This may be useful for writing a script to generate accounts or to
+reset a password in the bnetd user database.
+.LP
+If
+.I cleartextpassword
+is not specified you will be prompted to enter it into the standard
+input.
+.SH OPTIONS
+.TP
+.B \-h --help --usage
+Print usage information and exit.
+.TP
+.B \-v --version
+Print its version number and exit.
+.TP
+.B --
+Signal end of options.  Any further arguments will be treated as
+passwords even if they begin with a "-".
+.SH NOTES
+The current version is available with the bnetd distribution at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH "SEE ALSO"
+.BR bnetd (1),
+.BR bnchat (1),
+.BR bnftp (1)
+.SH AUTHOR
+Ross Combs (\fIross@bnetd.org\fP)

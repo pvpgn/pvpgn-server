@@ -1,0 +1,377 @@
+
+		    PVPGN 2.x DEVELOPERS GUIDE
+
+           Please read this file before asking any questions !
+
+0. About this document
+=======================
+
+This document is intended to be read by all of you out there wanting to do
+development or testing for/on PvPGN.
+
+1. Why ?
+=========
+
+You want to start coding for PvPGN ? Why ? What do you expect to get from it ?
+Answer yourself this questions and then go to the next paragraph.
+
+2. History
+===========
+
+PvPGN has started as a game server emulation project, taking the excelent's
+bnetd project source and working on it. While initially it has started as
+a War3 emulation patch over bnetd it become a lot more than that (lots of
+new features, lots of code changes organizing). Because of the code roots
+you will notice a lot of things still carrying the "bnetd" word (most notable
+examples are the main servers program file called "bnetd" or the main server
+configuration file called bnetd.conf). We considered that as a sign of respect
+from us to the bnetd coders we keep their names on the code they written (but
+on the new code of course we may name them different).
+
+Arround the time of pvpgn 1.7.9 release we have branched the codes and started 
+to work on pvpgn 2.x, the next big version, a C++ based version.
+
+3. Objective
+=============
+
+PvPGN's main objective is to support many gaming network protocols so that 
+users can setup LAN parties and Internet gaming communities. As such it 
+focuses mainly on those protocols that are both popular and where the 
+client vendor (game maker) has NOT released any kind of server software that 
+you can run to achieve the goal above (like Battle.Net, Westwood Online, etc).
+
+The current status is almost complete support for Battle.Net (all games) and 
+limited Westwood Online support. We also offer the possibility to connect to 
+PvPGN using non-gaming related protocols like IRC and telnet for better 
+interoperability regarding the chat feature of the server (one of the main 
+features as a gaming server).
+
+4. Layout of files
+===================
+
+Note: Starting here on you may find lots of terms and wors which may sound
+"strange" to you and for this reason we have included a glossary of terms
+in the end of this file.
+
+The PvPGN project consists of a main server (called "bnetd") and various
+other programs and (little) servers (ex. bnchat, d2cs, d2dbs etc...).
+
+PvPGN follows the bnetd's layout of files:
+./bin			-> used to store binaries (after compilation)
+./conf			-> configuration files (many of them templates)
+./files			-> various files needed for clients connecting
+./man			-> outdated man pages :(
+./sbin			-> same as ./bin
+./scripts		-> various scripts for testing/managing pvpgn
+./src			-> the source main directory
+./src/bnetd		-> source files used only by the main server
+./src/common		-> source files used in common by different programs
+./src/compat		-> source files concerning portability of code
+...
+
+PvPGN uses automake/autoconf build and platform portability system. This is 
+the main build method for UNIX/POSIX builds. For Win32 we offer the option to 
+build using mingw tools.
+
+5. Coding Style
+================
+
+a. General
+
+Because PvPGN is developed mainly on POSIX/Linux systems there are some 
+things specific to this type of platform (like the line ending of all 
+text/source files to be "Unix-style").
+
+One thing which is overlooked by newbie coders is the "esthetical" side of the
+code. It may not be so important to many people (which code on the idea "if it
+works then its good") but for us, coding on PvPGN is VERY important. When you
+are coding for PvPGN PLEASE try to make your code look similar to already 
+written code (this includes identing, identificator names, etc...). Keeping
+the code look "the same" makes its reading a lot more easier so, finding
+bugs easier so coding better.
+
+Other overlooked aspect for newbie coders is code replication. Please DONT
+copy and paste code arround !!! If you need to copy common functionality from
+some place, think about making some API of that functionalilty, put it in
+some classes and use it from both places. I repeat, DONT replicate code.
+
+When allocating memory (or some other kind of resource like a file, etc) 
+inside a function always free it (release the resource) in the same function
+before its exit (exceptions: the function returns the allocated memory/resource in
+which case the calling function should take care of the allocated memory;
+or the allocated memory is cached/stored somewhere to be used later, in which
+case you must make sure it will be free()d when not needed anymore).
+
+In the startup code of any "external" function (function which may be called
+from other modules then the one containing it or a public method ) please 
+check ALL the input parameters (you will notice how PvPGN already does that 
+in such functions). In case of errors detected in such cases (and not only) 
+code should "throw" an exception (see section 5.d).
+
+When developing code you should compile always with "all warnings" enabled 
+and try to fix them (some warnings uncover real bugs), like for gcc use 
+"-Wall". When running/testing the codes you should use a memory debugger like 
+valgrind. For more details about how to run pvpgn check Appendix B.
+
+To allocate/free memory use ONLY new/delete calls (this makes sure that out 
+of memory condition is detected and nicely handled because in that case 
+"new" automatically "throws" std::bad_alloc exception).
+
+b. Indenting
+
+PvPGN indentation should be done ONLY with "tabs" (exception see below), the 
+tab size is 8 "spaces".
+
+We indent a level after if, while, do-while, for, case (but NOT from switch), 
+class/struct/union (but NOT the access modifier public/protected/private) and 
+a starting brace. The position of the starting brace relative to the keywords 
+from above is at the same level as the keyword.
+
+We except to indent after switch, namespace braces and the access modifiers 
+because otherwise things will look "too indented" and make codes less readable.
+
+c. Functions (methods/constructors) and their parameters
+
+Function definitions should have the type returned by the function on it's own 
+line than the function name and it's parameter list. Like in:
+
+const std::string&
+MyClass::getString()
+{
+}
+
+Function parameters should be passed by reference for "aggregate" types (like 
+class/struct/union). This reference usually is const, ie "const Type& param". 
+Accessors should return references to aggregate members (this is safe because 
+we presume the object's life time exceeds the reference cacher's use time, if 
+not the calling codes can just cache a copy of the object).
+
+Functions should never have their bodies in the .h file (exception, class and 
+function templates that NEED to be in the .h file completely).
+
+d. Exceptions and error handling
+
+"Errors are not always exceptions". Keep this in mind!
+
+But generally, errors are exceptions. In the common sense and in turn, in the 
+codes. In case of errors (that is errors that shouldnt happen too often, not 
+common case errors) the codes should throw an exception. Exceptions allows for 
+a very clean and versatile way to detach the place of error detection to the 
+place of error handling (in C you detect an error in some low-level codes and 
+you report it in the return value and this is checked and propagated by checks 
+to the higher level codes that will probably handle the error). Also with C++ 
+exceptions the "normal" code flow it's NOT disrupted and polluted by trying to 
+handle errors everywhere you might hit one. Exceptions basically offer an 
+alternative SLOW code path. It is slow (much slower than normal code flow) and 
+this is why it should be used to signal relatively "rare" events (thus called 
+exceptions) and not something "common".
+
+But using exceptions you might be carefull with them to not "leak" resources. 
+The problem is that if you allocate some resource in some codes and then you 
+might get an exception (not even from your codes but indirectly from codes you 
+call) you need to make sure the resources aquired are released BEFORE the 
+exception propagates out of your code scope. This is _easily_ done with C++ 
+and the RAII principle 
+(http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization). The 
+rule is simple, ALL resource aquisitions should be done using some kind of 
+wrappers that release the resource in their destructor. This also makes codes 
+a lot more simple when exiting code scope on non-error cases because you do 
+NOT need to explicitely release the "wrapped" resource as it will release 
+automatically when leaving the code scope.
+
+You are allowed ONLY to throw objects, NEVER throw basic types. All the 
+exceptions you throw HAVE to be derived from std::exception (thus providing 
+the .what() method to get a C-string of the description of the error). It is 
+best however, you derivate from std::runtime_error & co. You MAY create your 
+own exception class (with the limitations from above) IF AND ONLY IF your 
+exception represents an error that NEEDS to be handled differentely (ie 
+catched separately from other exceptions). All such user defined exception 
+classes should be defined NESTED in the class that throws them.
+
+Catching exceptions should ONLY be done using the "const reference" catching 
+scheme like in:
+} catch (const std::exception& ex) {
+
+This allows for 2 important things to happen:
+- it allows proper polymorphic mechanisms for exceptions (so with the example 
+above ANY exception derived from std::exception is caught and handled as it 
+should be)
+- it behaves nicely on out of memory condition ie an ISO C++98 compliant 
+compiler even when out of memory condition is reached has to provide ENOUGH 
+memory to create a temporary object that (and this is what you do when 
+throwing an exception to be caught with reference, you throw like 
+throw MyException(); whcih means it creates a temporary object MyException() 
+and that object reference is passed to the handlers)
+
+e. Namespaces
+
+All pvpgn codes will belong to the "pvpgn" namespace. Specific application 
+codes will belong to a namespace inside "pvpgn" like "pvpgn::bnetd". Common 
+codes need to still be just in "pvpgn" so all other codes will "see" them.
+
+Never ever use a "using" keyword inside a .h file. Inside .cpp files you 
+_may_ use them.
+
+Some types, classes, etc are better to be declared inside some other class 
+(like the exceptions, see the above section or smart pointers for the class).
+
+"static" keyword to declare "local" variables and functions it's not allowed. 
+Instead of it, use unnamed namespaces. A ISO C++98 compliant compiler has to 
+provide for each separate translation unit an unique name for the unnamed 
+namespace that could be declared in that translation unit. As such, instead of 
+
+------------------------
+static int myvar;
+static int myfunc(int);
+
+extern int externfunc()
+{
+}
+
+static int myfunc()
+{
+}
+------------------------
+
+Make it
+
+------------------------
+namespace
+{
+
+int myvar;
+int myfunc(int);
+
+}
+
+extern int externfunc()
+{
+}
+
+namespace
+{
+
+int myfunc(int)
+{
+}
+
+}
+------------------------
+
+f. Identifiers
+
+Class names should start with a capital and all words composing it should too
+(Java-like style, like in "MyStuff"). All methods should start with a lowercase 
+letter and then all words composing it with uppercase. Accessor methods should 
+start with get/set and then the name of the member accessed with the case 
+rules already mentioned.
+
+g. Include order
+
+In .cpp files the first include should be "common/setup_before.h" followed by 
+the coresponding header of the cpp file (ie in clan.cpp after setup_before.h 
+you include clan.h).
+
+Then you include (this applies to headers too not only .cpp now) the headers 
+of standard C++ lib, then the headers from C90 as offered by standard C++ 
+(ex. <cstring> etc), then the POSIX/win32/system dependant headers.
+
+h. Code Flow
+
+<to be written, not sure how it will be after the complete C++ conversion>
+
+Appendix A. Glossary of terms
+===============================
+
+* autoupdate: the feature of Battle.Net servers to send a (MPQ, see MPQ) file
+to the client which after downloading it, it is used to update the client
+
+* connection class: when a connection is established to a bnet listening
+address the client sends an initial byte which tells the server of what class
+of connection the following packets will be; classes of connections determine
+what packets can go through that connection.
+
+* MPQ: a format archive which is used by Blizzard clients and Battle.Net 
+servers. This files are used for containing verious files (sound/graphics in
+clients, AI scripts, update patches etc...)
+
+* versioncheck: also know as vcheck and sometimes just vc ; a client 
+verification system used by Battle.Net servers to identify client version and 
+"purity". Based on this the server may accept/refuse connection or ask for 
+upgrade (see autoupdate).
+
+Appendix B. How to run PvPGN for debugging
+===========================================
+
+It is very helpfull in finding out memory coruption bugs as soon as possible 
+so while developing codes or just when running a server it is good that you 
+use some memory coruption run-time debuggers. I dont know about Win32 users 
+but on Unix/Linux there are some good options.
+
+1. valgrind (http://valgrind.kde.org)
+
+Valgrind is not very portable (only x86, Linux and very recently FreeBSD), 
+also it slows down the debugged codes (it acts like a CPU emulator so it 
+has to do that) but I have yet to find out a better debugging tool for what 
+he does. Valgrind is so cool that recently many OSS projects use it for 
+finding out bugs in their codes. For more information you can check out their 
+web page. I will focus on valgrind with PvPGN.
+
+After you have compiled and installed valgrind (it's easy, ./configure, make, 
+make install) you will use it by running PvPGN like this:
+
+$ valgrind --tool=memcheck --num-callers=10 /path/to/bnetd -f 2> valg.out
+
+"num-callers" makes valgrind record backtraces with 10 entries and is usually 
+needed with PvPGN which has not very small backtrace path :)
+
+Another option you might want to use is "--leak-check=yes" and probably 
+"--leak-resolution=high". This options make valgrind even slower but they 
+will give memory leak information when PvPGN exits.
+
+I encourage EVERYONE to use it if available (that is if you run PvPGN on 
+a supported platform). Only very big servers won't be able to do it because 
+there is no hardware powerfull enough to run a big server with valgrind (but 
+big means over 500 users online). You should test it with your server and if 
+it does not make your bnetd go over 90% CPU then you should be fine. If you 
+cannot run valgrind for any reason or if you are hunting for some bugs 
+valgrind cannot find (yes, valgrind is superb but there is a class of bugs, 
+especially overflows which valgrind can't help you with) you should then try 
+the next debugging tool.
+
+Appendix C. How to generate and use "core" files
+=================================================
+
+This appendix is for Unix users. I dont know if other platforms have similar 
+features, that when the program crashes unexpectedly the OS would dump the 
+contents of the memory of the crashing process into a disk file for later 
+inspection.
+
+First make sure that PvPGN has been compiled with debugging ("-g" parameter 
+to gcc) and with no optimizations ("-O0" parameter to gcc). PvPGN default 
+build process puts "-g -O2" so you need to edit Makefile file before compile 
+and change it to "-g -O0". Then something like "make clean; make".
+
+On Unix/Linux to be able to get core dumps you first need to make sure your 
+core file size limit is set acordingly. Use "ulimit -c" for querying and 
+setting this limit (I recommend setting it to "unlimited"). After that when 
+you start PvPGN make sure you are in a directory where you have write access 
+(so the OS when it wants to do the core dump it will be allowed to do so). 
+The last thing to do is when starting PvPGN make sure it starts in FOREGROUND, 
+example : /path/to/bnetd -f . If you did all this then when PvPGN will crash 
+you will get a core dump. On linux this is a file called "core", on *BSD it's 
+called <processname>.core (for bnetd that means it's called bnetd.core). 
+
+Now that you got a core file it is time to use it to identify what happened 
+wrong in the crashing process. We use gdb (the GNU debugger, should be 
+available on all Unices) to do this. Run gdb like this:
+$ gdb /path/to/bnetd /path/to/corefile
+
+Then gdb should startup, print out a lot of messages and stop after printing 
+a file and line number and quoting some C code where the crash has happened. 
+You can find out a lot more information than this. Run gdb's command "bt full" 
+and it will display a full backtrace of the moment of the crash. The backtrace 
+will contain how the functions were called along the way (their parameters), 
+and also any local variables. If you do not know what to do next from here 
+contact a PvPGN developer and give him exactly that backtrace dump, he should 
+know more.

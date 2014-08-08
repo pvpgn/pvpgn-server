@@ -1,0 +1,8 @@
+/var/log/bnetd/bnetd.log {
+    rotate 9
+    missingok
+    notifempty
+    postrotate
+	/usr/bin/killall -HUP bnetd
+    endscript
+}

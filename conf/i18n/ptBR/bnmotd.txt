@@ -1,0 +1,12 @@
+%EOlá %l, Bem vindo a %s!
+%IRodando a versão %v em %h.
+%IEste servidor é hosteado por %H
+%I
+%IExistem %a contas criadas nesse servidor.
+%IAtuamente existe %U usuarios %G jogos de %N,
+%IE %u usuários jogando %g jogos e conversando em %c canais.
+%ITendo algum problema com comando? Digite /help ra
+%Aprender mais sobre.
+%IType /language to switch translation.
+%I
+%M%m

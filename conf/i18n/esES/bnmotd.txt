@@ -1,0 +1,12 @@
+%EHola %l, bienvenido a %s!
+%IEn %h se usa la versión %v
+%IEste servidor está alojado por %H
+%I
+%IEn este servidor hay %a cuentas registradas.
+%IActualmente hay %U usuarios en %G partidas de %N,
+%Iy %u usuarios jugando %g partidas y conversando en %c salas.
+%I¿Tiene problemas con algun comando? Teclee "/help" para
+%Iaprender más sobre los comandos.
+%IEscribir /language para cambiar el idioma de traducción.
+%I
+%M%m

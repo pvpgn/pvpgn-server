@@ -1,0 +1,113 @@
+.\"
+.\" Copyright (C) 1998  Mark Baysinger (mbaysing@ucsd.edu)
+.\" Copyright (C) 1998,1999,2000  Ross Combs (ross@bnetd.org)
+.\" Copyright (C) 1999  Rob Crittenden (rcrit@greyoak.com)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH bntext 5 "2 August, 2001"
+.SH NAME
+bnmotd.txt, bnnews.txt bnissue.txt \- messages for the Unix Battle.net daemon
+.SH DESCRIPTION
+The file
+.I bnmotd.txt
+contains text displayed by
+.BR bnetd (1),
+when users first log into the server.
+.LP
+The file
+.I bnnews.txt
+contains text displayed when the user uses the /news chat command.
+.LP
+The files consist of raw text with printf-style formatting escapes.  Each line
+of a file can contain a type formatter from the following list:
+.RS
+.TP
+.B %B
+Use the broadcast attribute (???).
+.TP
+.B %C
+Execute the line as if the user entered it as a command.
+.TP
+.B %E
+Use the error attribute (red).
+.TP
+.B %I
+Use the info attribute (yellow).  This is the same was
+.B %W.
+.TP
+.B %M
+Normal chat message (white).  This will appear as if the user said it.
+.TP
+.B %T
+Emote chat message (???).  This will appear as if the user said it.
+.TP
+.B %W
+Use the warning attribute (yellow).  This is the same was
+.B %I.
+.RE
+.LP
+Within a line, any of the following format formatters may be used:
+.RS
+.TP
+.B %%
+Expand to a literal percent sign (%).
+.TP
+.B %a
+Expand to the number of accounts on the server.
+.TP
+.B %c
+Expand to the number of channels on the server.  This includes all
+permanent and current temporary channels.
+.TP
+.B %g
+Expand to the number of games on the server.  This includes both
+public and private (passworded) games.
+.TP
+.B %h
+Expand to the hostname of the server (as returned by
+.BR gethostname (2)).
+.TP
+.B %i
+Expand to this user's account ID number, formatted with a leading
+pound (#) sign and leading zeros.
+.TP
+.B %l
+Expand to this user's current chat name which is usually the same
+.TP
+.B %r
+Expand to the IP of the remote machine (the client).
+.TP
+.B %t
+Expand to four character client tag.
+.TP
+.B %u
+Expand to the number of users logged into the server.
+.TP
+.B %v
+Expand to the version number of the server.
+.RE
+.SH "SEE ALSO"
+.TP
+.BR bnetd (1)
+.SH AUTHOR
+.TP
+Ross Combs (\fIross@bnetd.org\fP)

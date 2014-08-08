@@ -1,0 +1,19 @@
+branches:
+  only:
+    - master
+
+language: cpp
+
+os:
+  - linux
+
+before_install:
+  - sudo apt-get update --fix-missing
+  - sudo apt-get install build-essential zlib1g-dev libmysqlclient-dev liblua5.1-0-dev
+  - mkdir build
+  - cd build
+  
+script:
+  - cmake -D CMAKE_INSTALL_PREFIX=/usr/local/pvpgn -D WITH_MYSQL=true -D WITH_LUA=true ../
+  - make
+  - sudo make install

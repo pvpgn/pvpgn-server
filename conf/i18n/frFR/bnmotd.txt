@@ -1,0 +1,12 @@
+%EBonjour %l, bienvenue sur %s!
+%IUtilisant la version %v sur %h.
+%ICe serveur est hébergé par %H
+%I
+%IIl y à %a comptes utilisateur sur ce serveur.
+%IIl y à en ce moment %U ultilisateurs dans %G parties de %N,
+%Iainsi que %u utilisateurs jouant dans %g parties et discutant dans %c canaux.
+%IUn problème avec une commande ? Tappez /help pour
+%Ien savoir plus.
+%IType /language to switch translation.
+%I
+%M%m

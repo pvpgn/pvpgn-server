@@ -1,0 +1,247 @@
+#################################################################################
+# d2cs.conf  -  Configuration file for the diablo2 game control server		#
+#-------------------------------------------------------------------------------#
+#										#
+# This file is an example configuration and may require modification to		#
+# suit your needs or your site.  Blank lines and lines starting with a "#"	#
+# are ignored.  Use quotes around values that contain spaces.			#
+#										#
+#################################################################################
+
+
+#################################################################################
+# Server Major Settings								#
+#-------------------------------------------------------------------------------#
+#										#
+# Your realm server name							#
+# Here you put the value of the first column from the realm line in realm.conf
+# Example, if you have the line
+# "MyRealm" "My Super Realm" <someIP>:6113
+# in realm.conf then here you put realmname = "MyRealm"
+realmname		=	D2CS
+
+# This is a comma delimited list of hostnames that the server should
+# listen on.  Generally, YOU DONT NEED TO TOUCH THIS but it might be useful 
+# to make an internal-only server on a gateway machine for example.  If the 
+# list is not set or if it has a entry with no host component, the server will 
+# bind to that port on all interfaces.
+# d2cs default listening port is 6113
+# WARNING!! DO NOT USE "127.0.0.1" or "localhost" !!!
+servaddrs		=	0.0.0.0:6113
+
+# This is a comma delimited list of game servers. Put here the IPs
+# (without ports) of the machines running d2gs. If you run d2gs on the same 
+# machine as d2cs you put the IP of that machine here.
+# Example: gameservlist = 192.168.1.10
+# (if you have a d2gs running on a machine with the IP 192.168.1.10)
+#
+# YOU MUST CHANGE THIS OR D2CS WON'T WORK PROPERLY
+#
+# WARNING!! DO NOT USE "127.0.0.1" or "localhost" !!!
+gameservlist		=	<d2gs-IP>,<another-d2gs-IP>
+
+# Put here the address and port of the machine running bnetd (or pvpgn.exe). 
+# If you run d2cs on the same machine as bnetd (or pvpgn.exe) then here you 
+# put the IP of that machine.
+#
+# YOU MUST CHANGE THIS OR D2CS WON'T WORK PROPERLY
+#
+# bnetd default listening port is 6112
+# WARNING!! DO NOT USE "127.0.0.1" or "localhost" !!!
+bnetdaddr		=	<bnetd-IP>:6112
+
+# Set this to the maximum number of concurrent connections allowed on 
+# this server. DO NOT TOUCH UNLESS STRICTLY NECESSARY!
+max_connections = 1000
+
+# This sets the realm to Classic or LOD or Both
+# Classic = 0
+# LOD = 1
+# Both = 2 (default)
+lod_realm = 2
+
+# This sets whether you can convert a clasic char to
+# an expansion char.
+# Allow Convert = 1
+# Don't allow Convert = 0
+allow_convert = 0
+
+# here u can enter the symbols allowed in accountnames (additional to 
+# alphanumerical symbals which are always accepted). please note that
+# it is absolutly mandatory that u set up the same symbols here as in
+# bnetd.conf or else u wont be able to play D2 with some characters
+# (those whose symbols are allowed in bnetd.conf but not here)
+# same warnings as in bnetd.conf apply here - be warned - and just
+# change something if you know what you are doing
+#default setting is "-_[]"
+account_allowed_symbols = "-_[]"
+
+#										#
+#################################################################################
+
+#################################################################################
+# Message logs									#
+#-------------------------------------------------------------------------------#
+# Multiple log levels can be defined by connecting them with a comma (,)
+# Available loglevels are:
+#   none
+#   trace
+#   debug
+#   info
+#   warn
+#   error
+#   fatal
+#loglevels = fatal,error,warn,info
+loglevels = fatal,error,warn,info,debug,trace
+
+#										#
+#################################################################################
+
+#################################################################################
+# File and Path section								#
+# Use absolute paths in these lines to avoid problems!				#
+#-------------------------------------------------------------------------------#
+#										#
+logfile			=	var\d2cs.log
+charsavedir		=	var\charsave
+charinfodir		=	var\charinfo
+bak_charsavedir		=	var\bak\charsave
+bak_charinfodir		=	var\bak\charinfo
+ladderdir		=	var\ladders
+transfile		=	conf\address_translation.conf
+d2gsconffile		=	conf\d2server.ini
+#pidfile			=	var\d2cs.pid
+
+# d2s template for a new created characters
+newbiefile_amazon		=	files\newbie.save
+newbiefile_sorceress		=	files\newbie.save
+newbiefile_necromancer		=	files\newbie.save
+newbiefile_paladin		=	files\newbie.save
+newbiefile_barbarian		=	files\newbie.save
+newbiefile_druid		=	files\newbie.save
+newbiefile_assasin		=	files\newbie.save
+#										#
+#################################################################################
+
+#################################################################################
+# Misc										#
+#-------------------------------------------------------------------------------#
+#										#
+# Message Of The Day
+motd                    =       "No Message Of The Day Set" 
+
+# Set to non-zero to allow creation of new realm character
+allow_newchar		=	1
+
+# Do you want d2cs to check client for multilogin for security reason?
+check_multilogin	=	0
+
+# Maxinum number of character per account
+# Max allowed value is 18 (enforced by server)
+maxchar			=	8
+
+# Character sorting. Options are: level, mtime, name, none. (none assumed if
+# not specified).
+#charlist_sort = "none"
+
+# Do we need ascending or descending order for charlist?
+#charlist_sort_order = "ASC"
+
+# Maxinum number of games will be shown in join game list
+# Zero = infinite
+maxgamelist		=	20
+
+# Set to non-zero to allow show all games with difficulty < character difficulty
+# Otherwise, only game with difficulty = character difficulty will be shown
+gamelist_showall	=	0
+
+# Maxinum time in seconds that a user can idle
+# Zero = infinite
+idletime		=	3600
+
+# Amount of time to delay shutting down server in seconds.
+shutdown_delay		=	300
+
+# Amount of time delay period is decremented by either a SIGTERM or SIGINT
+# (control-c) signal in seconds.
+shutdown_decr		=	60
+#
+#################################################################################
+
+
+#################################################################################
+# Internal System Settings							#
+# You may just ignore them and use the default value				#
+#-------------------------------------------------------------------------------#
+#
+# How often will the server purge all list to clean unused data (in seconds)
+listpurgeinterval	=	300
+
+# How often will the server check game queues (in seconds)
+gqcheckinterval		=	60
+
+# How often will the server retry to connect to bnetd 
+# when connection lost (in seconds)
+s2s_retryinterval	=	10
+
+# How long time the s2s connection will timeout 
+s2s_timeout		=	10
+
+# How often the server will check server queues for expired data
+sq_checkinterval	=	300
+
+# How long time will a server queue data expire
+sq_timeout		=	300
+
+# Game serer binary files checksum, use zero to skip this checking
+d2gs_checksum		=	0
+
+# Game server version, use zero to skip this checking
+d2gs_version		=	0
+
+# Game server password
+d2gs_password		=	""
+
+# Maxinum number of second that a game will be shown on list( zero = infinite )
+game_maxlifetime	=	0
+
+# Maximum level allowed in this (realm) game.
+# Normal games have a max level 99, while the internal field size limit is 255.
+# Extreme game MODs may have higher values, but be warned:
+# !!! Use them at your own risk !!!
+# game_maxlevel       = 255
+
+# A game will be automatically destroied after how long time idle
+max_game_idletime	=	0
+
+# Allow Limitation created game with password, player number or level limit?
+allow_gamelimit		=	1
+
+# Ladder refresh time
+ladder_refresh_interval =	3600
+
+# server to server connection max idle time in seconds
+s2s_idletime		=	300
+
+# server to server connection keepalive interval
+s2s_keepalive_interval	=	60
+
+# all connection timeout check interval
+timeout_checkinterval	=	60
+
+# game server restart interval
+# when sending SIGUSR2 signal to your d2cs this issues a restart
+# of all connected d2gs after d2gs_restart_delay seconds
+d2gs_restart_delay	=	300
+
+# ladder start time
+# format: yyyy-mm-dd hh:mm:ss
+# be carefull:
+# all chars created before this date will revert to non-ladder chars
+ladder_start_time	=	""
+
+# number of days before a char expires (default 0=unlimited)
+char_expire_day		=	0
+
+#
+#################################################################################

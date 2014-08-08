@@ -1,0 +1,82 @@
+.\"
+.\" Copyright (C) 2000  Ross Combs (ross@bnetd.org)
+.\" 
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public
+.\" License along with this manual; if not, write to the Free
+.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
+.\" USA.
+.\"
+.TH BNPROXY 1 "12 June, 2000" "BNETD" "BNETD User's Manual"
+.SH NAME
+bnproxy \- Battle.net proxy daemon
+.SH SYNOPSIS
+.B bnproxy
+[\fB-f\fP]
+[\fB-d\fP \fIdumpfile\fP]
+[\fB-l\fP \fIlogfile\fP]
+[\fB-p\fP \fIport\fP]
+[\fIservername\fP [\fIserverport\fP]]
+.BR
+.SH DESCRIPTION
+.B bnproxy
+is a simple daemon which will relay client connections to a Battle.net
+server like
+.BR bnetd (1).
+It has the capability of saving a hexadecimal/ASCII dump of the network
+records (packets) into a log file.  Someday this command might be useful for
+people playing from behind a NAT firewall.
+.LP
+If no \fIservername\fP is specified, localhost is assumed.  If no
+\fIserverport\fP is specified, 6112 is assumed.
+.SH OPTIONS
+.TP
+.B \-d --hexdump
+Put a hex dump of packets sent and received into the specified file.
+.TP
+.B \-f --foreground
+The server normally acts as a daemon and goes into the background.  This forces
+the server to run in the foreground.
+.TP
+.B \-h --help --usage
+Print server usage information and exit.
+.TP
+.B \-l --logfile
+Put the event log messages into the specified file.
+.TP
+.B \-p --port
+Listen on the specified TCP and UDP port number.
+.TP
+.B \-v --version
+Causes
+.B bnproxy
+to print its version number and exit.
+.SH NOTES
+.TP
+The current version is available at:
+.LP
+.RS
+.I http://www.bnetd.org/
+.RE
+.SH BUGS
+No support for dynamic UDP address determination (SESSIONADDR[12] packets) has
+been added.  Support for multiple clients is broken because the server becomes
+confused as to which client to relay UDP server traffic to.
+.SH "SEE ALSO"
+.BR bnetd (1)
+.SH AUTHOR
+Ross Combs (\fIross@bnetd.org\fP)
