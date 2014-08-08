@@ -98,4 +98,4 @@ UpgradeLog*.htm
 *.vcxproj
 *.vcxproj.*
 *.sln
-
+*.tlog
