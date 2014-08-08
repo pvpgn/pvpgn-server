@@ -8,7 +8,7 @@ CMakeFiles/
 
 # Random
 zlib/
-Win32/
+/Win32/
 install_manifest.txt
 
 # Compiled Object files
