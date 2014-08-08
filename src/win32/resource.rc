@@ -1,0 +1,261 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "win32/resource.h"
+#include "common/version.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef __BORLANDC__
+#include "afxres.h"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU 
+BEGIN
+    POPUP "&Server"
+    BEGIN
+        MENUITEM "&Save Accounts",              IDM_SAVE
+        MENUITEM "&Restart",                    IDM_RESTART
+        MENUITEM "Sh&utdown",                   IDM_SHUTDOWN
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_EXIT
+    END
+    POPUP "&AdminCommands"
+    BEGIN
+        MENUITEM "&Announce",                   IDM_ANN
+        POPUP "&User Actions"
+        BEGIN
+            MENUITEM "&AdminControlPanel",          ID_USERACTIONS_KICKUSER
+            MENUITEM "Edit &Profile",               ID_USERACTIONS_VIEWPROFILE
+            , GRAYED
+        END
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Clear Window",               IDM_CLEAR
+        MENUITEM "Update &Userlist",            IDM_USERLIST
+    END
+    POPUP "&Server Configuration"
+    BEGIN
+        MENUITEM "&Edit the Server Config File", 
+                                                ID_SERVERCONFIGURATION_EDITTHESERVERCONFIGFILE
+
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About",                      IDM_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "&HomePage",                   ID_HELP_CHECKFORUPDATES
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_KICKUSER DIALOGEX 0, 0, 359, 89
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "AdminControlPanel"
+FONT 8, "MS Shell Dlg", 400, 0
+
+
+BEGIN
+    LTEXT           "Enter the Name of the User here:",IDC_STATIC_KICK,29,20,
+                    114,11
+    GROUPBOX        "",IDC_STATIC_KICKBOX,7,2,151,80
+    EDITTEXT        IDC_EDITKICK,25,48,112,13,ES_AUTOHSCROLL
+    CONTROL         "Kick",IDC_CHECKKICK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,182,16,28,10
+    CONTROL         "Ban",IDC_CHECKBAN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    182,32,28,10
+    PUSHBUTTON      "Execute",IDC_KICK_EXECUTE,225,63,50,14
+    CONTROL         "Promote to Administrator",IDC_CHECKADMIN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,239,16,96,10
+    CONTROL         "Promote to Moderator",IDC_CHECKMOD,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,239,32,87,10
+    CONTROL         "Give the Right to Make Announcements",IDC_CHECKANN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,182,48,142,10
+    GROUPBOX        "",IDC_STATIC,157,2,195,80
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_KICKUSER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 352
+        TOPMARGIN, 2
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Englisch (USA) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUT DIALOGEX 120, 133, 239, 101
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "About this nice Server"
+FONT 8, "MS Sans Serif", 0, 0
+
+
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,174,18,50,14
+    GROUPBOX        PVPGN_VERSION ,IDC_STATIC,7,4,225,93
+    CTEXT           "coded by the PvPGN Team\r\n\r\n- - - - - - - - - - - - - - -\r\n\r\nvisit us @ www.pvpgn.org or \r\n irc.pvpgn.org #pvpgn\r\n\r\n©2002 &2003 PvPGN Is a Open Source Project \r\n As specified by the GPL",
+                    IDC_STATIC,16,18,154,75
+END
+
+IDD_ANN DIALOGEX 120, 133, 323, 34
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "make an announcement to all users"
+FONT 8, "MS Sans Serif", 0, 0
+
+BEGIN
+    DEFPUSHBUTTON   "&Announce",IDOK,261,10,50,14
+    EDITTEXT        IDC_EDIT1,14,11,240,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUT, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 100
+    END
+
+    IDD_ANN, DIALOG
+    BEGIN
+        RIGHTMARGIN, 311
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "win32/logo01.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_APP_TITLE           "bnet"
+    IDM_SAVE                "Save Accounts"
+    IDM_RESTART             "Restart"
+    IDM_SHUTDOWN            "Shutdown"
+    IDM_EXIT                "Exit"
+    IDM_CLEAR               "Clear Window"
+    IDM_ABOUT               "About"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_ANN                 "Announce"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_SERVERCONFIG        "Edit the Server Config File"
+END
+
+#endif    // Englisch (USA) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

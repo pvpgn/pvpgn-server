@@ -1,0 +1,10 @@
+#include "console_resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+#ifndef __BORLANDC__
+#include "afxres.h"
+#endif
+
+/* Icon */
+ID_ICON1                ICON    DISCARDABLE     "win32/logo01.ico"
+

@@ -1,0 +1,16 @@
+#define ID_TRAY			4
+#define ID_RESTORE		5
+#define ID_EXIT			6
+
+#define ID_ABOUT_BOX		101
+#define ID_ICON1		102
+#define ID_MENU			103
+
+#define ID_START_D2DBS		40001
+#define ID_SHUTDOWN_D2DBS	40002
+#define ID_RESTART_D2DBS	40003
+#define ID_EDITCONFIG_D2DBS	40004
+#define ID_LOADCONFIG_D2DBS	40005
+#define ID_LADDER_SAVE		40006
+#define ID_CLEAR		40007
+#define ID_ABOUT		40008
