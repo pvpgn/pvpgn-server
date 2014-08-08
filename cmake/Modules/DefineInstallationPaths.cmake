@@ -89,7 +89,7 @@ if(WIN32)
   )
 else(WIN32)
   SET(SYSCONF_INSTALL_DIR
-    "${EXEC_INSTALL_PREFIX}/etc"
+    "${EXEC_INSTALL_PREFIX}/etc/${APPLICATION_NAME}"
     CACHE PATH "The ${APPLICATION_NAME} sysconfig install dir (default prefix/etc)"
     FORCE
   )
@@ -107,7 +107,7 @@ SET(INFO_INSTALL_DIR
 )
 
 SET(LOCALSTATE_INSTALL_DIR
-  "${CMAKE_INSTALL_PREFIX}/var"
+  "${CMAKE_INSTALL_PREFIX}/var/${APPLICATION_NAME}"
   CACHE PATH "The ${APPLICATION_NAME} local state install dir (default prefix/var)"
   FORCE
 )
