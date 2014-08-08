@@ -3,6 +3,8 @@ cmake_install.cmake
 CMakeCache.txt
 Makefile
 CTestTestfile.cmake
+CMakeFiles
+/config.h
 
 # Random
 zlib/
