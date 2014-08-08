@@ -99,5 +99,7 @@ UpgradeLog*.htm
 # Other VS
 *.vcxproj
 *.vcxproj.*
+*.lastbuildstate
+*.vcxproj
 *.sln
 *.tlog
