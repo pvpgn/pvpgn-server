@@ -172,6 +172,7 @@ namespace pvpgn
 		extern unsigned int prefs_get_passfail_count(void);
 		extern unsigned int prefs_get_passfail_bantime(void);
 		extern unsigned int prefs_get_maxusers_per_channel(void);
+		extern unsigned int prefs_get_require_activation(void);
 		extern char const * prefs_get_supportfile(void);
 		extern char const * prefs_get_allowed_clients(void);
 		extern char const * prefs_get_ladder_games(void);
