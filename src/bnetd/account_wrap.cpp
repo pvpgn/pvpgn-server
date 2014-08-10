@@ -574,7 +574,16 @@ namespace pvpgn
 			return account_set_numattr(account, "BNET\\acct\\lastlogin_time", t);
 		}
 
+		/* Activation time */
+		extern unsigned int account_get_activation_time(t_account * account)
+		{
+			return account_get_numattr(account, "BNET\\acct\\activation_time");
+		}
 
+		extern unsigned int account_set_activation_time(t_account * account, unsigned int t)
+		{
+			return account_set_numattr(account, "BNET\\acct\\activation_time", t);
+		}
 
 		extern t_clienttag account_get_ll_clienttag(t_account * account)
 		{
@@ -1958,6 +1967,7 @@ namespace pvpgn
 
 			if ((flist = account_get_friends(account)) == NULL)
 				return -1;
+
 
 			if ((fr = friendlist_find_username(flist, frienduid)) == NULL) return -2;
 

@@ -1702,6 +1702,17 @@ namespace pvpgn
 						bn_int_set(&rpacket->u.server_loginreply1.message, SERVER_LOGINREPLY2_MESSAGE_BADPASS);
 					}
 				}
+				else if (account_get_activation_time(account) < (unsigned int)now && prefs_get_require_activation()) {
+					eventlog(eventlog_level_info, __FUNCTION__, "[%d] login for \"%s\" refused (this account needs to be activated)", conn_get_socket(c), username);
+					if (supports_locked_reply) {
+						bn_int_set(&rpacket->u.server_loginreply1.message, SERVER_LOGINREPLY2_MESSAGE_LOCKED);
+						std::string msgtemp = localize(c, "You must activate your account.");
+						packet_append_string(rpacket, msgtemp.c_str());
+					}
+					else {
+						bn_int_set(&rpacket->u.server_loginreply1.message, SERVER_LOGINREPLY2_MESSAGE_BADPASS);
+					}
+				}
 				else if (conn_get_sessionkey(c) != bn_int_get(packet->u.client_loginreq2.sessionkey)) {
 					eventlog(eventlog_level_error, __FUNCTION__, "[%d] login for \"%s\" refused (expected session key 0x%08x, got 0x%08x)", conn_get_socket(c), username, conn_get_sessionkey(c), bn_int_get(packet->u.client_loginreq2.sessionkey));
 					bn_int_set(&rpacket->u.server_loginreply2.message, SERVER_LOGINREPLY2_MESSAGE_BADPASS);
@@ -2120,6 +2131,12 @@ namespace pvpgn
 					bn_int_set(&rpacket->u.server_logonproofreply.response, SERVER_LOGONPROOFREPLY_RESPONSE_CUSTOM);
 					std::string msgtemp = localize(c, "This account has been locked");
 					msgtemp += account_get_locktext(account, true);
+					packet_append_string(rpacket, msgtemp.c_str());
+				}
+				else if (account_get_activation_time(account) < (unsigned int)now && prefs_get_require_activation()) {
+					eventlog(eventlog_level_info, __FUNCTION__, "[%d] login for \"%s\" refused (this account needs to be activated)", conn_get_socket(c), username);
+					bn_int_set(&rpacket->u.server_logonproofreply.response, SERVER_LOGONPROOFREPLY_RESPONSE_CUSTOM);
+					std::string msgtemp = localize(c, "You must activate your account.");
 					packet_append_string(rpacket, msgtemp.c_str());
 				}
 				else {

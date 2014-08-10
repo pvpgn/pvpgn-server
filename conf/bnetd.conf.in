@@ -406,6 +406,9 @@ passfail_bantime = 300
 # Max users limit in private channels (0 = unlimited)
 maxusers_per_channel = 0
 
+# Whether players need to periodically activate accounts on the web
+require_activation = false
+
 #                                                                            #
 ##############################################################################
 

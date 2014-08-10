@@ -106,6 +106,8 @@ namespace pvpgn
 		extern unsigned int account_get_ll_ctime(t_account * account);
 		extern unsigned int account_get_ll_time(t_account * account);
 		extern int account_set_ll_time(t_account * account, unsigned int t);
+		extern unsigned int account_get_activation_time(t_account * account);
+		extern unsigned int account_set_activation_time(t_account * account, unsigned int t);
 		extern char const * account_get_ll_user(t_account * account);
 		extern int account_set_ll_user(t_account * account, char const * user);
 		extern t_clienttag account_get_ll_clienttag(t_account * account);

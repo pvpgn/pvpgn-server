@@ -157,6 +157,7 @@ namespace pvpgn
 			unsigned int passfail_count;
 			unsigned int passfail_bantime;
 			unsigned int maxusers_per_channel;
+			unsigned int require_activation;
 			char const * supportfile;
 			char const * allowed_clients;
 			char const * ladder_games;
@@ -649,6 +650,10 @@ namespace pvpgn
 		static const char *conf_get_maxusers_per_channel(void);
 		static int conf_setdef_maxusers_per_channel(void);
 
+		static int conf_set_require_activation(const char *valstr);
+		static const char *conf_get_require_activation(void);
+		static int conf_setdef_require_activation(void);
+
 		static int conf_set_allowed_clients(const char *valstr);
 		static const char *conf_get_allowed_clients(void);
 		static int conf_setdef_allowed_clients(void);
@@ -850,6 +855,7 @@ namespace pvpgn
 			{ "passfail_count", conf_set_passfail_count, conf_get_passfail_count, conf_setdef_passfail_count },
 			{ "passfail_bantime", conf_set_passfail_bantime, conf_get_passfail_bantime, conf_setdef_passfail_bantime },
 			{ "maxusers_per_channel", conf_set_maxusers_per_channel, conf_get_maxusers_per_channel, conf_setdef_maxusers_per_channel },
+			{ "require_activation", conf_set_require_activation, conf_get_require_activation, conf_setdef_require_activation },
 			{ "allowed_clients", conf_set_allowed_clients, conf_get_allowed_clients, conf_setdef_allowed_clients },
 			{ "ladder_games", conf_set_ladder_games, conf_get_ladder_games, conf_setdef_ladder_games },
 			{ "max_connections", conf_set_max_connections, conf_get_max_connections, conf_setdef_max_connections },
@@ -3382,6 +3388,27 @@ namespace pvpgn
 		static const char* conf_get_maxusers_per_channel(void)
 		{
 			return conf_get_int(prefs_runtime_config.maxusers_per_channel);
+		}
+
+
+		extern unsigned int prefs_get_require_activation(void)
+		{
+			return prefs_runtime_config.require_activation;
+		}
+
+		static int conf_set_require_activation(const char *valstr)
+		{
+			return conf_set_bool(&prefs_runtime_config.require_activation, valstr, 0);
+		}
+
+		static int conf_setdef_require_activation(void)
+		{
+			return conf_set_bool(&prefs_runtime_config.require_activation, NULL, 0);
+		}
+
+		static const char* conf_get_require_activation(void)
+		{
+			return conf_get_bool(prefs_runtime_config.require_activation);
 		}
 
 
