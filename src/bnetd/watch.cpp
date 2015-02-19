@@ -18,6 +18,7 @@
  */
 #include "common/setup_before.h"
 #include "watch.h"
+#include "compat/snprintf.h"
 #include "common/field_sizes.h"
 #include "common/eventlog.h"
 #include "common/list.h"
@@ -152,18 +153,18 @@ namespace pvpgn
 					{
 					case Watch::ET_joingame:
 						if (gamename)
-							std::sprintf(msg, "Your friend %s has entered a %s game named \"%s\".", myusername, game_title, gamename);
+							snprintf(msg, sizeof(msg), "Your friend %s has entered a %s game named \"%s\".", myusername, game_title, gamename);
 						else
-							std::sprintf(msg, "Your friend %s has entered a %s game", myusername, game_title);
+							snprintf(msg, sizeof(msg), "Your friend %s has entered a %s game", myusername, game_title);
 						break;
 					case Watch::ET_leavegame:
-						std::sprintf(msg, "Your friend %s has left a %s game.", myusername, game_title);
+						snprintf(msg, sizeof(msg), "Your friend %s has left a %s game.", myusername, game_title);
 						break;
 					case Watch::ET_login:
-						std::sprintf(msg, "Your friend %s has entered %s.", myusername, prefs_get_servername());
+						snprintf(msg, sizeof(msg), "Your friend %s has entered %s.", myusername, prefs_get_servername());
 						break;
 					case Watch::ET_logout:
-						std::sprintf(msg, "Your friend %s has left %s.", myusername, prefs_get_servername());
+						snprintf(msg, sizeof(msg), "Your friend %s has left %s.", myusername, prefs_get_servername());
 						break;
 					}
 					LIST_TRAVERSE(flist, curr)
@@ -193,18 +194,18 @@ namespace pvpgn
 				{
 				case Watch::ET_joingame:
 					if (gamename)
-						std::sprintf(msg, "Watched user %s has entered a %s game named \"%s\".", myusername, game_title, gamename);
+						snprintf(msg, sizeof(msg), "Watched user %s has entered a %s game named \"%s\".", myusername, game_title, gamename);
 					else
-						std::sprintf(msg, "Watched user %s has entered a %s game", myusername, game_title);
+						snprintf(msg, sizeof(msg), "Watched user %s has entered a %s game", myusername, game_title);
 					break;
 				case Watch::ET_leavegame:
-					std::sprintf(msg, "Watched user %s has left a %s game.", myusername, game_title);
+					snprintf(msg, sizeof(msg), "Watched user %s has left a %s game.", myusername, game_title);
 					break;
 				case Watch::ET_login:
-					std::sprintf(msg, "Watched user %s has entered %s.", myusername, prefs_get_servername());
+					snprintf(msg, sizeof(msg), "Watched user %s has entered %s.", myusername, prefs_get_servername());
 					break;
 				case Watch::ET_logout:
-					std::sprintf(msg, "Watched user %s has left %s", myusername, prefs_get_servername());
+					snprintf(msg, sizeof(msg), "Watched user %s has left %s", myusername, prefs_get_servername());
 					break;
 				}
 

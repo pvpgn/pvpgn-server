@@ -16,11 +16,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include "common/setup_before.h"
+
 #ifndef HAVE_STRDUP
 #include "strdup.h"
+
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
+
+#include "common/xalloc.h"
+
 #include "common/setup_after.h"
 
 
@@ -31,7 +36,7 @@ namespace pvpgn
 	{
 		char * out;
 
-		if (!(out = (char *)std::malloc(std::strlen(str) + 1)))
+		if (!(out = (char *)xmalloc(std::strlen(str) + 1)))
 			return NULL;
 		std::strcpy(out, str);
 		return out;

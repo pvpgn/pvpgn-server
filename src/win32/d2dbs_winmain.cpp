@@ -63,12 +63,17 @@ namespace pvpgn
 
 		int fprintf(FILE *stream, const char *format, ...)
 		{
+			int temp = 0;
 			va_list args;
 			va_start(args, format);
+
 			if (stream == stderr || stream == stdout)
-				return gui_lvprintf(eventlog_level_error, format, args);
+				temp = gui_lvprintf(eventlog_level_error, format, args);
 			else
-				return vfprintf(stream, format, args);
+				temp = vfprintf(stream, format, args);
+			
+			va_end(args);
+			return temp;
 		}
 
 		static void KillTrayIcon(HWND hwnd)
