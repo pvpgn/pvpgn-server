@@ -50,7 +50,8 @@ namespace pvpgn
 
 	namespace bnetd
 	{
-
+		
+		char msgtemp3[MAX_MESSAGE_LEN];
 		DECLARE_ELIST_INIT(gamelist_head);
 		static int glist_length = 0;
 		static int totalcount = 0;
