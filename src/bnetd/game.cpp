@@ -1565,6 +1565,7 @@ namespace pvpgn
 			char const * *   temprh;
 			char const * *   temprb;
 			unsigned int i = 0;
+			unsigned int spoofc = 0;
 
 			if (!game)
 			{
@@ -1628,6 +1629,14 @@ namespace pvpgn
 					}
 				}
 
+				std::sprintf(msgtemp3, "%.64s ha entrado en el juego. (comprobando Spoofer)", conn_get_username(c));
+				for (spoofc = 0; spoofc<game->count; spoofc++)
+				{
+					if (game->connections[spoofc])
+					{
+						message_send_text(game->connections[spoofc], message_type_info, game->connections[spoofc], msgtemp3);
+					}
+				}
 			}
 
 			// first player will be added here
