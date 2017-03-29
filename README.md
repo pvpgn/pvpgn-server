@@ -31,7 +31,7 @@ Submit pull requests to contribute to this project. Utilize C++11 features and a
 See [docs/ports.md](https://github.com/pvpgn/pvpgn-server/blob/master/docs/ports.md) for operating systems and compilers that have been confirmed to work with PvPGN. Any operating system that supports WinAPI or POSIX, and any C++11 compliant compiler should be able to build PvPGN.
 
 #### Windows
-Use [Magic Builder](https://github.com/pvpgn/pvpgn-server-magic-builder).
+Use [Magic Builder](https://github.com/pvpgn/pvpgn-magic-builder).
 
 Alternatively, use cmake to generate the .sln project and build it from Visual Studio.
 ```
