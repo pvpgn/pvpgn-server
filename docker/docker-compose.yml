@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+  pvpgn:
+    ports:
+      - "80:80"
+    image: pvpgn
