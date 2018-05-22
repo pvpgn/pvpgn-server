@@ -663,7 +663,6 @@ namespace pvpgn
 			t_game * game;
 
 			conn_part_channel(conn);
-                        game = conn_get_game(conn);
 
 			if ((game = conn_get_game(conn)) && (game_get_status(game) == game_status_open))
 				conn_set_game(conn, NULL, NULL, NULL, game_type_none, 0);
@@ -672,7 +671,7 @@ namespace pvpgn
 		}
 
 		/**
-		*  Fallowing commands are only in Westwood Online protocol
+		*  Following commands are only in Westwood Online protocol
 		*/
 		static int _handle_cvers_command(t_connection * conn, int numparams, char ** params, char * text)
 		{
