@@ -663,6 +663,7 @@ namespace pvpgn
 			t_game * game;
 
 			conn_part_channel(conn);
+                        game = conn_get_game(conn);
 
 			if ((game = conn_get_game(conn)) && (game_get_status(game) == game_status_open))
 				conn_set_game(conn, NULL, NULL, NULL, game_type_none, 0);
@@ -1326,7 +1327,14 @@ namespace pvpgn
 					std::strcat(temp, ":");
 				}
 
+				if ((conn_get_clienttag(conn) == CLIENTTAG_RENEGADE_UINT) || (conn_get_clienttag(conn) == CLIENTTAG_RENGDFDS_UINT))
+				{
+				game_set_status(game, game_status_open);
+				}
+				else
+				{
 				game_set_status(game, game_status_started);
+				}
 
 				std::snprintf(_temp_a, sizeof(_temp_a), "%u %" PRId64, game_get_id(game), static_cast<std::int64_t>(game_get_start_time(game)));
 				std::strcat(temp, _temp_a);
@@ -1714,7 +1722,7 @@ namespace pvpgn
 								std::strcat(data, temp);
 							}
 							else
-								std::strcat(data, "NOTFOUND\r\n");
+								std::strcat(data, "NOTFOUND");
 						}
 					}
 					irc_unget_ladderelems(e);
@@ -1861,3 +1869,4 @@ namespace pvpgn
 	}
 
 }
+
