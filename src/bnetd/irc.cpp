@@ -760,10 +760,14 @@ namespace pvpgn
 									   char temp[MAX_IRC_MESSAGE_LEN];
 									   std::sprintf(temp, ":%s", text);
 									   if (conn_get_wol(dst) == 1) {
+                                                                                   /* Fixes Renegade "paging" to "channel" private messaging to prevent a "page" popup that cannot be replied to (from server) */
+                                                                                   if (conn_get_clienttag(dst) == CLIENTTAG_RENEGADE_UINT) { from.nick = conn_get_chatname(me); from.host = addr_num_to_ip_str(conn_get_addr(me)); from.user = ctag; char const * dest; msg = irc_message_preformat(&from, "PRIVMSG", dest, temp); } else {
+
 										   if ((type == message_type_info) || (type == message_type_error))
 											   msg = irc_message_preformat(NULL, "PAGE", NULL, temp);
 										   else
 											   msg = irc_message_preformat(NULL, "NOTICE", NULL, temp);
+                                                                                   } 
 									   }
 									   else
 										   msg = irc_message_preformat(NULL, "NOTICE", NULL, temp);
