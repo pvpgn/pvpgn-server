@@ -760,6 +760,7 @@ namespace pvpgn
 									   char temp[MAX_IRC_MESSAGE_LEN];
 									   std::sprintf(temp, ":%s", text);
 									   if (conn_get_wol(dst) == 1) {
+
 										   if ((type == message_type_info) || (type == message_type_error))
 											   msg = irc_message_preformat(NULL, "PAGE", NULL, temp);
 										   else
