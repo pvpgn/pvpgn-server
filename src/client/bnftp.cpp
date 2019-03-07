@@ -846,5 +846,5 @@ extern int main(int argc, char * argv[])
 	}
 
 	std::printf("done\n");
-	return EXIT_FAILURE;
+	return EXIT_SUCCESS;
 }
