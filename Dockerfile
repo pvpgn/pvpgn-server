@@ -17,6 +17,7 @@ ARG with-sqlite3=false
 ARG with-pgsql=false
 ARG with-odbc=false
 
+ARG march-native=false
 
 RUN git clone https://github.com/pvpgn/pvpgn-server.git && \
     cd pvpgn-server && \
@@ -28,7 +29,8 @@ RUN git clone https://github.com/pvpgn/pvpgn-server.git && \
           -D WITH_MYSQL=$with-mysql \
           -D WITH_SQLITE3=$with-sqlite3 \
           -D WITH_PGSQL=$with-pgsql \
-          -D WITH_ODBC=$with-odbc && \
+          -D WITH_ODBC=$with-odbc \
+          -D MARCH_NATIVE=$march-native && \
     cd build && make -j$(nproc) && make install && \
     rm -rf /pvpgn-server
 
