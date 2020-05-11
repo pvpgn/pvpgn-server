@@ -159,9 +159,11 @@ There are some build arguments supported:
 
 Some note: If you're planning to build an image and run it somewhere else, you shouldn't enable `march-native` argument. The code might not work as you expected.
 
-Reference:
+References:
 * https://stackoverflow.com/questions/52653025/why-is-march-native-used-so-rarely
-* https://stackoverflow.com/questions/52653025/why-is-march-native-used-so-rarely
+* https://lemire.me/blog/2018/07/25/it-is-more-complicated-than-i-thought-mtune-march-in-gcc/
+
+How to build and run:
 
 ```bash
 docker build . -t pvpgn-server --build-arg with-d2cs=false --build-arg with-d2dbs=false --build-arg with-mysql=true
