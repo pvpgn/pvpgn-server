@@ -22,14 +22,24 @@ option(WITH_MYSQL "include MySQL user accounts support" OFF)
 option(WITH_SQLITE3 "include SQLite3 user accounts support" OFF)
 option(WITH_PGSQL "include PostgreSQL user accounts support" OFF)
 option(WITH_ODBC "include ODBC user accounts support" OFF)
-include(ConfigureChecks.cmake)
 
+#march native flag
+#march arguments is much compicated than you think
+#recommend off on docker, the build may not correctly if your build machine CPU
+#doesn't match with the run machine CPU
+#reference: https://lemire.me/blog/2018/07/25/it-is-more-complicated-than-i-thought-mtune-march-in-gcc/
+option(MARCH_NATIVE "enable compiler native optimization" OFF)
+
+include(ConfigureChecks.cmake)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	# using Clang
 
-	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -march=native -mtune=native -pedantic -stdlib=libc++")
-
+	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -pedantic -stdlib=libc++")
+	if (MARCH_NATIVE)
+		set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -march=native -mtune=native")
+	endif()
+	
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	# using G++
 
@@ -37,8 +47,11 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 		message(FATAL_ERROR "G++ 5.1 or higher required")
 	endif()
 
-	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -march=native -mtune=native -pedantic -Wno-variadic-macros" )
-
+	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -pedantic -Wno-variadic-macros" )
+	if (MARCH_NATIVE)
+		set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -march=native -mtune=native")
+	endif()
+	
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	# using Visual Studio
 
