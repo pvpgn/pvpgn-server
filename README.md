@@ -147,32 +147,30 @@ Full instructions: [Русский](http://harpywar.com/?a=articles&b=2&c=1&d=74
 There are some build arguments supported:
 | Build Arg    | Original Option | Default Value |
 |--------------|-----------------|---------------|
-| with-bnetd   | WITH_BNETD      | true          |
-| with-d2cs    | WITH_D2CS       | true          |
-| with-d2dbs   | WITH_D2DBS      | true          |
-| with-lua     | WITH_LUA        | false         |
-| with-mysql   | WITH_MYSQL      | false         |
-| with-sqlite3 | WITH_SQLITE3    | false         |
-| with-pgsql   | WITH_PGSQL      | false         |
-| with-odbc    | WITH_ODBC       | false         |
-| march-native | MARCH_NATIVE    | false         |
-
-Some note: If you're planning to build an image and run it somewhere else, you shouldn't enable `march-native` argument. The code might not work as you expected.
-
-References:
-* https://stackoverflow.com/questions/52653025/why-is-march-native-used-so-rarely
-* https://lemire.me/blog/2018/07/25/it-is-more-complicated-than-i-thought-mtune-march-in-gcc/
+| with_bnetd   | WITH_BNETD      | true          |
+| with_d2cs    | WITH_D2CS       | true          |
+| with_d2dbs   | WITH_D2DBS      | true          |
+| with_lua     | WITH_LUA        | false         |
+| with_mysql   | WITH_MYSQL      | false         |
+| with_sqlite3 | WITH_SQLITE3    | false         |
+| with_pgsql   | WITH_PGSQL      | false         |
+| with_odbc    | WITH_ODBC       | false         |
 
 How to build and run:
 
 ```bash
-docker build . -t pvpgn-server --build-arg with-d2cs=false --build-arg with-d2dbs=false --build-arg with-mysql=true
+docker build . -t pvpgn-server --build-arg with_d2cs=false --build-arg with_d2dbs=false --build_arg with-mysql=true
 docker run -d -v /your/config/file:/usr/local/etc/pvpgn/config-file.conf pvpgn-server
 ```
 
-You will need to mount the configuration files to the container. The config files will be located at `/usr/local/etc/pvpgn`.
+You will need to mount the configuration files, which is located at `/usr/local/etc/pvpgn` in the container.
 
-TODO: Add configurable enviroment variables
+TODO:
+* Add configurable enviroment variables to easily change server configurations.
+* Add multistage build to lower the size of image, current image is really heavy (~680M).
+
+Known Issues (which I encountered, may not occur on your machine):
+* Built PVPGN with LUA support (with_lua=true) will crash the server on start.
 
 ## Hosting on LAN or VPS with private IP address
 Some VPS providers do not assign your server a direct public IP. If that is the case or you host at home behind NAT you need to setup the route translation in `address_translation.conf`. The public address is pushed as the route server address to game clients when seeking games. Failure to push the correct address to game clients results in players not being able to match and join games (long game search and error).
