@@ -69,7 +69,7 @@ This will generate .sln in `build` directory.
 Do not blindly run these commands. The main problem with older distributions is installing CMake 3.2.x and GCC 5, so external repositories are used in the examples.
 
 ```
-apt-get install git install cmake make build-essential zlib1g-dev
+apt-get install git install cmake make build-essential zlib1g-dev libssl-dev libcurl4-openssl-dev
 apt-get install liblua5.1-0-dev #Lua support
 apt-get install mysql-server mysql-client libmysqlclient-dev #MySQL support
 cd /home
@@ -81,7 +81,7 @@ make install
 
 #### Ubuntu 16.04, 18.04
 ```
-sudo apt-get -y install build-essential git cmake zlib1g-dev
+sudo apt-get -y install build-essential git cmake zlib1g-dev libssl-dev libcurl4-openssl-dev
 git clone https://github.com/pvpgn/pvpgn-server.git
 cd pvpgn-server && cmake -G "Unix Makefiles" -H./ -B./build
 cd build && make
@@ -89,7 +89,7 @@ cd build && make
 
 #### Ubuntu 14.04
 ```
-sudo apt-get -y install build-essential zlib1g-dev git
+sudo apt-get -y install build-essential zlib1g-dev git libssl-dev libcurl4-openssl-dev
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 sudo apt-get -y update
 sudo apt-get -y install gcc-5 g++-5
