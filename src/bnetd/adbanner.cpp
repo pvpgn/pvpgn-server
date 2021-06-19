@@ -29,7 +29,7 @@
 #include <vector>
 
 #include "i18n.h"
-#include "json/json.hpp"
+#include <nlohmann/json.hpp>
 
 #include "common/bn_type.h"
 #include "common/tag.h"
@@ -153,90 +153,99 @@ namespace pvpgn
 
 		const AdBanner* const AdBannerSelector::pick(t_clienttag client_tag, t_gamelang client_lang, std::size_t prev_ad_id)
 		{
-			switch (this->m_banners.size())
+			try
 			{
-			case 0:
-				return nullptr;
-			case 1:
-				return &this->m_banners.at(0);
-			default:
-			{
-				bn_int ext;
-				std::vector<std::size_t> candidates = {};
-
-				std::for_each(this->m_banners.begin(), this->m_banners.end(), 
-					[client_tag, client_lang, &candidates, &ext](const AdBanner& ad) -> void
+				switch (this->m_banners.size())
 				{
-					if ((ad.get_client() == client_tag || ad.get_client() == 0)
-						&& (ad.get_language() == client_lang || ad.get_language() == 0))
-					{
-
-						bn_int_set(&ext, ad.get_extension_tag());
-						// Warcraft 3
-						if (client_tag == CLIENTTAG_WAR3XP_UINT || client_tag == CLIENTTAG_WARCRAFT3_UINT)
-						{
-							// ignore all formats except MNG for Warcraft 3, cause it's only one supported format
-							if (bn_int_tag_eq(ext, EXTENSIONTAG_MNG) != 0)
-							{
-								return;
-							}
-						}
-						// Starcraft, Warcraft 2, Diablo, Diablo 2
-						else
-						{
-							// ignore MNG, cause it's not supported format for other games
-							if (bn_int_tag_eq(ext, EXTENSIONTAG_MNG) == 0)
-							{
-								return;
-							}
-						}
-						candidates.push_back(ad.get_id());
-					}
-				});
-
-				if (candidates.empty())
-				{
+				case 0:
 					return nullptr;
-				}
+				case 1:
+					return &this->m_banners.at(0);
+				default:
+				{
+					bn_int ext;
+					std::vector<AdBanner*> candidates = {};
 
-				const AdBanner* ad;
-				unsigned int idx = 0;
-				if (client_tag == CLIENTTAG_WAR3XP_UINT || client_tag == CLIENTTAG_WARCRAFT3_UINT)
-				{
-					// Warcraft 3 client always send prev_ad_id = 0, because of that we use random selection instead of sequence
-					std::uniform_int_distribution<std::size_t> random(0, candidates.size() - 1);
-					idx = random(engine);
-				}
-				else
-				{
-					// if prev_id in middle (for first and last idx=0)
-					if (prev_ad_id != 0 && prev_ad_id != candidates.at(candidates.size() - 1))
+					for (auto& ad : this->m_banners)
 					{
-						bool prev_found = false;
-						for (unsigned int i = 0; i < candidates.size(); i++)
+						if ((ad.get_client() == client_tag || ad.get_client() == 0)
+							&& (ad.get_language() == client_lang || ad.get_language() == 0))
 						{
-							if (prev_found)
+
+							bn_int_set(&ext, ad.get_extension_tag());
+							// Warcraft 3
+							if (client_tag == CLIENTTAG_WAR3XP_UINT || client_tag == CLIENTTAG_WARCRAFT3_UINT)
 							{
-								idx = i;
-								break;
+								// ignore all formats except MNG for Warcraft 3, cause it's only one supported format
+								if (bn_int_tag_eq(ext, EXTENSIONTAG_MNG) != 0)
+								{
+									continue;
+								}
 							}
-							if (prev_ad_id == candidates.at(i))
+							// Starcraft, Warcraft 2, Diablo, Diablo 2
+							else
 							{
-								prev_found = true;
+								// ignore MNG, cause it's not supported format for other games
+								if (bn_int_tag_eq(ext, EXTENSIONTAG_MNG) == 0)
+								{
+									continue;
+								}
+							}
+
+							candidates.push_back(&ad);
+						}
+					}
+
+					if (candidates.empty())
+					{
+						return nullptr;
+					}
+
+
+					unsigned int idx = 0;
+					if (client_tag == CLIENTTAG_WAR3XP_UINT || client_tag == CLIENTTAG_WARCRAFT3_UINT)
+					{
+						// Warcraft 3 client always send prev_ad_id = 0, because of that we use random selection instead of sequence
+						std::uniform_int_distribution<std::size_t> random(0, candidates.size() - 1);
+						idx = random(engine);
+					}
+					else
+					{
+						// if prev_id in middle (for first and last idx=0)
+						if (prev_ad_id != 0 && prev_ad_id != candidates.at(candidates.size() - 1)->get_id())
+						{
+							bool prev_found = false;
+							for (unsigned int i = 0; i < candidates.size(); i++)
+							{
+								if (prev_found)
+								{
+									idx = i;
+									break;
+								}
+								if (prev_ad_id == candidates.at(i)->get_id())
+								{
+									prev_found = true;
+								}
 							}
 						}
 					}
-				}
-				ad = this->find(client_tag, client_lang, candidates.at(idx));
 
-				/*
-				char lang[5] = {};
-				eventlog(eventlog_level_trace, __FUNCTION__, "Pick ad idx={} candidates={} id=0x{:08} prev_id=0x{:08} filename=\"{}\" link=\"{}\" client=\"{}\" lang=\"{}\"",
-					idx, candidates.size(), ad->get_id(), prev_ad_id, ad->get_filename(), ad->get_url(), client_tag ? clienttag_uint_to_str(client_tag) : "NULL",
-					client_lang ? tag_uint_to_str(lang, client_lang) : "NULL");
-				*/
-				return ad;
+					/*
+					char lang[5] = {};
+					eventlog(eventlog_level_trace, __FUNCTION__, "Pick ad idx={} candidates={} id=0x{:08} prev_id=0x{:08} filename=\"{}\" link=\"{}\" client=\"{}\" lang=\"{}\"",
+						idx, candidates.size(), ad->get_id(), prev_ad_id, ad->get_filename(), ad->get_url(), client_tag ? clienttag_uint_to_str(client_tag) : "NULL",
+						client_lang ? tag_uint_to_str(lang, client_lang) : "NULL");
+					*/
+
+					const AdBanner* const ad = candidates.at(idx);
+					return ad;
+				}
+				}
 			}
+			catch (const std::exception& e)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "error picking ad banner ({})", e.what());
+				return nullptr;
 			}
 		}
 

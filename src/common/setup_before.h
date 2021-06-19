@@ -158,6 +158,7 @@ const char * const BNETD_SUPPORT_FILE = "conf/supportfile.conf";
 const char * const BNETD_COMMAND_GROUPS_FILE = "conf/command_groups.conf";
 const char * const BNETD_TOURNAMENT_FILE = "conf/tournament.conf";
 const char * const BNETD_CUSTOMICONS_FILE = "conf/icons.conf";
+const char * const BNETD_EMAIL_VERIFICATION_FILE = "conf/email_verification.conf";
 const char * const BNETD_ALIASFILE = "conf/bnalias.conf";
 /* time limit for new member as newer(whom cannot be promoted) in clan, (hrs) */
 const unsigned CLAN_NEWER_TIME = 168;
@@ -236,6 +237,8 @@ const char * const BNETD_EXEINFO_MATCH = "true";
 const unsigned PVPGN_VERSION_TIMEDIV = 0; /* no timediff check by default */
 const int PVPGN_CACHE_MEMLIMIT = 5000000;  /* bytes */
 const char * const PVPGN_DEFAULT_SYMB = "-_[]";
+const unsigned int BNETD_SMTP_CERT_STORE_FETCH_INTERVAL = 30;
+const unsigned int BNETD_SMTP_PORT = 587;
 
 const char * const BNETD_LOG_COMMAND_GROUPS = "2345678";
 const char * const BNETD_LOG_COMMAND_LIST = "";

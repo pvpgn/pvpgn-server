@@ -24,6 +24,7 @@
 #include <cstring>
 #include <cassert>
 
+#include "compat/localtime_s.h"
 #include "compat/rename.h"
 #include "compat/strcasecmp.h"
 #include "common/eventlog.h"
@@ -340,6 +341,8 @@ namespace pvpgn
 			{
 			case game_speed_slowest:
 				return "slowest";
+			case game_speed_evenslower:
+				return "even slower";
 			case game_speed_slower:
 				return "slower";
 			case game_speed_slow:
@@ -350,6 +353,8 @@ namespace pvpgn
 				return "fast";
 			case game_speed_faster:
 				return "faster";
+			case game_speed_evenfaster:
+				return "even faster";
 			case game_speed_fastest:
 				return "fastest";
 			default:
@@ -953,19 +958,19 @@ namespace pvpgn
 			}
 
 			{
-				struct std::tm * tmval;
-				char        dstr[64];
+				struct std::tm tmval = {};
+				char dstr[64];
 
-				if (!(tmval = std::localtime(&now)))
+				if (pvpgn::localtime_s(&now, &tmval) == nullptr)
 					dstr[0] = '\0';
 				else
 					std::sprintf(dstr, "%04d%02d%02d%02d%02d%02d",
-					1900 + tmval->tm_year,
-					tmval->tm_mon + 1,
-					tmval->tm_mday,
-					tmval->tm_hour,
-					tmval->tm_min,
-					tmval->tm_sec);
+					1900 + tmval.tm_year,
+					tmval.tm_mon + 1,
+					tmval.tm_mday,
+					tmval.tm_hour,
+					tmval.tm_min,
+					tmval.tm_sec);
 
 				tempname = (char*)xmalloc(std::strlen(prefs_get_reportdir()) + 1 + 1 + 5 + 1 + 2 + 1 + std::strlen(dstr) + 1 + 6 + 1);
 				std::sprintf(tempname, "%s/_bnetd-gr_%s_%06u", prefs_get_reportdir(), dstr, game->id);
@@ -993,25 +998,25 @@ namespace pvpgn
 				game_type_get_str(game->type),
 				game_option_get_str(game->option));
 			{
-				struct std::tm * gametime;
-				char        timetemp[GAME_TIME_MAXLEN];
+				struct std::tm gametime = {};
+				char timetemp[GAME_TIME_MAXLEN];
 
-				if (!(gametime = std::localtime(&game->create_time)))
+				if (pvpgn::localtime_s(&game->create_time, &gametime) == nullptr)
 					std::strcpy(timetemp, "?");
 				else
-					std::strftime(timetemp, sizeof(timetemp), GAME_TIME_FORMAT, gametime);
+					std::strftime(timetemp, sizeof(timetemp), GAME_TIME_FORMAT, &gametime);
 				std::fprintf(fp, "created=\"%s\" ", timetemp);
 
-				if (!(gametime = std::localtime(&game->start_time)))
+				if (pvpgn::localtime_s(&game->start_time, &gametime) == nullptr)
 					std::strcpy(timetemp, "?");
 				else
-					std::strftime(timetemp, sizeof(timetemp), GAME_TIME_FORMAT, gametime);
+					std::strftime(timetemp, sizeof(timetemp), GAME_TIME_FORMAT, &gametime);
 				std::fprintf(fp, "started=\"%s\" ", timetemp);
 
-				if (!(gametime = std::localtime(&now)))
+				if (pvpgn::localtime_s(&now, &gametime) == nullptr)
 					std::strcpy(timetemp, "?");
 				else
-					std::strftime(timetemp, sizeof(timetemp), GAME_TIME_FORMAT, gametime);
+					std::strftime(timetemp, sizeof(timetemp), GAME_TIME_FORMAT, &gametime);
 				std::fprintf(fp, "ended=\"%s\"\n", timetemp);
 			}
 			{

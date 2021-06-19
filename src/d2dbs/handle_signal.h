@@ -18,6 +18,8 @@
 #ifndef INCLUDED_HANDLE_SIGNAL_H
 #define INCLUDED_HANDLE_SIGNAL_H
 
+#include <ctime>
+
 namespace pvpgn
 {
 
@@ -34,6 +36,8 @@ namespace pvpgn
 #endif
 
 		extern int d2dbs_handle_signal(void);
+
+		extern std::time_t d2dbs_get_exit_time();
 
 	}
 

@@ -66,10 +66,6 @@ namespace pvpgn
 		unsigned int sql_defacct;
 		t_sql_engine *sql = NULL;
 
-#ifndef SQL_ON_DEMAND
-		char const *sql_tables[] = { "BNET", "Record", "profile", "friend", "Team", NULL };
-#endif	/* SQL_ON_DEMAND */
-
 		const char* tab_prefix = SQL_DEFAULT_PREFIX;
 
 		static char query[1024];
@@ -389,6 +385,7 @@ namespace pvpgn
 					if (!(clan->clanid = std::atoi(row[0])))
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "got bad cid");
+						xfree(clan);
 						sql->free_result(result);
 						return -1;
 					}
@@ -414,10 +411,14 @@ namespace pvpgn
 							if (row2[0] == NULL)
 							{
 								eventlog(eventlog_level_error, __FUNCTION__, "got NULL uid from db");
+								xfree(member);
 								continue;
 							}
 							if (!(member_uid = std::atoi(row2[0])))
+							{
+								xfree(member);
 								continue;
+							}
 							if (!(member->memberacc = accountlist_find_account_by_uid(member_uid)))
 							{
 								eventlog(eventlog_level_error, __FUNCTION__, "cannot find uid {}", member_uid);
@@ -665,6 +666,7 @@ namespace pvpgn
 					if (!(team->teamid = std::atoi(row[0])))
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "got bad teamid");
+						xfree(team);
 						sql->free_result(result);
 						return -1;
 					}

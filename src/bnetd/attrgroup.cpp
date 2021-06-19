@@ -229,13 +229,10 @@ namespace pvpgn
 				now - attrgroup->lastaccess < prefs_get_user_flush_timer())
 				return 0;
 
-			assert(attrgroup->storage);
-			unsigned int uid = *((unsigned int *)attrgroup->storage);
 			t_storage_info *defacct = storage->get_defacct();
-			unsigned int defuid = *((unsigned int *)defacct);
 
 			// do not flush default account
-			if (uid == defuid)
+			if (attrgroup->storage == defacct)
 			{
 				storage->free_info(defacct);
 				return 2;
@@ -273,7 +270,7 @@ namespace pvpgn
 			t_attrgroup *attrgroup = (t_attrgroup *)data;
 
 #ifdef WITH_SQL
-			if (strcmp(prefs_get_storage_path(), "sql") == 0)
+			if (std::strncmp(prefs_get_storage_path(), "sql", std::strlen("sql")) == 0)
 			{
 				const char *tab = key_get_tab(key);
 
@@ -302,7 +299,7 @@ namespace pvpgn
 			if (FLAG_ISSET(attrgroup->flags, ATTRGROUP_FLAG_LOADED))
 			{
 #ifdef WITH_SQL
-				if (strcmp(prefs_get_storage_path(), "sql") == 0)
+				if (std::strncmp(prefs_get_storage_path(), "sql", std::strlen("sql")) == 0)
 				{
 					// find a tab
 					for (std::vector<const char *>::iterator it = attrgroup->loadedtabs->begin(); it != attrgroup->loadedtabs->end(); ++it)

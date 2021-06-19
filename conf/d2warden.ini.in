@@ -1,0 +1,225 @@
+; NOTE! IMPORTANT!
+; For d2hackmap players, please add following lines into your d2hackmap.cfg !
+;          Unknown Warden Mod Action: 0
+;          Extrawork Dll Action: 0 
+;          Version Checking Dll Action: 0
+
+;注意！d2hackmap玩家请在自己的d2hackmap.cfg文件中加入下面的语句！
+;          Unknown Warden Mod Action: 0
+;          Extrawork Dll Action: 0 
+;          Version Checking Dll Action: 0
+;
+[Global]
+;EnableHackChecks=d2jsp1,d2jsp2,d2hackmap2.24,test     will enable multi hack checks.
+;EnableHackChecks=d2jsp1,d2jsp2,d2hackmap2.24,test     将使能多个Hack检测
+EnableHackChecks=Redvex1,Redvex2,Redvex3,d2jsp1,d2jsp2,jspbot,d2hackit1,d2hackit2,Awesom-1,Awesom-2,AntiWarden1,AntiWarden2,PickIt1,PickIt2,TMC,Kuk-bot,Claw
+
+;SupportD2ClientVersion=1,2,3  #you can use this option force the player use a special d2 client version,1=1.11b 2=1.12a 3=1.13....
+;comment this to allow all d2 client version
+;SupportD2ClientVersion=1,2,3  #可以通过这个选项限定玩家只能使用特定版本的D2，1=1.11b, 2=1.12a, 3=1.13....
+;注释掉这句话将允许所有版本的D2
+SupportD2ClientVersion=3
+
+;This will enable internal player mouse check, some clientless bot or packet-based bot, will not use mouse. And this can check them out!
+;启用玩家鼠标检测，一些无客户端或者基于报文的BOT，并不使用鼠标。这个功能能够将它们检测出来。
+EnablePlayerMouseCheck=1
+
+;0=disable MM.bot check; 1=log player; 3=log player & kick player
+;0=跳过MM.bot检查；1=记录玩家；3=记录玩家，并踢掉玩家
+EnableMMBotCheck=3
+
+;d2warden active frequency. d2warden wake up every 1000ms=1 second
+;d2warden活动频率，d2warden将每1000毫秒=1秒运行一次检测
+Check_Interv=1000
+
+;d2warden update frequency. d2warden check player every 5000ms=5 seconds
+;d2warden检查玩家的频率，d2warden将每5000毫秒=5秒运行一次检测
+UpdateInterv=5000
+
+;set a big value(for example 10) to get detail log info, please check the d2warden.log file
+;设置一个较大的值，例如10，可以获得更详细的日志信息，日志保存在d2warden.log文件中
+Log_level=0
+
+;Please don't modify following values!
+;不要修改下面的值！
+MOD=3ea42f5ac80f0d2deb35d99b4e9a780b.mod
+MOD_RC4_Key=4f340a327dc8b4b8a7d1c15cf73c0e78
+
+
+;D2Version: 0=all version 1=1.11b 2=1.12a
+;Action: 0=skip, 1=kick , bit0=HackAction  bit1=UnknownAction bit2=TimeoutAction
+;        for example, you set Action=7, mean when found hack or unknown response from client side or client timeout, kick the player
+;Log: 0=not log, 1=log, bit0=HackLog bit1=UnknownLog bit2=TimeoutLog
+;        for example, you set Log=7, mean when found hack or unknown response from client side or client timeout, log the player
+;
+;D2Version: 0=所有版本均适用 1=1.11b版本适用 2=1.12a版本适用
+;Action: 0=忽略 1=踢掉玩家，这是一个字节的数据（十进制），其中第0位对应于检测到Hack时的动作，第1位对应于检测到不正确应答时候的动作，第2位对应于玩家不回答时候的动作
+;        例如Action=7，表示当检测到Hack的时候、检测到不正确的应答的时候、玩家不回答的时候，均把玩家踢掉
+;Log: 0=不记录 1=记录，这是一个字节的数据（十进制），其中第0位对应于检测到Hack时是否记录，第1位对应于检测到不正确应答时候是否记录，第2位对应于玩家不回答时候是否记录
+;        例如Log=7，表示当检测到Hack的时候、检测到不正确的应答的时候、玩家不回答的时候，均把玩家记录到日志中
+
+
+[Redvex1]
+D2Version=1
+Check=02 0C 42 4E 43 6C 69 65 6E 74 2E 64 6C 6C 00 EC 01 30 D3 01 00 11 D9
+HackCHKSUM=C1 74 09 70
+Action=5
+Log=5
+Msg="You are killed by Warden because use Redvex!"
+
+[Redvex2]
+D2Version=2
+Check=02 0C 42 4E 43 6C 69 65 6E 74 2E 64 6C 6C 00 EC 01 B8 F2 01 00 11 D9
+HackCHKSUM=C1 74 09 70
+Action=5
+Log=5
+Msg="You are killed by Warden because use Redvex!"
+
+[Redvex3]
+D2Version=3 ; should be 1.13 PTR
+Check=02 0C 42 4E 43 6C 69 65 6E 74 2E 64 6C 6C 00 EC 01 70 ED 01 00 11 D9
+HackCHKSUM=C1 74 09 70 
+Action=5
+Log=5
+Msg="You are killed by Warden because use Redvex!"
+
+[d2jsp1]
+;support d2jsp 1.13 1.14 1.20, you only need to enable one of the d2jsp1 or d2jsp2.
+D2Version=1
+Check=02 0c 44 32 43 6c 69 65 6e 74 2e 64 6c 6c 00 ec 01 F7 C0 00 00 04 d9 
+HackCHKSUM=38 88 7b 24
+CorrectCHKSUM=ff 68 c7 14
+Action=7
+Log=7
+Msg="You are killed by Warden because use d2jsp!"
+
+[d2jsp2]
+;support d2jsp 1.13 1.14 1.20, you only need to enable one of the d2jsp1 or d2jsp2.
+D2Version=1
+Check=02 0c 44 32 43 6c 69 65 6e 74 2e 64 6c 6c 00 ec 01 69 C1 00 00 04 d9 
+HackCHKSUM=96 1a d0 4d
+CorrectCHKSUM=69 50 53 81
+Action=7
+Log=7
+Msg="You are killed by Warden because use d2jsp!"
+
+[d2hackmap2.24]
+D2Version=1
+Check=02 0c 44 32 43 6c 69 65 6e 74 2e 64 6c 6c 00 ec 01 d1 21 05 00 04 d9 
+HackCHKSUM=70 f1 c7 1d
+CorrectCHKSUM=e7 c6 4b 9d
+Action=7
+Log=7
+Msg="You are killed by Warden because use d2hackmap!"
+
+[d2hackit1]
+D2Version=0
+Check=02 00 76 6D 61 72 73 FDEE56669DBFF57B1626CE050B90304AE4503505 d9
+HackCHKSUM=dc a2 f8 0e
+CorrectCHKSUM=16 7f df cc
+Action=7
+Log=7
+Msg="You are killed by Warden because use d2hackit!"
+
+[d2hackit2]
+D2Version=0
+Check=02 00 ed 6D 61 72 73 FDEE56669DBFF57B1626CE050B90304AE4503505 d9
+HackCHKSUM=dc a2 f8 0e
+CorrectCHKSUM=16 7f df cc
+Action=7
+Log=7
+Msg="You are killed by Warden because use d2hackit!"
+
+[jspbot]
+D2Version=0
+Check=02 00 ed 6D 61 72 73 031CB959FF73DF4BCFCA4FC36E91AA52D5BA7BF6 d9
+HackCHKSUM=dc a2 f8 0e
+CorrectCHKSUM=16 7f df cc
+Action=7
+Log=7
+Msg="You are killed by Warden because use jsp bot!"
+
+
+[Awesom-1]
+D2Version=0
+Check=02 00 76 6D 61 72 73 1AAB8A60E0971BB8DDFEB349E8717CAB4007154E d9
+HackCHKSUM=dc a2 f8 0e
+CorrectCHKSUM=16 7f df cc
+Action=7
+Log=7
+Msg="You are killed by Warden because use Awesom bot!"
+
+[AntiWarden1]
+D2Version=0
+Check=02 00 76 6D 61 72 73 5BA48C95706D4D43466B0BF31FE672D97B4DFC74 d9
+HackCHKSUM=16 7f df cc
+CorrectCHKSUM=dc a2 f8 0e
+Action=7
+Log=7
+Msg="You are killed by Warden because use anti-warden hack or bot!"
+
+
+[Awesom-2]
+D2Version=0
+Check=SS
+Offset=0
+HackVALUE=FF 00 63 00 38 00 41 00 77 00 65 00 73 00 6F 00 6D
+Action=7
+Log=7
+Msg="You are killed by Warden because use Awesom bot!"
+
+[Kuk-bot]
+D2Version=0
+Check=SS
+Offset=0
+HackVALUE=ff 00 63 00 30 00 3c 00 50 00 4c 00 41 00 59 00 45 00 52 00 53 00 3e 00
+Action=7
+Log=7
+Msg="You are killed by Warden because use Kuk-bot!"
+
+[Claw]
+D2Version=0
+Check=SS
+Offset=0
+HackVALUE=ff 00 63 00 34 00 43 00 6c 00 61 00 77 00 ff 00 63 00 30 00 3a 00 20 00
+Action=7
+Log=7
+Msg="You are killed by Warden because use Claw shopbot!"
+
+[PickIt1]
+D2Version=1
+Check=02 0c 44 32 43 6c 69 65 6e 74 2e 64 6c 6c 00 ec 01 79 BC 0A 00 04 d9 
+;HackCHKSUM=38 88 7b 24
+CorrectCHKSUM=aa ff fd 70
+Action=7
+Log=7
+Msg="You are killed by Warden because use some pickit hack!"
+
+
+[PickIt2]
+D2Version=2
+Check=02 0c 44 32 43 6c 69 65 6e 74 2e 64 6c 6c 00 ec 01 89 86 09 00 04 d9 
+HackCHKSUM=38 88 7b 24
+CorrectCHKSUM=40 22 8c 82
+Action=7
+Log=7
+Msg="You are killed by Warden because use some pickit hack!"
+
+[TMC]
+;Modified AnimData.D2
+D2Version=0
+Check=02 00 77 6D 61 72 73 8CC5EB579119D58748AFD3A58839093D0F3D5BFC 1C 65 08 00 10 d9
+HackCHKSUM=16 7f df cc
+CorrectCHKSUM=dc a2 f8 0e
+Action=7
+Log=7
+Msg="You are killed by Warden because use Modified AnimData.D2!"
+
+[AntiWarden2]
+D2Version=0
+Check=02 00 77 6D 61 72 73 112233445566D58748AFD3A58839093D0F3D5BFC 1C 65 08 00 10 d9
+HackCHKSUM=dc a2 f8 0e
+CorrectCHKSUM=16 7f df cc
+Action=7
+Log=7
+Msg="You are killed by Warden because use anti-warden hack or bot!"

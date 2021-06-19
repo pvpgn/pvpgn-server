@@ -59,7 +59,7 @@ namespace pvpgn
 
 	BigInt BnetSRP3::N = BigInt(bnetsrp3_N, 32);
 	BigInt BnetSRP3::g = BigInt(bnetsrp3_g);
-	BigInt BnetSRP3::I = BigInt(bnetsrp3_I, 32);
+	BigInt BnetSRP3::I = BigInt(bnetsrp3_I, 20);
 
 	int
 		BnetSRP3::init(const char* username_, const char* password_, BigInt* salt_)
@@ -79,8 +79,9 @@ namespace pvpgn
 			symbol = username;
 			for (i = 0; i < username_length; i++)
 			{
-				*(symbol++) = safe_toupper(*(source++));
+				*(symbol++) = std::toupper(static_cast<unsigned char>(*(source++)));
 			}
+			*(symbol++) = '\0';
 
 			if (!((password_ == NULL) ^ (salt_ == NULL))) {
 				eventlog(eventlog_level_error, __FUNCTION__, "need to init with EITHER password_ OR salt_");
@@ -94,8 +95,9 @@ namespace pvpgn
 				symbol = password;
 				for (i = 0; i < password_length; i++)
 				{
-					*(symbol++) = safe_toupper(*(source++));
+					*(symbol++) = std::toupper(static_cast<unsigned char>(*(source++)));
 				}
+				*(symbol++) = '\0';
 				a = BigInt::random(32) % N;
 				s = BigInt::random(32);
 			}

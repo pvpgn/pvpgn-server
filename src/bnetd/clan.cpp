@@ -48,6 +48,7 @@
 #include "anongame.h"
 #include "storage.h"
 #include "server.h"
+#include "i18n.h"
 
 #include "common/setup_after.h"
 
@@ -220,7 +221,6 @@ namespace pvpgn
 
 					if (conn_get_channel(conn))
 					{
-						conn_update_w3_playerinfo(conn);
 						channel_set_userflags(conn);
 						if (conn_set_channel(conn, channelname) < 0)
 							conn_set_channel(conn, CHANNEL_NAME_BANNED);	/* should not fail */
@@ -273,7 +273,6 @@ namespace pvpgn
 						continue;			// online but wrong client
 
 					conn_push_outqueue(conn, rpacket);
-					conn_update_w3_playerinfo(conn);
 				}
 				packet_del_ref(rpacket);
 			}
@@ -1401,6 +1400,7 @@ namespace pvpgn
 		{
 			t_clan *clan;
 			t_clanmember *member;
+			t_connection * c;
 
 			clan = (t_clan*)xmalloc(sizeof(t_clan));
 			member = (t_clanmember*)xmalloc(sizeof(t_clanmember));
@@ -1412,11 +1412,11 @@ namespace pvpgn
 				xfree((void *)member);
 				return NULL;
 			}
-
+			c = account_get_conn(chieftain_acc);
 			clan->clanname = xstrdup(clanname);
 
 			if (!(motd))
-				clan->clan_motd = xstrdup("This is a newly created clan");
+				clan->clan_motd = xstrdup(localize(c, "This is a newly created clan").c_str());
 			else
 				clan->clan_motd = xstrdup(motd);
 

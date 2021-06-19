@@ -18,7 +18,10 @@
 #ifndef INCLUDED_DBSERVER_H
 #define INCLUDED_DBSERVER_H
 
-#include "common/list.h"
+#define STATUS_D2LADDER_FAILURE		20
+#define STATUS_CHARLOCK_FAILURE		30
+#define STATUS_FDWATCH_FAILURE		90
+
 
 namespace pvpgn
 {
@@ -26,33 +29,25 @@ namespace pvpgn
 	namespace d2dbs
 	{
 
-		typedef struct {
-			int		sd;
-			unsigned int	ipaddr;
-			unsigned char	major;
-			unsigned char	minor;
-			unsigned char	type;
-			unsigned char	stats;
-			unsigned int	serverid;
-			unsigned int	verified;
-			unsigned char	serverip[16];
-			int		last_active;
-			int nCharsInReadBuffer;
-			int nCharsInWriteBuffer;
-			char ReadBuf[kBufferSize];
-			char WriteBuf[kBufferSize];
-		} t_d2dbs_connection;
+#ifdef SERVER_INTERNAL_ACCESS
 
-		typedef struct raw_preset_d2gsid {
-			unsigned int	ipaddr;
-			unsigned int	d2gsid;
-			struct raw_preset_d2gsid	*next;
-		} t_preset_d2gsid;
+		enum t_laddr_type
+		{
+			laddr_type_d2gs, // d2gs (port 4000)
+		};
 
-		int dbs_server_main(void);
-		int dbs_server_shutdown_connection(t_d2dbs_connection* conn);
+		// listen address structure
+		struct t_laddr_info
+		{
+			int ssocket; // TCP listen socket
+			t_laddr_type type;
+		};
 
-		extern t_list * dbs_server_connection_list;
+#endif
+
+		int pre_server_startup();
+		bool server_process();
+		void post_server_shutdown(int status);
 
 	}
 

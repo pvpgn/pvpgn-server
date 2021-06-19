@@ -648,7 +648,7 @@ namespace pvpgn
 			for (table = db_layout_get_first_table(db_layout); table; table = db_layout_get_next_table(db_layout))
 			{
 				column = table_get_first_column(table);
-				std::sprintf(query, "CREATE TABLE %s (%s default %s)", table->name, column->name, column->value);
+				std::snprintf(query, sizeof(query), "CREATE TABLE %s (%s default %s)", table->name, column->name, column->value);
 				//create table if missing
 				if (!(sql->query(query)))
 				{
@@ -658,7 +658,7 @@ namespace pvpgn
 
 				for (; column; column = table_get_next_column(table))
 				{
-					std::sprintf(query, "ALTER TABLE %s ADD %s DEFAULT %s", table->name, column->name, column->value);
+					std::snprintf(query, sizeof(query), "ALTER TABLE %s ADD %s DEFAULT %s", table->name, column->name, column->value);
 					if (!(sql->query(query)))
 					{
 						eventlog(eventlog_level_info, __FUNCTION__, "added missing column {} to table {}", column->name, table->name);
@@ -722,7 +722,7 @@ namespace pvpgn
 
 				column = table_get_first_column(table);
 				std::sscanf(column->name, "%s", _column); //get column name without format infos
-				std::sprintf(query, "INSERT INTO %s (%s) VALUES (%s)", table->name, _column, column->value);
+				std::snprintf(query, sizeof(query), "INSERT INTO %s (%s) VALUES (%s)", table->name, _column, column->value);
 				if (!(sql->query(query)))
 				{
 					eventlog(eventlog_level_info, __FUNCTION__, "added missing default account to table {}", table->name);

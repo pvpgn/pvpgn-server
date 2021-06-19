@@ -80,8 +80,8 @@ namespace pvpgn
 
 		static unsigned int account_hash(char const *username)
 		{
-			register unsigned int h;
-			register std::size_t len = std::strlen(username);
+			unsigned int h;
+			std::size_t len = std::strlen(username);
 
 			int c;
 			for (h = 5381; len > 0; --len, ++username) {
@@ -286,7 +286,7 @@ namespace pvpgn
 		{
 			if (!account) {
 				eventlog(eventlog_level_error, __FUNCTION__, "got NULL account");
-				return 0;
+				return -1;
 			}
 
 			if (!key) {

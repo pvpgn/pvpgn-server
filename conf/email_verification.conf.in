@@ -1,0 +1,9 @@
+Hello {{account_name}},
+
+Your verification code is {{account_email_verification_code}}.
+This code will expire in {{account_email_verification_expiration}} minutes.
+
+To verify your email address, enter /email verify {{account_email_verification_code}} in the PvPGN server.
+
+
+{pvpgn_server_name}

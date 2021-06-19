@@ -91,16 +91,15 @@ namespace pvpgn
 			try
 			{
 				t_gamelang lang;
-				const char *format = fmt::to_string(format_str).c_str();
-				if (lang = conn_get_gamelang_localized(c))
+				const char* format = nullptr;
+				if ((lang = conn_get_gamelang_localized(c)) && (format = _find_string(fmt::to_string(format_str).c_str(), lang)))
 				{
-					if (!(format = _find_string(fmt::to_string(format_str).c_str(), lang)))
-					{
-						format = fmt::to_string(format_str).c_str(); // if not found use original
-					}
+					output = fmt::format(format, args...);
 				}
-
-				output = fmt::format(format, args...);
+				else
+				{
+					output = fmt::format(format_str, args...);
+				}
 
 				char tmp[MAX_MESSAGE_LEN];
 				std::snprintf(tmp, sizeof tmp, "%s", output.c_str());

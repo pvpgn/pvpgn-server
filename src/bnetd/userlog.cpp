@@ -26,6 +26,7 @@
 #include <stdexcept>
 #include <string>
 
+#include "compat/localtime_s.h"
 #include "compat/strcasecmp.h"
 #include "compat/pdir.h"
 #include "compat/mkdir.h"
@@ -130,14 +131,16 @@ namespace pvpgn
 
 			// get time string
 			char        time_string[USEREVENT_TIME_MAXLEN];
-			struct std::tm * tmnow;
-			std::time_t      now;
 
-			std::time(&now);
-			if (!(tmnow = std::localtime(&now)))
-				std::strcpy(time_string, "?");
-			else
-				std::strftime(time_string, USEREVENT_TIME_MAXLEN, USEREVENT_TIME_FORMAT, tmnow);
+			{
+				struct std::tm tmnow = {};
+				std::time_t now = (std::time_t)(-1);
+				std::time(&now);
+				if (now == (std::time_t)(-1) || pvpgn::localtime_s(&now, &tmnow) == nullptr)
+					std::strcpy(time_string, "?");
+				else
+					std::strftime(time_string, USEREVENT_TIME_MAXLEN, USEREVENT_TIME_FORMAT, &tmnow);
+			}
 
 
 			std::string filename = userlog_filename(account_get_name(account), true);

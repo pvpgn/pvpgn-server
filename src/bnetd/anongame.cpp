@@ -535,7 +535,6 @@ namespace pvpgn
 			md = (t_matchdata*)xmalloc(sizeof(t_matchdata));
 			md->c = c;
 			md->map_prefs = map_prefs;
-			md->versiontag = conn_get_versioncheck(c) ? conn_get_versioncheck(c)->get_version_tag().c_str() : nullptr;
 
 			list_append_data(matchlists[queue][level], md);
 
@@ -806,7 +805,6 @@ namespace pvpgn
 			int level = _anongame_level_by_queue(c, queue);
 			int delta = 0;
 			int i;
-			t_matchdata *md;
 			t_elem *curr;
 			int diff;
 			t_anongame *a = conn_get_anongame(c);
@@ -827,10 +825,28 @@ namespace pvpgn
 					eventlog(eventlog_level_trace, __FUNCTION__, "Traversing level {} players", level + delta);
 
 					LIST_TRAVERSE(matchlists[queue][level + delta], curr) {
-						md = (t_matchdata*)elem_get_data(curr);
-						if (md->versiontag 
-							&& conn_get_versioncheck(c) 
-							&& !std::strcmp(md->versiontag, conn_get_versioncheck(c)->get_version_tag().c_str()) 
+						t_matchdata* md = (t_matchdata*)elem_get_data(curr);
+						if (md == nullptr)
+						{
+							eventlog(eventlog_level_error, __FUNCTION__, "got NULL matchdata");
+							continue;
+						}
+
+						if (md->c == nullptr)
+						{
+							eventlog(eventlog_level_error, __FUNCTION__, "got NULL connection");
+							continue;
+						}
+
+						const VersionCheck* const md_c_vc = select_versioncheck(conn_get_archtag(md->c), conn_get_clienttag(md->c), conn_get_versionid(md->c), conn_get_gameversion(md->c), conn_get_checksum(md->c));
+						const VersionCheck* const c_vc = select_versioncheck(conn_get_archtag(c), conn_get_clienttag(c), conn_get_versionid(c), conn_get_gameversion(c), conn_get_checksum(c));
+						if (md_c_vc == nullptr || c_vc == nullptr)
+						{
+							eventlog(eventlog_level_error, __FUNCTION__, "got NULL versioncheck");
+							continue;
+						}
+
+						if (md_c_vc->get_version_tag() == c_vc->get_version_tag()
 							&& (cur_prefs & md->map_prefs))
 						{
 							/* set maxlevel and minlevel to keep all players within 6 levels */

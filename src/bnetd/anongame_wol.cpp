@@ -24,6 +24,8 @@
 #include <cctype>
 #include <cstdlib>
 
+#include <fmt/format.h>
+
 #include "compat/strcasecmp.h"
 
 #include "common/irc_protocol.h"
@@ -316,10 +318,9 @@ namespace pvpgn
 			if (!nick)
 				nick = "UserName";
 
-			std::string data(":matchbot!u@h " + std::string(command) + " " + std::string(nick) + " " + std::string(text));
-			data.erase(MAX_IRC_MESSAGE_LEN, std::string::npos);
+			std::string data = fmt::format(":matchbot!u@h {} {} {}", command, nick, text);
 
-			DEBUG2("[{}] sent \"{}\"", conn_get_socket(conn), data.c_str());
+			DEBUG2("[{}] sent \"{}\"", conn_get_socket(conn), data);
 			data.append("\r\n");
 			packet_set_size(p, 0);
 			packet_append_data(p, data.c_str(), data.length());

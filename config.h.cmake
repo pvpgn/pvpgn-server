@@ -50,10 +50,16 @@
 #cmakedefine HAVE_GETPWNAME
 #cmakedefine HAVE_GETRLIMIT
 #cmakedefine HAVE_GETSERVBYNAME
+#cmakedefine HAVE_MICROSOFT_GMTIME_S
+#cmakedefine HAVE_GMTIME_S
+#cmakedefine HAVE_GMTIME_R
 #cmakedefine HAVE_GETTIMEOFDAY
 #cmakedefine HAVE_GETUID
 #cmakedefine HAVE_IOCTL
 #cmakedefine HAVE_KQUEUE
+#cmakedefine HAVE_MICROSOFT_LOCALTIME_S
+#cmakedefine HAVE_LOCALTIME_S
+#cmakedefine HAVE_LOCALTIME_R
 #cmakedefine HAVE__MKDIR
 #cmakedefine HAVE_MKDIR
 #cmakedefine HAVE_MMAP

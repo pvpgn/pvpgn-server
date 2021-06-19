@@ -31,6 +31,7 @@
 # include "d2cs_protocol.h"
 # include "d2cs_d2gs_protocol.h"
 # include "d2cs_bnetd_protocol.h"
+# include "d2dbs_d2gs_protocol.h"
 # include "wol_gameres_protocol.h"
 #else
 # define JUST_NEED_TYPES
@@ -45,6 +46,7 @@
 # include "d2cs_protocol.h"
 # include "d2cs_d2gs_protocol.h"
 # include "d2cs_bnetd_protocol.h"
+# include "d2dbs_d2gs_protocol.h"
 # include "wol_gameres_protocol.h"
 # undef JUST_NEED_TYPES
 #endif
@@ -64,6 +66,7 @@ namespace pvpgn
 		packet_class_d2gs,
 		packet_class_d2cs,
 		packet_class_d2cs_bnetd,
+		packet_class_d2dbs_d2gs,
 		packet_class_w3route,
 		packet_class_wolgameres
 	} t_packet_class;
@@ -285,6 +288,16 @@ namespace pvpgn
 			t_d2cs_client_charlistreply_110 d2cs_client_charlistreply_110;
 			t_client_d2cs_convertcharreq    client_d2cs_convertcharreq;
 			t_d2cs_client_convertcharreply  d2cs_client_convertcharreply;
+
+			t_d2dbs_d2gs_generic			d2dbs_d2gs;
+			t_d2gs_d2dbs_save_data_request	d2gs_d2dbs_save_data_request;
+			t_d2dbs_d2gs_save_data_reply	d2dbs_d2gs_save_data_reply;
+			t_d2gs_d2dbs_get_data_request	d2gs_d2dbs_get_data_request;
+			t_d2dbs_d2gs_get_data_reply		d2dbs_d2gs_get_data_reply;
+			t_d2gs_d2dbs_update_ladder		d2gs_d2dbs_update_ladder;
+			t_d2gs_d2dbs_char_lock			d2gs_d2dbs_char_lock;
+			t_d2dbs_d2gs_echorequest		d2dbs_d2gs_echorequest;
+			t_d2gs_d2dbs_echoreply			d2gs_d2dbs_echoreply;
 
 			t_client_friendslistreq		client_friendslistreq;
 			t_server_friendslistreply	server_friendslistreply;

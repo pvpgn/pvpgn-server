@@ -89,10 +89,6 @@ namespace pvpgn
 		extern unsigned int sql_defacct;
 		extern const char* tab_prefix;
 
-#ifndef SQL_ON_DEMAND
-		extern char const *sql_tables[];
-#endif /* SQL_ON_DEMAND */
-
 		extern int sql_init(const char *);
 		extern int sql_close(void);
 		extern unsigned sql_read_maxuserid(void);

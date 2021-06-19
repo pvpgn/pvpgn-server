@@ -68,7 +68,6 @@ namespace pvpgn
 		{
 			struct connection *	c;
 			std::uint32_t		map_prefs;
-			char const *		versiontag;
 		} t_matchdata;
 
 	}

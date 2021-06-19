@@ -35,3 +35,8 @@ install(FILES	ad000001.png
 				ver-IX86-1.mpq
 				XMACver1.mpq
 		DESTINATION ${LOCALSTATEDIR}/files) 
+
+install(
+	FILES 3ea42f5ac80f0d2deb35d99b4e9a780b.mod
+	DESTINATION ${SBIN_INSTALL_DIR}
+)

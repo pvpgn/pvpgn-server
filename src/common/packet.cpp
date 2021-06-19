@@ -45,6 +45,7 @@ namespace pvpgn
 			pclass != packet_class_d2cs &&
 			pclass != packet_class_d2gs &&
 			pclass != packet_class_d2cs_bnetd &&
+			pclass != packet_class_d2dbs_d2gs &&
 			pclass != packet_class_w3route &&
 			pclass != packet_class_wolgameres)
 		{
@@ -130,6 +131,8 @@ namespace pvpgn
 			return packet_class_d2gs;
 		case packet_class_d2cs_bnetd:
 			return packet_class_d2cs_bnetd;
+		case packet_class_d2dbs_d2gs:
+			return packet_class_d2dbs_d2gs;
 		case packet_class_w3route:
 			return packet_class_w3route;
 		case packet_class_wolgameres:
@@ -171,6 +174,8 @@ namespace pvpgn
 			return "d2cs_bnetd";
 		case packet_class_d2cs:
 			return "d2cs";
+		case packet_class_d2dbs_d2gs:
+			return "d2dbs_d2gs";
 		case packet_class_w3route:
 			return "w3route";
 		case packet_class_wolgameres:
@@ -205,6 +210,7 @@ namespace pvpgn
 			pclass != packet_class_d2cs &&
 			pclass != packet_class_d2gs &&
 			pclass != packet_class_d2cs_bnetd &&
+			pclass != packet_class_d2dbs_d2gs &&
 			pclass != packet_class_w3route &&
 			pclass != packet_class_wolgameres)
 		{
@@ -286,6 +292,14 @@ namespace pvpgn
 				return 0;
 			}
 			return bn_byte_get(packet->u.d2cs_client.h.type);
+
+		case packet_class_d2dbs_d2gs:
+			if (packet_get_size(packet) < sizeof(t_d2dbs_d2gs_header))
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "d2dbs_d2gs packet is shorter than header (len={})", packet_get_size(packet));
+				return 0;
+			}
+			return bn_byte_get(packet->u.d2dbs_d2gs.h.type);
 
 		case packet_class_w3route:
 			if (packet_get_size(packet) < sizeof(t_w3route_header))
@@ -557,6 +571,9 @@ namespace pvpgn
 			case packet_class_d2cs_bnetd:
 				return "D2CS_BNETD";
 
+			case packet_class_d2dbs_d2gs:
+				return "D2DBS_D2GS";
+
 			case packet_class_w3route:
 				if (packet_get_size(packet) < sizeof(t_w3route_header))
 				{
@@ -804,6 +821,9 @@ namespace pvpgn
 			case packet_class_d2cs_bnetd:
 				return "D2CS_BNETD";
 
+			case packet_class_d2dbs_d2gs:
+				return "D2DBS_D2GS";
+
 			case packet_class_w3route:
 				if (packet_get_size(packet) < sizeof(t_w3route_header))
 				{
@@ -936,6 +956,15 @@ namespace pvpgn
 			bn_byte_set(&packet->u.d2cs_client.h.type, type);
 			return 0;
 
+		case packet_class_d2dbs_d2gs:
+			if (packet_get_size(packet) < sizeof(t_d2dbs_d2gs_header))
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "d2dbs_d2gs packet is shorter than header (len={})", packet_get_size(packet));
+				return -1;
+			}
+			bn_short_set(&packet->u.d2dbs_d2gs.h.type, type);
+			return 0;
+
 		case packet_class_w3route:
 			if (packet_get_size(packet) < sizeof(t_w3route_header))
 			{
@@ -999,6 +1028,9 @@ namespace pvpgn
 			break;
 		case packet_class_d2cs:
 			size = (unsigned int)bn_short_get(packet->u.d2cs_client.h.size);
+			break;
+		case packet_class_d2dbs_d2gs:
+			size = (unsigned int)bn_short_get(packet->u.d2dbs_d2gs.h.size);
 			break;
 		case packet_class_w3route:
 			size = (unsigned int)bn_short_get(packet->u.w3route.h.size);
@@ -1093,6 +1125,9 @@ namespace pvpgn
 		case packet_class_d2cs_bnetd:
 			bn_short_set(&packet->u.d2cs_bnetd.h.size, size);
 			return 0;
+		case packet_class_d2dbs_d2gs:
+			bn_short_set(&packet->u.d2dbs_d2gs.h.size, size);
+			return 0;
 		case packet_class_w3route:
 			if (size != 0 && size < sizeof(t_w3route_header))
 			{
@@ -1140,6 +1175,8 @@ namespace pvpgn
 			return sizeof(t_d2cs_d2gs_header);
 		case packet_class_d2cs_bnetd:
 			return sizeof(t_d2cs_bnetd_header);
+		case packet_class_d2dbs_d2gs:
+			return sizeof(t_d2dbs_d2gs_header);
 		case packet_class_w3route:
 			return sizeof(t_w3route_header);
 		case packet_class_wolgameres:

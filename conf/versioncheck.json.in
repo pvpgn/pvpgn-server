@@ -1762,7 +1762,7 @@
                 ]
             },
             "0x0d": {
-                "checkRevisionFile": "IX86ver1.mpq",
+                "checkRevisionFile": "ver-IX86-1.mpq",
                 "equation": "A=3845581634 B=880823580 C=1363937103 4 A=A-S B=B-C C=C-A A=A-B",
                 "entries": [
                     {
@@ -1852,7 +1852,7 @@
                 ]
             },
             "0x0d": {
-                "checkRevisionFile": "IX86ver1.mpq",
+                "checkRevisionFile": "ver-IX86-1.mpq",
                 "equation": "A=3845581634 B=880823580 C=1363937103 4 A=A-S B=B-C C=C-A A=A-B",
                 "entries": [
                     {

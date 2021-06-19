@@ -191,7 +191,6 @@ namespace pvpgn
 					// if user online then force him to rejoin channel
 					if (c)
 					{
-						conn_update_w3_playerinfo(c);
 						channel_rejoin(c);
 					}
 					return 0;
@@ -275,7 +274,6 @@ namespace pvpgn
 					// if user online then force him to rejoin channel
 					if (user_c)
 					{
-						conn_update_w3_playerinfo(user_c);
 						channel_rejoin(user_c);
 					}
 

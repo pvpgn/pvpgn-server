@@ -4,7 +4,7 @@ set(COMMON_SOURCES
 	bnettime.cpp bnettime.h bn_type.cpp bn_type.h bot_protocol.h conf.cpp 
 	conf.h d2char_checksum.cpp d2char_checksum.h d2char_file.h 
 	d2cs_bnetd_protocol.h d2cs_d2dbs_ladder.h d2cs_d2gs_character.h 
-	d2cs_d2gs_protocol.h d2cs_protocol.h d2game_protocol.h elist.h 
+	d2cs_d2gs_protocol.h d2cs_protocol.h d2dbs_d2gs_protocol.h d2game_protocol.h elist.h 
 	eventlog.cpp eventlog.h fdwatch.cpp fdwatch_epoll.cpp fdwatch_epoll.h
 	fdwatch.h fdwatch_kqueue.cpp fdwatch_kqueue.h fdwatch_poll.cpp 
 	fdwatch_poll.h fdwatch_select.cpp fdwatch_select.h fdwbackend.cpp 
@@ -23,4 +23,4 @@ set(COMMON_SOURCES
 
 add_library(common STATIC ${COMMON_SOURCES})
 
-target_link_libraries(common PRIVATE fmt)
+target_link_libraries(common PUBLIC compat fmt::fmt)

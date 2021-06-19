@@ -60,13 +60,15 @@ namespace pvpgn
 
 		extern int attrlayer_load_default(void)
 		{
-			if (defattrs) attrlayer_unload_default();
-
-			defattrs = attrgroup_create_storage(storage->get_defacct());
-			if (!defattrs) {
-				eventlog(eventlog_level_error, __FUNCTION__, "could not create attrgroup");
-				return -1;
+			if (defattrs == NULL) {
+				defattrs = attrgroup_create_storage(storage->get_defacct());
+				if (!defattrs) {
+					eventlog(eventlog_level_error, __FUNCTION__, "could not create attrgroup");
+					return -1;
+				}
 			}
+			// reset flag to load possible new default attributes
+			defattrs->flags = ATTRGROUP_FLAG_NONE;
 
 			return attrgroup_load(defattrs, "BNET");
 		}

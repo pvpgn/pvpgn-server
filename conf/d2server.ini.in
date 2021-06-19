@@ -1,0 +1,201 @@
+;Standard windows INI file format
+
+[D2GE]
+DebugDumpThread=1
+
+;
+;EnableMeleeHireableAI：当设置为1的时候，将修改ACT2和ACT5雇佣兵的AI设置，当中了IM（钢铁处女）诅咒之后，停止攻击，直到诅咒消失或者被别的诅咒取代（嘿嘿，再也不怕ACT4了）
+;EnableNeroPetAI：当设置为1的时候，将修改Nec召唤的铁魔、石魔的AI设置，当中了IM（钢铁处女）诅咒之后，停止攻击，直到诅咒消失或者被别的诅咒取代（骄傲铁魔的救星！）
+;EnableExpGlitchFix：当设置为1的时候，将修改组队下经验值分配算法，按照官方公布的正确算法执行。（程序实现的算法有Bug）
+;DisableUberUp：当设置为1的时候，在3BOSS场地所有的召唤出来的小怪将不再拥有经验值。（防止Uber快速升级）
+;EnableUnicodeCharName：当设置为1的时候，服务器将允许使用Unicode的角色名字，例如汉字的角色名字。注意，需要修改过的D2CS支持！请参考UnicodeCharName目录下面的说明！
+;EnableWarden：当设置为1的时候，将启动Warden模块，可以检测到客户端是否运行了一些Hack程序，例如d2jsp等，并自动将玩家踢出游戏！
+;EnablePreCalculateTCNoDropTbl：当设置为1的时候，将预先计算怪物死的时候多人NoDrop的浮点计算，有利于提高服务器的性能
+;EnableEthSocketBugFix：当设置为1的时候，禁止无形防具公式打孔额外50%防御值奖励
+;DisableBugMF：当设置为1的时候，禁止BugMF各个关底的BOSS，安姐、督瑞尔、老墨、Diablo和巴尔
+;DisableDCSpawnInSomeArea: 当设置为1的时候，禁止在“混沌避难所”、“亚瑞特山脉之巅峰”以及最后几个超级BOSS处产生DiabloClone。
+
+;EnableMeleeHireableAI: When set to 1, the ACT2&ACT5 hireable's AI will be fixed, when the hireable is cursed by IM, he will stop attack monster, until the cruse disappear or replace by another curse.(Your melee pet will be more safer!)
+;EnableNeroPetAI: When set to 1, the Nero Golem's AI will be fixed, when the golem is cursed by IM, it will stop attack monster, until the cruse disappear or replace by another curse.(Your Pride Nero Iron Golem will be more safer!)
+;EnableExpGlitchFix: When set to 1, the experience that player get when in party will be fixed.(The orig program has some bug, you will get only 1 exp when in 8pp party killing hell diablo.)
+;DisableUberUp: When set to 1, you will get 0 exp when killing the monster summon by Uber Boss(including Uber Meph and Uber Diablo). This will prevent the Uber Up.
+;EnableUnicodeCharName: When set to 1, the server will allow the unicode charname login the game. NOTE: Need modified D2CS support! Please check the UnicodeCharName directory!
+;EnableWarden: When set to 1, the server will start a d2warden thread, and use a build-in MOD check the client for hack or bot. See d2warden.ini for detail.
+;EnablePreCalculateTCNoDropTbl: When set to 1, the multiply players TC NoDrop floating-point calculation will be pre-calculated, and this can improve your server performance.
+;EnableEthSocketBugFix=1  ; This will disable additional 50% reward of eth armor when use the cube. 
+;DisableBugMF=1	; This will disable all ACT boss quest drop within a non-quest drop game.
+;DisableDCSpawnInSomeArea=1; This will not spawn DiabloClone in 'The Chaos Sanctuary' 'Arreat Summit' and Uber Boss Levels.
+[NewFeatures]
+EnableMeleeHireableAI=1
+EnableNeroPetAI=1
+EnableExpGlitchFix=1
+DisableUberUp=1
+EnableUnicodeCharName=1
+EnableWarden=1
+EnablePreCalculateTCNoDropTbl=1
+EnableEthSocketBugFix=1
+DisableBugMF=1
+DisableDCSpawnInSomeArea=1
+
+;UberQuest设置
+;SpawnProbability：当BOSS施展技能时，有多大概率进行召唤，0~100之间的整数，例如30，表示30%的概率
+;MaxSpawnNum： 在一场游戏中，最大施展召唤的次数
+;SpawnInterval：两次召唤之间的最小时间间隔
+;ActivArea：多远距离可以开始施展召唤
+;StallTime：施展召唤之后，BOSS停顿时间
+;SpawnMonsters：BOSS施展召唤时，随机召唤的怪物类型（hcidx），必须是0~733之间的整数，最多10种怪物类型，每次召唤1个。
+
+;UberQuest configuration in d2server.ini
+;SpawnProbability: The probability that the Uber bosses try to spawn a monster, should be a int between 0~99;
+;MaxSpawnNum: Max spawn number of monsters in a single game;
+;SpawnInterval: the interval time between two spawns;
+;ActivArea: how far ways that the uber boss try to spawn a monster;
+;StallTime: After spawn a monster, the boss should stall for some time;
+;SpawnMonsters: The monster type that a boss can spawn, should be a 0~733. You can look up the monststat.txt to get some hits. A boss can spawn 10 types of monsters at most;
+
+
+[UberMephisto]
+SpawnProbability=30
+MaxSpawnNum=50
+SpawnInterval=10
+ActivArea=40
+StallTime=10
+SpawnMonsters=725,726,727,728,729,730
+
+[UberDiablo]
+SpawnProbability=30
+MaxSpawnNum=50
+SpawnInterval=10
+ActivArea=40
+StallTime=10
+SpawnMonsters=712,731,732
+
+
+[World Event]
+Enable=1
+
+;1, 单房间出DC设置
+;在d2server.ini中增加一行
+; DcItemRate=1000
+;1000表示每个key都是100%几率出DC
+;100表示10%
+;500表示50%, 其它类推
+;此时原有的全服务器出DC设置仍然起作用, 可将
+;ItemRangeMin和ItemRangeMax设置为极大的数字, 避免全服务器数量达到时所有房间出现DC
+;
+;2, 全服务器出DC设置
+;将DcItemRate设置为=0
+;即可关闭单房间出DC的可能性
+;
+;3, 根据需要, 也可以让两种方案同时起作用              
+
+; Enable DiabloClone Spawned only in the only game where the key sold.
+; Also, all games in a server can spawn DCs when the original condition meet.(ItemRangeMin,ItemRangeMax,...)
+; DcItemRate=1000        100% spawned DiabloClone in the only game
+; DcItemRate=0		 0% spawned DiabloClone in the only game
+DcItemRate=1000
+
+;是否显示“XX颗乔丹之石卖给商人”的消息
+ShowSOJMessage=1
+
+;update interval in seconds
+UpdateInterval=10
+
+;Notes: even if DC spawns in non-hell difficulty, it can only drop USC in hell difficulty
+;e.g: Difficulty=normal,nightmare,hell means spawn DC in any difficulty
+Difficulty=hell
+
+;you will be happy when SpawnMinions set to non zero...
+;如果你觉得很牛，可以设置一次K十个CD试试。。。
+SpawnMinions=0
+
+ItemDataFile=ItemConfig.dat
+
+;World event trigger item config
+Item=Key
+
+;Total items needed to trigger DC is:
+;[ItemRangeMin, ItemRangeMax] + (ItemNormalGameFactor * NormalGames)/100
+;+ (ItemNormalPlayerFactor * NormalPlayers)/100 + ...
+;NormalGame, NormalPlayers ... all are current dyanmic count on this server
+ItemRangeMin=1
+ItemRangeMax=1
+
+ItemNormalGameFactor=0
+ItemNightmareGameFactor=0
+ItemHellGameFactor=100
+ItemNormalPlayerFactor=0
+ItemNightmarePlayerFactor=0
+ItemHellPlayerFactor=100
+
+[Key]
+Mods = code=key
+
+[The Stone of Jordan]
+Mods = code=rin & quality=unique & prefix=122
+
+[7% mf sc]
+Mods = code=cm1 & quality=magical & mf=7
+
+[UM Rune]
+Mods = code=r22
+
+[Unique or Set ring]
+Mods = code=rin & quality=unique, quality=set
+
+[UnID unique ring or unID set amulet]
+Mods = code=rin & quality=unique | code=amu & quality=set
+
+;Item Format:
+;Logical operators:
+;'|' ';' 	high priority OR
+;'&' 		normal priority AND
+;',' 		low priority OR
+;e.g:
+;mod1 | mod2, mod3 & mod4 = mod1 ; mod2, mod3 & mod4 = mod1 || ((mod2 || mod3) && mod4) (unsupported c like expression)
+;all spaces are ignored
+;any character after '/' will be treated as comment and ignored
+
+;Mod format:
+;[mod] [<|=|>|<=|>=] [value]
+;Currently supported mod list:
+;Type -> item base type id
+;can be found from weapons.txt armor.txt misc.txt
+;notes: the ID start from 0 instead of 1
+
+;code -> item code
+;can be found from weapons.txt armor.txt misc.txt
+
+;quality -> tempered, craft,unique,set,rare,magical,superior,normal,inferior
+
+;prefix -> item prefix id
+;actually, for unique/set/runeword items, it is the name index.
+;can be found from UniqueItems.txt, SetItems.txt, Runes.txt
+;notes: the ID start from 0 instead of 1
+
+;ilvl -> item ilvl
+
+;stat[n] -> stats value
+;see ItemStatCost.txt ID column
+
+;flag[n] -> item flag value
+;see alias for common used flags
+
+;MPQVersion -> item version
+;ItemClassic for classic item, ItemExpansion for expansion item, ItemExpansion110 for items after 1.10
+
+;Common used alias
+;socket = number of socket
+;ethereal = [1|0]
+;ear = [1|0]
+;runeword = [1|0]
+;broken = [1|0]
+;identified = [1/0]
+;personalized = [1/0]
+;gems = number of gems socketed
+
+;unsupported now
+;gem[n] = mod of certain gem
+;suffix = item suffix id
+;and item magical prefix/suffix, use Stat[n] to check them now
+;e.g: mf=7 & code=cm1 or stat80=7 & code=cm1 means 7% mf sc

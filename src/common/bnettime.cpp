@@ -26,6 +26,8 @@
 #include <ctime>
 
 #include "compat/gettimeofday.h"
+#include "compat/gmtime_s.h"
+#include "compat/localtime_s.h"
 #include "common/eventlog.h"
 #include "common/bn_type.h"
 #include "common/setup_after.h"
@@ -189,22 +191,29 @@ namespace pvpgn
 
 	extern int local_tzbias(void) /* in minutes */
 	{
-		std::time_t      now;
-		std::time_t      test;
-		std::time_t      testloc;
-		struct std::tm * temp;
+		std::time_t now = std::time(nullptr);
+		struct std::tm temp = {};
+		if (pvpgn::gmtime_s(&now, &temp) == nullptr)
+		{
+			return 0;
+		}
 
-		now = std::time(NULL);
+		std::time_t test = (std::time_t)(-1);
+		if ((test = std::mktime(&temp)) == (std::time_t)(-1))
+		{
+			return 0;
+		}
 
-		if (!(temp = std::gmtime(&now)))
+		if (pvpgn::localtime_s(&now, &temp) == nullptr)
+		{
 			return 0;
-		if ((test = std::mktime(temp)) == (std::time_t)(-1))
-			return 0;
+		}
 
-		if (!(temp = std::localtime(&now)))
+		std::time_t testloc = (std::time_t)(-1);
+		if ((testloc = std::mktime(&temp)) == (std::time_t)(-1))
+		{
 			return 0;
-		if ((testloc = std::mktime(temp)) == (std::time_t)(-1))
-			return 0;
+		}
 
 		if (testloc > test) /* std::time_t is probably unsigned... */
 			return -(int)(testloc - test) / 60;

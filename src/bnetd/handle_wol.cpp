@@ -26,6 +26,9 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+
+#include <nonstd/optional.hpp>
 
 #include "compat/strcasecmp.h"
 #include "common/irc_protocol.h"
@@ -482,20 +485,12 @@ namespace pvpgn
 				return 0;
 			}
 
-			class_topic Topic;
-			topicstr = Topic.get(channel_get_name(gamechannel));
+			nonstd::optional<std::string> topic = channel_get_topic(gamechannel);
 
-			if (topicstr.empty() == false) {
-				if (std::strlen(gamename) + 1 + 20 + 1 + 1 + std::strlen(topicstr.c_str()) > MAX_IRC_MESSAGE_LEN) {
-					WARN0("LISTREPLY length exceeded");
-					return 0;
-				}
-			}
-			else {
-				if (std::strlen(gamename) + 1 + 20 + 1 + 1 > MAX_IRC_MESSAGE_LEN) {
-					WARN0("LISTREPLY length exceeded");
-					return 0;
-				}
+			if (std::strlen(gamename) + 1 + 20 + 1 + 1 + topic.value_or("").length() > MAX_IRC_MESSAGE_LEN)
+			{
+				WARN0("LISTREPLY length exceeded");
+				return 0;
 			}
 
 			/***
@@ -538,8 +533,9 @@ namespace pvpgn
 
 			std::strcat(temp, "::");
 
-			if (topicstr.c_str()) {
-				std::snprintf(temp_a, sizeof(temp_a), "%s", topicstr.c_str());  /* topic */
+			if (topic.has_value())
+			{
+				std::snprintf(temp_a, sizeof(temp_a), "%s", topic.value().c_str());  /* topic */
 				std::strcat(temp, temp_a);
 			}
 

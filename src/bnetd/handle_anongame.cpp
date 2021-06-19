@@ -601,7 +601,6 @@ namespace pvpgn
 			//FIXME: Still need a way to 'refresh the user/channel'
 			//_handle_rejoin_command(conn_get_account(c),"");
 			/* ??? channel_update_userflags() */
-			conn_update_w3_playerinfo(c);
 
 			channel_rejoin(c);
 			return 0;
@@ -613,7 +612,7 @@ namespace pvpgn
 		static int check_user_icon(t_account * account, const char * user_icon)
 		{
 			unsigned int i, len;
-			char temp_str[2];
+			char temp_str[2] = {};
 			char user_race;
 			int number;
 
@@ -621,7 +620,7 @@ namespace pvpgn
 			if (len != 4)
 				eventlog(eventlog_level_error, __FUNCTION__, "got invalid user icon '{}'", user_icon);
 
-			for (i = 0; i < len && i < 2; i++)
+			for (i = 0; i < len && i < sizeof(temp_str); i++)
 				temp_str[i] = user_icon[i];
 
 			number = temp_str[0] - '0';

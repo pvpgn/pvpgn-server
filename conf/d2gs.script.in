@@ -1,0 +1,21 @@
+#put this script together with the loader, and the
+#loader will read it automatically at startup.
+
+#Any line begin with '#' are ignored
+#all digits here should be hex
+#use tab or space to separate two items
+
+#Format:
+#Module Name	Offset(RVA)	Source Data(for check)		Destnation Data(Change to) Method
+#Offset Format: 	RVA[:Offset, Pattern]
+#You can use pattern searching to get the RVA result now
+#Method:
+#0X00: replace source with dest
+#0X01: relocate src
+#0X02: relocate dest
+#0X20: relocate call address
+
+#you may add your own hack below freely
+
+#For D2 1.11b, the D2Game.dll has been rebase to 0x010C0000, not the 0x6FC20000!!!
+

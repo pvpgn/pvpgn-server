@@ -487,6 +487,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: no first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 
@@ -495,6 +496,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					clanname++;
@@ -503,6 +505,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					*p = '\0';
@@ -510,6 +513,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 
@@ -518,6 +522,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					p++;
@@ -525,6 +530,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					motd = p + 1;
@@ -533,6 +539,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					*p = '\0';
@@ -541,6 +548,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid first line in clanfile");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					clan->clanname = xstrdup(clanname);

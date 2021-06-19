@@ -19,12 +19,15 @@
 #ifndef INCLUDED_PROGINFO_PROTOS
 #define INCLUDED_PROGINFO_PROTOS
 
+#include <cstdint>
+#include <string>
+
 namespace pvpgn
 {
 
-	extern int verparts_to_vernum(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4, unsigned long * vernum);
-	extern int verstr_to_vernum(char const * verstr, unsigned long * vernum);
-	extern char const * vernum_to_verstr(unsigned long vernum);
+	extern int verparts_to_vernum(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4, std::uint32_t* vernum);
+	extern int verstr_to_vernum(char const * verstr, std::uint32_t* vernum);
+	extern std::string vernum_to_verstr(std::uint32_t vernum);
 
 }
 

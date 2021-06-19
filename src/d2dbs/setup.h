@@ -38,6 +38,8 @@ constexpr long kBufferSize = 1024L * 20L;
 #ifndef D2DBS_DEFAULT_CONF_FILE
 # define D2DBS_DEFAULT_CONF_FILE "conf/d2dbs.conf"
 #endif
+#define D2DBS_POLL_INTERVAL 20 /* 20 ms */
+#define D2DBS_FDWATCH_MAX_CONNECTIONS 512
 #define DEFAULT_MEMLOG_FILE		"/tmp/d2dbs-mem.std::log"
 #define DEFAULT_LISTEN_PORT		6114
 #define D2DBS_SERVER_ADDRS		"0.0.0.0"

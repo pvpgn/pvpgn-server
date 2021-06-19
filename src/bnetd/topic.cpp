@@ -1,248 +1,283 @@
 /*
-*	Copyright (C) 2015  xboi209
-*
-*	This program is free software: you can redistribute it and/or modify
-*	it under the terms of the GNU General Public License as published by
-*	the Free Software Foundation, either version 3 of the License, or
-*	(at your option) any later version.
-*
-*	This program is distributed in the hope that it will be useful,
-*	but WITHOUT ANY WARRANTY; without even the implied warranty of
-*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*	GNU General Public License for more details.
-*
-*	You should have received a copy of the GNU General Public License
-*	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 #include "common/setup_before.h"
 #include "topic.h"
 
+#include <chrono>
 #include <fstream>
 #include <memory>
 #include <new>
 #include <regex>
 #include <string>
+#include <unordered_map>
 #include <utility>
+
+#include <nonstd/optional.hpp>
+#include <nlohmann/json.hpp>
 
 #include "compat/strcasecmp.h"
 
 #include "common/eventlog.h"
 #include "common/field_sizes.h"
 
+#include "channel.h"
+#include "i18n.h"
 #include "message.h"
 #include "prefs.h"
 
 #include "common/setup_after.h"
+
+
+using nlohmann::json;
+using nonstd::optional;
+using nonstd::nullopt;
 
 namespace pvpgn
 {
 
 	namespace bnetd
 	{
-		std::vector<std::shared_ptr<class_topic::t_topic>> class_topic::class_topiclist::Head;
+		static std::unordered_map<std::string, std::string> topic_head;
 
-		bool class_topic::class_topiclist::IsHeadLoaded = false;
+		static bool is_topic_conf_loaded = false;
+		static std::string topic_conf_filename;
 
-		class_topic::class_topic()
+		bool load_topic_conf(const std::string& filename)
 		{
-			//Already loaded, do not load again
-			if (this->topiclist.IsHeadLoaded == true)
-				return;
-
-			std::ifstream topicfile_stream(prefs_get_topicfile());
-			if (!topicfile_stream)
+			if (is_topic_conf_loaded)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "couldn't open topic file");
-				return;
+				eventlog(eventlog_level_warn, __FUNCTION__, "topic conf already loaded");
+				return true;
 			}
 
-			std::string strLine;
-			std::smatch match;
-			const std::regex rgx("(.*)\t(.*)"); // tab character separates the channel name and topic
+			auto t0 = std::chrono::steady_clock::now();
 
-			//loop through each line in topic file
-			while (std::getline(topicfile_stream, strLine))
+			try
 			{
-				//skip empty lines
-				if (strLine.empty() == true)
-					continue;
-
-				if (!std::regex_search(strLine, match, rgx))
+				std::ifstream topicfile_stream(filename);
+				if (!topicfile_stream.is_open())
 				{
-					eventlog(eventlog_level_error, __FUNCTION__, "Invalid line in topic file ({})", strLine.c_str());
-					continue;
-				}
-
-				//check if current line in file already exists in Head
-				if (this->topiclist.get(match[1].str()) != nullptr)
-				{
-					eventlog(eventlog_level_error, __FUNCTION__, "Duplicate line for channel {} in topic file", match[1].str().c_str());
-					continue;
-				}
-
-				//save current line to Head
-				this->topiclist.add(match[1].str(), match[2].str(), true);
-			}
-
-			this->topiclist.IsHeadLoaded = true;
-		}
-
-		//Get channel_name's topic string
-		std::string class_topic::get(const std::string channel_name)
-		{
-			if ((channel_name.size() + 1) > MAX_CHANNELNAME_LEN || channel_name.empty() == true)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "got invalid channel name length");
-				return std::string();
-			}
-
-			auto topic = this->topiclist.get(channel_name);
-			if (topic == nullptr)
-				return std::string();
-
-			return topic->topicstr;
-		}
-
-		//Sets channel_name's topic
-		bool class_topic::set(const std::string channel_name, const std::string topic_text, bool do_save)
-		{
-			if ((channel_name.size() + 1) > MAX_CHANNELNAME_LEN || channel_name.empty() == true)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "got invalid channel name length");
-				return false;
-			}
-
-			if ((topic_text.size() + 1) > MAX_TOPIC_LEN || topic_text.empty() == true)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "got invalid topic length");
-				return false;
-			}
-
-			auto topic = this->topiclist.get(channel_name);
-
-			if (topic != nullptr)
-			{
-				eventlog(eventlog_level_trace, __FUNCTION__, "Setting <{}>'s topic to <{}>", channel_name.c_str(), topic_text.c_str());
-				topic->topicstr = topic_text;
-			}
-			else
-			{
-				eventlog(eventlog_level_trace, __FUNCTION__, "Adding <{}:{}> to topiclist", channel_name.c_str(), topic_text.c_str());
-				this->topiclist.add(channel_name, topic_text, do_save);
-			}
-
-			if (do_save == true)
-			{
-				if (this->topiclist.save() == false)
-				{
-					eventlog(eventlog_level_error, __FUNCTION__, "error saving topic list");
+					eventlog(eventlog_level_error, __FUNCTION__, "couldn't open topic file \"{}\"", filename);
 					return false;
 				}
-			}
 
-			return true;
-		}
+				json jconf;
+				topicfile_stream >> jconf;
 
-		// Displays channel_name's topic to connection c
-		bool class_topic::display(t_connection * c, const std::string channel_name)
-		{
-			if ((channel_name.size() + 1) > MAX_CHANNELNAME_LEN || channel_name.empty() == true)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "got invalid channel name length");
-				return false;
-			}
-
-			auto topic = this->topiclist.get(channel_name);
-			if (topic == nullptr)
-				return false;
-
-			auto topicstr = topic->topicstr;
-
-			if (topicstr.empty())
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "topic is empty");
-				return false;
-			}
-
-			//send parts of topic string as separate message if there's a newline character
-			std::regex rgx("\\\\n+");
-			std::sregex_token_iterator iter(topicstr.begin(), topicstr.end(), rgx, -1), end;
-			for (bool first = true; iter != end; ++iter)
-			{
-				std::string msg(iter->str());
-				if (first == true)
+				for (auto& entry : jconf.at("topics").items())
 				{
-					msg.insert(0, topic->channel_name + " topic: ");
-					first = false;
-				}
-				message_send_text(c, message_type_info, c, msg);
-			}
-
-			return true;
-		}
-
-
-		//Get t_topic pointer of channel_name
-		std::shared_ptr<class_topic::t_topic> class_topic::class_topiclist::get(const std::string channel_name)
-		{
-			for (auto topic : this->Head)
-			{
-				if (strcasecmp(channel_name.c_str(), topic->channel_name.c_str()) == 0)
-					return topic;
-			}
-			eventlog(eventlog_level_debug, __FUNCTION__, "returning nullptr");
-
-			return nullptr;
-		}
-
-		//Saves data from Head vector to topic file
-		bool class_topic::class_topiclist::save()
-		{
-			std::fstream topicfile_stream(prefs_get_topicfile(), std::ofstream::app);
-			if (!topicfile_stream)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "couldn't open topic file");
-				return false;
-			}
-
-			std::string strLine;
-			std::smatch match;
-			const std::regex rgx("(.*)\t(.*)"); // tab character separates the channel name and topic
-
-			//Check if data in Head vector already exists in topic file
-			while (std::getline(topicfile_stream, strLine))
-			{
-				if (!std::regex_search(strLine, match, rgx))
-				{
-					eventlog(eventlog_level_error, __FUNCTION__, "Invalid line in topic file ({})", strLine.c_str());
-					continue;
-				}
-
-				for (auto topic : this->Head)
-				{
-					if (topic->save == true)
+					try
 					{
-						if (match[1].str() == topic->channel_name)
+						auto success = topic_head.emplace(entry.key(), entry.value());
+						if (!success.second)
 						{
-							break;
+							eventlog(eventlog_level_warn, __FUNCTION__, "failed to load topic for channel \"{}\" (possible duplicate?)", entry.key());
 						}
-						else
-						{
-							topicfile_stream << topic->channel_name << "\t" << topic->topicstr << std::endl;
-							break;
-						}
+					}
+					catch (const std::exception& e)
+					{
+						eventlog(eventlog_level_error, __FUNCTION__, "could not load topic for channel \"{}\"", entry.key());
+						continue;
 					}
 				}
 			}
-			return true;
+			catch (const std::exception& e)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "failed to load {} ({})", filename, e.what());
+				return false;
+			}
+
+			auto t1 = std::chrono::steady_clock::now();
+
+			eventlog(eventlog_level_info, __FUNCTION__, "Successfully loaded {} channel topics in {} milliseconds", topic_head.size(), std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count());
+
+			topic_conf_filename = filename;
+
+			is_topic_conf_loaded = true;
+
+			return is_topic_conf_loaded;
 		}
 
-		//Adds a new pointer to the Head vector
-		void class_topic::class_topiclist::add(std::string channel_name, std::string topic_text, bool do_save)
+		void unload_topic_conf()
 		{
-			auto topic = std::make_shared<class_topic::t_topic>(class_topic::t_topic{ channel_name, topic_text, do_save });
-			this->Head.push_back(std::move(topic));
+			topiclist_save();
+
+			topic_head.clear();
+
+			topic_conf_filename.clear();
+
+			is_topic_conf_loaded = false;
+
+			eventlog(eventlog_level_info, __FUNCTION__, "Successfully unloaded all channel topics");
+		}
+
+		void topiclist_save()
+		{
+			if (!is_topic_conf_loaded)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "topic conf not loaded");
+				return;
+			}
+
+			try
+			{
+				std::ofstream topicfile_stream(topic_conf_filename);
+				if (!topicfile_stream.is_open())
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "couldn't open topic file");
+					return;
+				}
+
+				json jconf;
+				jconf["topics"] = topic_head;
+
+				topicfile_stream << jconf.dump(1, '\t');
+			}
+			catch (const std::exception& e)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "failed to save topic_head to {} ({})", topic_conf_filename, e.what());
+				return;
+			}
+		}
+
+		nonstd::optional<std::string> channel_get_topic(const t_channel* channel)
+		{
+			if (channel == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL channel");
+				return nonstd::nullopt;
+			}
+
+			const char* channelname = channel_get_name(channel);
+			if (channelname == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL channel name");
+				return nonstd::nullopt;
+			}
+
+			try
+			{
+				auto search = topic_head.find(channelname);
+				if (search == topic_head.end())
+				{
+					return nonstd::nullopt;
+				}
+
+				return nonstd::optional<std::string>{search->second};
+			}
+			catch (const std::exception& e)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "failed to get channel topic for channel \"{}\"", channelname);
+
+				return nonstd::nullopt;
+			}
+		}
+
+		bool channel_set_topic(t_channel* channel, const std::string& topic)
+		{
+			if (channel == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL channel");
+				return false;
+			}
+
+			const char* channelname = channel_get_name(channel);
+			if (channelname == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL channel name");
+				return false;
+			}
+
+			try
+			{
+				auto success = topic_head.emplace(channelname, topic);
+				if (success.second == false)
+				{
+					// topic was not inserted because a topic for the channel already exists in topic_head
+
+					success.first->second = topic;
+				}
+
+				return true;
+			}
+			catch (const std::exception& e)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "failed to set channel topic for channel \"{}\"", channelname);
+
+				return false;
+			}
+		}
+
+		bool channel_display_topic(t_channel* channel, t_connection* conn)
+		{
+			if (channel == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL channel");
+				return false;
+			}
+
+			if (conn == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL conn");
+				return false;
+			}
+
+			try
+			{
+				nonstd::optional<std::string> topic = channel_get_topic(channel);
+				if (topic.has_value())
+				{
+					const std::string delimiter = "\\n";
+					const std::size_t delimiter_len = delimiter.length();
+					const std::string topicstr = topic.value();
+
+					// support "\n" (not '\n') by individually sending substrings
+					std::size_t old_newline_pos = 0;
+					std::size_t curr_newline_pos = topicstr.find(delimiter, old_newline_pos);
+					while (curr_newline_pos != std::string::npos)
+					{
+						if (old_newline_pos == curr_newline_pos)
+						{
+							old_newline_pos += delimiter_len;
+							curr_newline_pos = topicstr.find(delimiter, old_newline_pos);
+							continue;
+						}
+
+						std::string substr = topicstr.substr(old_newline_pos, curr_newline_pos - old_newline_pos);
+						message_send_text(conn, message_type_info, conn, substr);
+
+						old_newline_pos = curr_newline_pos + delimiter_len;
+						curr_newline_pos = topicstr.find(delimiter, old_newline_pos);
+					}
+
+					message_send_text(conn, message_type_info, conn, topicstr.substr(old_newline_pos, std::string::npos));
+				}
+
+				return true;
+			}
+			catch (const std::exception& e)
+			{
+				message_send_text(conn, message_type_error, conn, localize(conn, "An error has occurred."));
+
+				const char* channelname = channel_get_name(channel);
+				eventlog(eventlog_level_error, __FUNCTION__, "failed to display channel topic for channel \"{}\"", channelname ? channelname : "?");
+
+				return false;
+			}
 		}
 
 	}
