@@ -207,3 +207,111 @@ Diablo kills: {{diablo_kills}}
 [iconstash]
 demon		EYES
 [/iconstash]
+
+
+##############################################################################
+# Diablo II: Classic (D2DV) icon set                                         #
+# Icons map to character class.  Level-based rank brackets give visual       #
+# progression feedback directly in the Battle.net lobby character list.      #
+# Use Bni Icon Builder to add/modify icons in icons.bni.                     #
+#  https://github.com/pvpgn/bni-icon-builder                                 #
+#----------------------------------------------------------------------------#
+
+[D2DV]
+username       = "BNET\acct\username"
+char_level     = "Record\D2DV\0\level"
+char_class     = "Record\D2DV\0\class"
+wins           = "Record\D2DV\0\wins"
+losses         = "Record\D2DV\0\losses"
+disconnects    = "Record\D2DV\0\disconnects"
+diablo_kills   = "Record\D2DV\0\diablo kills"
+strength       = "Record\D2DV\0\strength"
+magic          = "Record\D2DV\0\magic"
+dexterity      = "Record\D2DV\0\dexterity"
+vitality       = "Record\D2DV\0\vitality"
+gold           = "Record\D2DV\0\gold"
+
+# Level-based rank brackets — icons are displayed in the lobby next to the
+# character name, giving at-a-glance progression info without any client mod.
+[icons]
+1    Initiate      D2DV
+20   Adept         D2DV
+40   Veteran       D2DV
+60   Champion      D2DV
+80   Legend        D2DV
+99   Immortal      D2DV
+[/icons]
+
+[stats]
+{{username}}'s Diablo II Classic record:
+Level {{char_level}} {{char_class->rank}}
+Games: {{wins}} wins / {{losses}} losses / {{disconnects}} disconnects
+Diablo Kills: {{diablo_kills}}
+Stats: {{strength}} str / {{magic}} mag / {{dexterity}} dex / {{vitality}} vit
+Gold: {{gold}}
+[/stats]
+
+[iconstash]
+diablo2classic    D2DV
+demon             EYES
+[/iconstash]
+
+
+##############################################################################
+# Diablo II: Lord of Destruction (D2XP) icon set                             #
+# Includes both normal and ladder record display.  Ladder rank icons use     #
+# the solo-ladder rating so the highest-rated characters stand out in the    #
+# lobby with a visually distinct tier badge.                                 #
+#----------------------------------------------------------------------------#
+
+[D2XP]
+username            = "BNET\acct\username"
+char_level          = "Record\D2XP\0\level"
+char_class          = "Record\D2XP\0\class"
+wins                = "Record\D2XP\0\wins"
+losses              = "Record\D2XP\0\losses"
+disconnects         = "Record\D2XP\0\disconnects"
+diablo_kills        = "Record\D2XP\0\diablo kills"
+strength            = "Record\D2XP\0\strength"
+magic               = "Record\D2XP\0\magic"
+dexterity           = "Record\D2XP\0\dexterity"
+vitality            = "Record\D2XP\0\vitality"
+gold                = "Record\D2XP\0\gold"
+ladder_wins         = "Record\D2XP\solo\wins"
+ladder_losses       = "Record\D2XP\solo\losses"
+ladder_disconnects  = "Record\D2XP\solo\disconnects"
+ladder_rating       = "Record\D2XP\solo\rating"
+ladder_rank         = "Record\D2XP\solo\rank"
+ladder_high_rating  = "Record\D2XP\solo\high rating"
+team_wins           = "Record\D2XP\team\wins"
+team_losses         = "Record\D2XP\team\losses"
+team_rating         = "Record\D2XP\team\rating"
+
+# Six tiers keyed on solo-ladder rating.  Players with no ladder games
+# will show the base D2XP icon; every tier milestone unlocks a richer badge.
+[icons]
+0      Nephalem       D2XP
+500    Warrior        D2XP
+1000   Slayer         D2XP
+1500   Champion       D2XP
+2000   Destroyer      D2XP
+2500   Conqueror      D2XP
+3000   Guardian       D2XP
+[/icons]
+
+[stats]
+{{username}}'s Diablo II LoD record:
+Level {{char_level}} {{char_class->rank}}
+Normal  — {{wins}} wins / {{losses}} losses / {{disconnects}} disconnects
+Ladder  — [{{ladder_rating->rank}}] {{ladder_rating}} pts  rank #{{ladder_rank}}  (peak: {{ladder_high_rating}})
+          W: {{ladder_wins}}  L: {{ladder_losses}}  DC: {{ladder_disconnects}}
+Team    — {{team_rating}} pts  W: {{team_wins}}  L: {{team_losses}}
+Stats: {{strength}} str / {{magic}} mag / {{dexterity}} dex / {{vitality}} vit
+Gold: {{gold}}
+[/stats]
+
+[iconstash]
+diablo2lod     D2XP
+necromancer    D2XP
+demon          EYES
+[/iconstash]

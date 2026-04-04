@@ -70,17 +70,19 @@ bak_charinfodir	=	"${LOCALSTATEDIR}/bak/charinfo"
 # Misc										#
 #-------------------------------------------------------------------------------#
 #										#
-# Ladder save interval
-laddersave_interval	=	3600
+# Ladder save interval (in seconds).
+# Reduced from 3600 to 900 (15 minutes) to minimize ladder data loss
+# in the event of an unexpected server crash or power outage.
+laddersave_interval	=	900
 
 # Time that allow characters create after it insert into ladder
 # These code should be rewritted to support string formmated time
 ladderinit_time		=	0
 
-# create extra ladder file in XML format that can be parsed more easy
-# 0 = turn extra output off (default)
-# 1 = turn on the XML output
-XML_ladder_output       =       0
+# Create extra ladder file in XML format for easy external parsing.
+# Enabled so web frontends, Discord bots, and stat sites can consume
+# structured ladder data without screen-scraping the plain-text file.
+XML_ladder_output       =       1
 
 # Amount of time to delay shutting down server in seconds.
 shutdown_delay          =       360
@@ -89,14 +91,19 @@ shutdown_delay          =       360
 # (control-c) signal in seconds.
 shutdown_decr           =       60
 
-# connection max idle time in seconds
-idletime		=	300
+# Connection max idle time in seconds.
+# Raised from 300 to 600 to avoid dropping d2gs connections during
+# brief lulls between save requests on low-traffic servers.
+idletime		=	600
 
-# connection keep alive interval
-keepalive_interval	=	60
+# Connection keepalive interval (in seconds).
+# Reduced from 60 to 30 for faster detection of a lost d2gs link,
+# matching the d2cs keepalive cadence for consistent behaviour.
+keepalive_interval	=	30
 
-# connection time out check interval
-timeout_checkinterval	=	60
+# Connection timeout check interval (in seconds).
+# Reduced from 60 to 30 — tighter checks catch stuck connections sooner.
+timeout_checkinterval	=	30
 
 # experience threshold, minimum experience needed to register on the ladder
 ladderupdate_threshold	=	0
@@ -106,13 +113,11 @@ ladderupdate_threshold	=	0
 # 1 = only ladder chars
 ladder_chars_only	=	1
 
-# This setting activates a workaround for the well known "Lvl 100" bug.
-# It should be activated for mods where the max level is greater than 99.
-# Activating this should work for mods with any max level
-# If level is greater than 255, it will be set to 255
-# 0 = deactivated
-# 1 = activated
-difficulty_hack         =       0
+# Workaround for the well-known "Lvl 100" bug.
+# Activated by default: it is harmless on vanilla D2 (max level 99) and
+# essential for any mod or custom realm where the level cap exceeds 99.
+# Characters above level 255 will be capped at 255 by the server.
+difficulty_hack         =       1
 
 #										#
 #################################################################################

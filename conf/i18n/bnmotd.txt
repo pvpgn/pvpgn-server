@@ -1,12 +1,23 @@
 %EHello %l, welcome to %s!
-%IRunning version %v on %h.
-%IThis server is hosted by %H
+%IRunning PvPGN %v on %h — hosted by %H
 %I
-%IThere are %a user accounts on this server.
-%IThere are currently %U users in %G games of %N,
-%Iand %u users playing %g games and chatting in %c channels.
-%IHaving trouble with a command? Type /help to
-%Ilearn more about it.
-%IType /language to switch translation.
+%I-=- Server Status -=-
+%IThere are %a registered accounts on this server.
+%IOnline now: %U users across %G games of %N
+%I           (%u playing / %g games / %c channels)
+%I
+%I-=- Diablo II Quick Tips -=-
+%I/w <player> <msg>  — whisper a player
+%I/f l               — show your friends list
+%I/f msg <msg>       — message all online friends
+%I/whois <player>    — see where someone is
+%I/stats             — view your lobby icon and record
+%I/icon <alias>      — change your lobby icon
+%I/help              — full command list
+%I
+%I-=- Realm -=-
+%IFor closed-realm Diablo II play, select a realm
+%Iat the character screen. Ladder resets are announced
+%Iin the News tab. Good luck, Nephalem!
 %I
 %M%m

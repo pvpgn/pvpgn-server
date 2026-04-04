@@ -50,9 +50,10 @@ gameservlist		=	<d2gs-IP>,<another-d2gs-IP>
 # WARNING!! DO NOT USE "127.0.0.1" or "localhost" !!!
 bnetdaddr		=	<bnetd-IP>:6112
 
-# Set this to the maximum number of concurrent connections allowed on 
-# this server. DO NOT TOUCH UNLESS STRICTLY NECESSARY!
-max_connections = 1000
+# Set this to the maximum number of concurrent connections allowed on
+# this server.  Raised from 1000 to 4096 to match the bnetd limit and
+# support large player populations without hitting the ceiling.
+max_connections = 4096
 
 # This sets the realm to Classic or LOD or Both
 # Classic = 0
@@ -128,8 +129,8 @@ newbiefile_assasin		=	"${LOCALSTATEDIR}/files/newbie.save"
 # Misc										#
 #-------------------------------------------------------------------------------#
 #										#
-# Message Of The Day
-motd                    =       "No Message Of The Day Set" 
+# Message Of The Day — displayed in the D2 realm selection screen.
+motd = "Welcome to the realm! Use /help in the lobby for commands. Good luck, Nephalem!"
 
 # Set to non-zero to allow creation of new realm character
 allow_newchar		=	1
@@ -137,28 +138,35 @@ allow_newchar		=	1
 # Do you want d2cs to check client for multilogin for security reason?
 check_multilogin	=	0
 
-# Maxinum number of character per account
-# Max allowed value is 18 (enforced by server)
-maxchar			=	8
+# Maximum number of characters per account.
+# Raised to 18 (the server-enforced maximum) so players can keep one
+# character per class per difficulty/mode combination without hitting
+# an artificial ceiling.
+maxchar			=	18
 
-# Character sorting. Options are: level, ctime, mtime, name, none. (none assumed if
-# not specified).
-#charlist_sort = "none"
+# Character sorting. Options are: level, ctime, mtime, name, none.
+# Sort by level descending so the player's most-progressed character
+# appears first in the selection screen — reduces accidental new-char
+# creation and improves the first-impression loading experience.
+charlist_sort = "level"
 
-# Do we need ascending or descending order for charlist?
-#charlist_sort_order = "ASC"
+# Descending order so highest-level character appears at the top.
+charlist_sort_order = "DESC"
 
-# Maxinum number of games will be shown in join game list
-# Zero = infinite
-maxgamelist		=	20
+# Maximum number of games shown in the join game list.
+# Raised from 20 to 100 so players on busy servers can browse the full
+# game list instead of seeing only the first 20 entries.
+maxgamelist		=	100
 
-# Set to non-zero to allow show all games with difficulty < character difficulty
-# Otherwise, only game with difficulty = character difficulty will be shown
-gamelist_showall	=	0
+# Show all games with difficulty <= character difficulty (not just exact match).
+# Enabled so players can freely join lower-difficulty games for rushing,
+# levelling alts, or helping friends without being blocked by the filter.
+gamelist_showall	=	1
 
-# Maxinum time in seconds that a user can idle
-# Zero = infinite
-idletime		=	3600
+# Maximum time in seconds that a user can idle.
+# Raised from 3600 to 14400 (4 hours) to accommodate long play sessions
+# and AFK traders without forcing repeated logins.
+idletime		=	14400
 
 # Amount of time to delay shutting down server in seconds.
 shutdown_delay		=	300
@@ -175,24 +183,33 @@ shutdown_decr		=	60
 # You may just ignore them and use the default value				#
 #-------------------------------------------------------------------------------#
 #
-# How often will the server purge all list to clean unused data (in seconds)
-listpurgeinterval	=	300
+# How often will the server purge all lists to clean unused data (in seconds).
+# Reduced from 300 to 60: stale game/character list entries are evicted 5×
+# faster, which keeps memory usage low on busy servers.
+listpurgeinterval	=	60
 
-# How often will the server check game queues (in seconds)
-gqcheckinterval		=	60
+# How often will the server check game queues (in seconds).
+# Reduced from 60 to 15: game-start requests are processed 4× faster,
+# cutting the visible delay between "Create Game" and entering the world.
+gqcheckinterval		=	15
 
-# How often will the server retry to connect to bnetd 
-# when connection lost (in seconds)
-s2s_retryinterval	=	10
+# How often will the server retry to connect to bnetd when connection lost (in seconds).
+# Reduced from 10 to 5 for faster automatic recovery after a bnetd restart.
+s2s_retryinterval	=	5
 
-# How long time the s2s connection will timeout 
-s2s_timeout		=	10
+# How long the s2s connection will timeout (in seconds).
+# Slightly raised from 10 to 15 to tolerate transient network hiccups on
+# WAN setups without immediately dropping the server-to-server link.
+s2s_timeout		=	15
 
-# How often the server will check server queues for expired data
-sq_checkinterval	=	300
+# How often the server will check server queues for expired data (in seconds).
+# Reduced from 300 to 60 so stale queue entries are cleaned up more promptly.
+sq_checkinterval	=	60
 
-# How long time will a server queue data expire
-sq_timeout		=	300
+# How long server queue data will remain before expiring (in seconds).
+# Reduced from 300 to 120: halves the window for ghost queue entries that
+# can block new game-creation requests on the same slot.
+sq_timeout		=	120
 
 # Game serer binary files checksum, use zero to skip this checking
 d2gs_checksum		=	0
@@ -212,23 +229,33 @@ game_maxlifetime	=	0
 # !!! Use them at your own risk !!!
 # game_maxlevel       = 255
 
-# A game will be automatically destroied after how long time idle
-max_game_idletime	=	0
+# A game will be automatically destroyed after how long time idle (in seconds).
+# Set to 7200 (2 hours) so games abandoned mid-session (crashed host,
+# power outage, etc.) are reclaimed automatically instead of leaking
+# game slots indefinitely.  Set to 0 to disable.
+max_game_idletime	=	7200
 
 # Allow Limitation created game with password, player number or level limit?
 allow_gamelimit		=	1
 
-# Ladder refresh time
-ladder_refresh_interval =	3600
+# Ladder refresh time (in seconds).
+# Reduced from 3600 to 900 (15 minutes) so ladder standings reflect
+# recent games much sooner — important for competitive realms.
+ladder_refresh_interval =	900
 
-# server to server connection max idle time in seconds
-s2s_idletime		=	300
+# Server-to-server connection max idle time in seconds.
+# Raised from 300 to 600 so a temporarily quiet realm server does not
+# get its bnetd link torn down during off-peak hours.
+s2s_idletime		=	600
 
-# server to server connection keepalive interval
-s2s_keepalive_interval	=	60
+# Server-to-server connection keepalive interval (in seconds).
+# Reduced from 60 to 30 so the bnetd<->d2cs link is probed twice as
+# often, giving faster detection of a silently broken network path.
+s2s_keepalive_interval	=	30
 
-# all connection timeout check interval
-timeout_checkinterval	=	60
+# All-connection timeout check interval (in seconds).
+# Reduced from 60 to 30 for tighter, more responsive connection hygiene.
+timeout_checkinterval	=	30
 
 # game server restart interval
 # when sending SIGUSR2 signal to your d2cs this issues a restart

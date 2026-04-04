@@ -225,10 +225,12 @@ allow_unknown_version = true
 #----------------------------------------------------------------------------#
 
 # Time in seconds between account file updates, 0 means wait forever.
-usersync  = 300
+# Reduced from 300 to 120 to limit data loss window if server crashes.
+usersync  = 120
 # Number of seconds of inactivity before file is unloaded from memory.
 # (only checked during account file updates)
-userflush = 3600
+# Reduced from 3600 to 1800 to reclaim memory from inactive accounts sooner.
+userflush = 1800
 # Number of users checked for updates at once. Higher values make sense if you 
 # either have very fast hardware or you don't have many number of accounts.
 # Lower values make sense if you have very high CPU usage on the system you run
@@ -239,10 +241,12 @@ userstep = 100
 userflush_connected = true
 
 # How often to send user latency tests in seconds.
-latency = 600
+# Reduced from 600 to 120 for faster detection of laggy/dead connections.
+latency = 120
 
 # How often to send null or keepalive packets in seconds.
-nullmsg = 120
+# Reduced from 120 to 60 so stale TCP sessions are detected and recycled quickly.
+nullmsg = 60
 
 # Amount of time to delay shutting down server in seconds.
 shutdown_delay = 300
@@ -351,7 +355,9 @@ quota_maxline = 200 # must be between 1 to 256 chars
 # it originally meant "to paint the wallpaper on a new or refurbished house").
 # If it less than or equal to quota_lines, there is no warning before
 # disconnection so don't set this too low.
-quota_dobae = 10     # must be between 1 and 100 lines
+# Raised from 10 to 15: gives a clear warning gap above quota_lines=5 so
+# spammy clients see the kick message before being disconnected.
+quota_dobae = 15     # must be between 1 and 100 lines
 
 # Mail support
 mail_support = true
@@ -360,12 +366,16 @@ mail_quota = 5
 # Channel logging message
 log_notice = "*** Please note this channel is logged! ***"
 
-# Ban on repeated password fails against bruteforce password thieves
-# Fails required to get ip banned (0 to disable ban on password fail)
-passfail_count = 0
+# Ban on repeated password fails against bruteforce password thieves.
+# Fails required to get IP banned (0 to disable ban on password fail).
+# Set to 10 so brute-force scripts are auto-banned after 10 attempts;
+# legitimate users rarely mistype a password more than 2-3 times.
+passfail_count = 10
 
-# Password fail IP ban duration (in seconds)
-passfail_bantime = 300
+# Password fail IP ban duration (in seconds).
+# 1800 seconds (30 minutes) is long enough to deter automated tools
+# but short enough not to permanently lock out misconfigured clients.
+passfail_bantime = 1800
 
 # Max users limit in private channels (0 = unlimited)
 maxusers_per_channel = 0
@@ -444,27 +454,34 @@ contact_email = "unknown"
 # Servername by which the server identifies itself (default: "PvPGN Realm")
 #servername = "PvPGN Realm"
 
-# Set this to the maximum number of concurrent connections allowed on 
-# this server (minimum 32). This limit sets a general server connection 
-# limit, NOT the concurrent user limit (for that see next option)
-max_connections = 1000
+# Set this to the maximum number of concurrent connections allowed on
+# this server (minimum 32). This limit sets a general server connection
+# limit, NOT the concurrent user limit (for that see next option).
+# Raised from 1000 to 4096 to support larger player populations.
+max_connections = 4096
 
-# Set maximum amount of packets in client packet queue
-# If limit is reached, client connection will be dropped
-# Set to 0 to disable
-packet_limit = 1000
+# Set maximum amount of packets in client packet queue.
+# If limit is reached, client connection will be dropped.
+# Set to 0 to disable.
+# Raised from 1000 to 2048 to buffer burst traffic from D2 clients
+# during game creation/join events without false-positive disconnects.
+packet_limit = 2048
 
 # Maximum number of concurrent users (0 means unlimited).
 max_concurrent_logins = 0
 
 # Set this option to true to allow TCP to detect and close stale
-# connections.
-use_keepalive = false
+# connections.  Enabling this lets the OS reclaim half-open sockets
+# from crashed/disconnected clients much faster than relying solely
+# on the application-level nullmsg/latency timers above.
+use_keepalive = true
 
-# Limit maximum number of connections per IP (0 = unlimited)
-# this feature is new, so no recommended value so far
-# (d2cs connections are exempted from this limitation)
-max_conns_per_IP = 0
+# Limit maximum number of connections per IP (0 = unlimited).
+# (d2cs connections are exempted from this limitation.)
+# Set to 20 to mitigate single-IP flooding / connection-exhaustion
+# attacks while still allowing LAN/NAT setups with multiple players.
+# Raise this value if your users share a heavily NATted network.
+max_conns_per_IP = 20
 
 # This is a comma delimited list of hostnames that the server should
 # listen on.  It might be useful to make an internal-only server on a
@@ -494,9 +511,12 @@ w3routeaddr = "0.0.0.0:6200"
 # w3routeshow has been removed.
 # see the address_translation.conf for translating the w3route ip for local networks
 
-# initkill_timer sets up a periodic timer on init/defer class connections
-# this should detect and clean up stale connections to your server
-initkill_timer = 120
+# initkill_timer sets up a periodic timer on init/defer class connections.
+# This detects and cleans up TCP connections that completed the three-way
+# handshake but never sent a valid Battle.net handshake packet (e.g. port
+# scanners, half-open connections).  Halved from 120 to 60 seconds so
+# zombie init-connections are evicted twice as fast, freeing fd slots.
+initkill_timer = 60
 
 #                                                                            #
 ##############################################################################
