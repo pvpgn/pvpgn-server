@@ -118,7 +118,7 @@ Memory debugging (Linux), per `README.DEV` Appendix B:
 | `src/d2dbs/` | Diablo 2 database server (separate daemon) |
 | `src/common/` | Static lib linked into every daemon: fdwatch, eventlog, packet/network, conf parser, hashtable, hashing primitives, wire-protocol headers, vendored pugixml |
 | `src/compat/` | Static lib of POSIX/Win32 portability shims (psock, gettimeofday, mkdir, pdir, pgetopt, mmap, etc.) |
-| `src/client/` | Reference client utilities: `bnchat`, `bnstat`, `bnftp`, `bnbot`, `udptest` |
+| `src/client/` | Reference client utilities: `bnchat`, `bnstat`, `bnftp`, `bnbot` (the `udptest.cpp` source compiles into `bnchat` and `bnstat` — there is no standalone `udptest` binary) |
 | `src/bniutils/` | BNI icon archive tools: `bnilist`, `bni2tga`, `bniextract`, `bnibuild`, `tgainfo` |
 | `src/bnpass/` | Password hash CLI (`bnpass`, `sha1hash`) |
 | `src/bntrackd/` | Standalone tracking daemon (`bntrackd`) |

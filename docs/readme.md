@@ -11,3 +11,4 @@ fdwatch.txt     | Documentation of the fdwatch API
 ports.md        | Documentation on tested operating systems, compilers, and tools for compiling PvPGN
 readme.md       | This file
 storage.txt     | Documentation of PvPGN's storage systems
+versioncheck.md | Documentation of the versioncheck.json client-version table
