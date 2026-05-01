@@ -103,11 +103,11 @@ Sections:
 
 ### Task 5: Final verification pass
 
-- [ ] Re-read `CLAUDE.md` end-to-end and grep the repository for every file path, function name, CMake option, namespace, port number, and default constant it cites; correct any drift
-- [ ] Re-read `docs/architecture.md` and do the same grep-and-verify pass
-- [ ] Confirm no claims are made about features/files that do not exist in the current snapshot (e.g., do not promise documentation for a system that has not been read)
-- [ ] Confirm `CLAUDE.md` is concise enough to be useful as a quick reference (target ~300–500 lines), and that long-form depth lives in `docs/architecture.md`
-- [ ] Confirm no edits were made to source code, CMake files, or configuration templates
+- [x] Re-read `CLAUDE.md` end-to-end and grep the repository for every file path, function name, CMake option, namespace, port number, and default constant it cites; correct any drift
+- [x] Re-read `docs/architecture.md` and do the same grep-and-verify pass
+- [x] Confirm no claims are made about features/files that do not exist in the current snapshot (e.g., do not promise documentation for a system that has not been read)
+- [x] Confirm `CLAUDE.md` is concise enough to be useful as a quick reference (target ~300–500 lines), and that long-form depth lives in `docs/architecture.md`
+- [x] Confirm no edits were made to source code, CMake files, or configuration templates
 
 ### Task 6: Move plan to completed
 

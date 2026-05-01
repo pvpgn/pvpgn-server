@@ -323,8 +323,8 @@ default ports:
 | `handle_w3route_packet` (declared in `anongame.h`, dispatched from `server.cpp`) | `conn_class_w3route` | `BNETD_W3ROUTE_PORT = 6200`, default address `BNETD_W3ROUTE_ADDR = 0.0.0.0` |
 
 `handlers.h` defines the shared `t_handler` callback signature
-`int (*)(t_connection *, t_packet const *)` and the `t_htable_row` row used
-to wire packet types to handler functions inside each `handle_*.cpp`.
+`int(*)(t_connection *, t_packet const * const)` and the `t_htable_row` row
+used to wire packet types to handler functions inside each `handle_*.cpp`.
 
 ## Lua scripting
 
@@ -360,9 +360,12 @@ Layout under `lua/`:
 
 The C++ side of the bridge lives in `src/bnetd/luainterface.{cpp,h}`,
 `luafunctions.{cpp,h}`, `luaobjects.{cpp,h}`, and `luawrapper.{cpp,h}`.
-`lua_load(scriptdir)` is invoked from `pre_server_startup()` and
-`lua_unload()` from `post_server_shutdown()`; the per-event hooks are
-`lua_handle_command`, `lua_handle_game`, `lua_handle_channel`,
+`lua_load(scriptdir)` is invoked from `pre_server_startup()` (in
+`src/bnetd/main.cpp`). `lua_unload()` is only called from the SIGHUP
+rehash path in `server_process()` when `restart_mode_lua` (or
+`restart_mode_all`) is requested; `post_server_shutdown()` does not
+call it -- the Lua state is reclaimed at process exit. The per-event
+hooks are `lua_handle_command`, `lua_handle_game`, `lua_handle_channel`,
 `lua_handle_user`, `lua_handle_user_icon`, `lua_handle_server`,
 `lua_handle_client_readmemory`, and `lua_handle_client_extrawork`.
 

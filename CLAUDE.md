@@ -271,9 +271,12 @@ Layout summary:
 
 The C++ bridge is in `src/bnetd/luainterface.{cpp,h}`,
 `luafunctions.{cpp,h}`, `luaobjects.{cpp,h}`, `luawrapper.{cpp,h}`.
-`lua_load(scriptdir)` runs from `pre_server_startup()` and `lua_unload()`
-from `post_server_shutdown()`. Hook entry points exposed to the C++ side
-include `lua_handle_command`, `lua_handle_game`, `lua_handle_channel`,
+`lua_load(scriptdir)` runs from `pre_server_startup()` (in
+`src/bnetd/main.cpp`); `lua_unload()` is invoked from the SIGHUP rehash
+path in `server_process()` when `restart_mode_lua` (or `restart_mode_all`)
+is requested -- it is not part of `post_server_shutdown()`, which lets
+process exit reclaim the Lua state. Hook entry points exposed to the C++
+side include `lua_handle_command`, `lua_handle_game`, `lua_handle_channel`,
 `lua_handle_user`, `lua_handle_user_icon`, `lua_handle_server`,
 `lua_handle_client_readmemory`, `lua_handle_client_extrawork`.
 
@@ -286,8 +289,12 @@ Slash commands handled in C++ live in
 the `standard_command_table[]` array of `{ "/name", _handler }` rows
 (near line 425). To add a new built-in command:
 
-1. Write `static int _handle_<name>_command(t_connection* c, char const* text)`
-   in the unnamed namespace of `command.cpp`.
+1. Write `int _handle_<name>_command(t_connection* c, char const* text)`
+   in `command.cpp`. The existing handlers all use a `static` storage
+   class -- legacy that predates the project's "unnamed namespace
+   instead of `static`" rule (`README.DEV` 5.e). Match the surrounding
+   style: keep `static` to stay consistent with the rest of the file
+   even though new translation units should prefer an unnamed namespace.
 2. Add a row to `standard_command_table[]`.
 3. If the command should be permission-gated, add the corresponding
    privilege bit to `command_groups.conf` and check it inside the
@@ -302,7 +309,7 @@ the `standard_command_table[]` array of `{ "/name", _handler }` rows
 Each protocol/connection-class lives in `src/bnetd/handle_<name>.cpp`
 plus `handle_<name>.h`. The shared signature is in `handlers.h`:
 
-    typedef int (*t_handler)(t_connection *, t_packet const *);
+    typedef int(*t_handler)(t_connection *, t_packet const * const);
 
 Inside each `handle_<name>.cpp` a `t_htable_row` table maps packet
 type IDs to handler functions; `handle_<name>_packet()` is the entry
