@@ -98,8 +98,8 @@ Sections:
 **Files:**
 - Modify: `docs/readme.md`
 
-- [ ] Add a row for `architecture.md` to the Index table with a one-line description
-- [ ] Verify: render the table mentally, ensure column alignment and that the file linked exists
+- [x] Add a row for `architecture.md` to the Index table with a one-line description
+- [x] Verify: render the table mentally, ensure column alignment and that the file linked exists
 
 ### Task 5: Final verification pass
 
