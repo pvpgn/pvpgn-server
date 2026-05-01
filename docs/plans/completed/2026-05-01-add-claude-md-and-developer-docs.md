@@ -111,4 +111,4 @@ Sections:
 
 ### Task 6: Move plan to completed
 
-- [ ] Move this plan from `docs/plans/` to `docs/plans/completed/`
+- [x] Move this plan from `docs/plans/` to `docs/plans/completed/`
