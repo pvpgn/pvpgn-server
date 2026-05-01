@@ -8,3 +8,6 @@
 /lua5.1
 /.vs
 /CMakeSettings.json
+
+# ralphex progress logs
+.ralphex/progress/
