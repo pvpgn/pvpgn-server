@@ -319,7 +319,7 @@ default ports:
 | `handle_apireg.{cpp,h}` | `conn_class_apireg` | `BNETD_APIREG_PORT = 5400` (`apiregaddrs`) |
 | `handle_d2cs.{cpp,h}` | `conn_class_d2cs_bnetd` | bnetd opens the d2cs realm connection out to `BNETD_REALM_PORT = 6113` (the d2cs listening port; see `realm.cpp`) |
 | `handle_anongame.{cpp,h}` | invoked from bnet path | (no listener -- used for matchmaking) |
-| `handle_udp.{cpp,h}` | UDP packet path | UDP port chosen via `BNETD_DEF_TEST_PORT = 6112` and the `BNETD_MIN_TEST_PORT`..`BNETD_MAX_TEST_PORT` 6112-6500 range |
+| `handle_udp.{cpp,h}` | UDP packet path | UDP listener uses `BNETD_DEF_TEST_PORT = 6112` (configurable via `udptest_port`); the `BNETD_MIN_TEST_PORT`..`BNETD_MAX_TEST_PORT` 6112-6500 range is the *client*-side bind-search range used by `src/client/udptest.cpp`, not a server listener range |
 | `handle_w3route_packet` (declared in `anongame.h`, dispatched from `server.cpp`) | `conn_class_w3route` | `BNETD_W3ROUTE_PORT = 6200`, default address `BNETD_W3ROUTE_ADDR = 0.0.0.0` |
 
 `handlers.h` defines the shared `t_handler` callback signature
