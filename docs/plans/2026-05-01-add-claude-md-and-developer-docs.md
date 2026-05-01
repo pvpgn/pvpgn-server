@@ -55,19 +55,19 @@ Steps:
 - Create: `docs/architecture.md`
 
 Sections:
-- [ ] Repository layout: top-level directories (`src/`, `conf/`, `lua/`, `docs/`, `cmake/`, `lib/`, `man/`, `scripts/`, `files/`) and what lives in each
-- [ ] Daemons and binaries produced: bnetd (main), d2cs, d2dbs, bntrackd, bnpass, bniutils, bnproxy, client tools (bnchat, bnstat, bnftp, bnbot, udptest); when each is built and what role it plays
-- [ ] bnetd module map: group `src/bnetd/*` files by responsibility (entry/loop, connection/session, account/storage, channels/messaging, games/anongame/tournament/ladder, clan/team/friends, realm/d2cs bridge, protocol handlers `handle_*`, configuration/prefs, support files, lua bridge)
-- [ ] common/ module map: fdwatch and its backends, eventlog (templated fmt API), packet/network, conf parser, hashtable/list/queue, xalloc, hashing primitives (bnethash, bnetsrp3, wolhash, bigint), pugixml, `*_protocol.h` headers
-- [ ] compat/ purpose and how POSIX/Win32 divergence is handled (psock, gettimeofday, etc.)
-- [ ] Runtime model: single-threaded fdwatch event loop, conn add/remove lifecycle, tick/timer cadence (`BNETD_POLL_INTERVAL`, `BNETD_JIFFIES`), OOM safety buffer, daemonization (`DO_DAEMONIZE`), Win32 service mode
-- [ ] Configuration system: conf templates in `conf/*.in` substituted by CMake, runtime parsing via `prefs.cpp`, key files (`bnetd.conf`, `d2cs.conf`, `d2dbs.conf`, `channel.conf`, `realm.conf`, `versioncheck.json`, `ad.json`, `bnmaps.conf`, `command_groups.conf`, `supportfile.conf`, `address_translation.conf`, `sql_DB_layout.conf`, `i18n/`)
-- [ ] Storage layer: `storage_path` string format, file (plain/cdb) vs sql backends, sql sub-drivers (mysql/pgsql/sqlite3/odbc) gated by `WITH_*` options; reference `docs/storage.txt`
-- [ ] Protocol handlers: bnet/bot/telnet/irc/wol/wgameres/apireg/file/udp/d2cs/init/w3route — list with port defaults from `setup_before.h`
-- [ ] Lua scripting: when enabled, file layout under `lua/`, hook entry points (`handle_channel/client/command/game/server/user`), C++ glue files, registered C functions
-- [ ] Logging: `eventlog(level, __FUNCTION__, "fmt {}", args)` template API, levels (none/trace/debug/info/warn/error/fatal/gui), `loglevels` config
-- [ ] Build options matrix: `WITH_BNETD/D2CS/D2DBS/LUA/MYSQL/SQLITE3/PGSQL/ODBC/WIN32_GUI` and how they affect the outputs
-- [ ] Verify: re-read each cited file and confirm every concrete claim (file path, function name, option flag, port number, default constant) matches the source
+- [x] Repository layout: top-level directories (`src/`, `conf/`, `lua/`, `docs/`, `cmake/`, `lib/`, `man/`, `scripts/`, `files/`) and what lives in each
+- [x] Daemons and binaries produced: bnetd (main), d2cs, d2dbs, bntrackd, bnpass, bniutils, bnproxy, client tools (bnchat, bnstat, bnftp, bnbot, udptest); when each is built and what role it plays
+- [x] bnetd module map: group `src/bnetd/*` files by responsibility (entry/loop, connection/session, account/storage, channels/messaging, games/anongame/tournament/ladder, clan/team/friends, realm/d2cs bridge, protocol handlers `handle_*`, configuration/prefs, support files, lua bridge)
+- [x] common/ module map: fdwatch and its backends, eventlog (templated fmt API), packet/network, conf parser, hashtable/list/queue, xalloc, hashing primitives (bnethash, bnetsrp3, wolhash, bigint), pugixml, `*_protocol.h` headers
+- [x] compat/ purpose and how POSIX/Win32 divergence is handled (psock, gettimeofday, etc.)
+- [x] Runtime model: single-threaded fdwatch event loop, conn add/remove lifecycle, tick/timer cadence (`BNETD_POLL_INTERVAL`, `BNETD_JIFFIES`), OOM safety buffer, daemonization (`DO_DAEMONIZE`), Win32 service mode
+- [x] Configuration system: conf templates in `conf/*.in` substituted by CMake, runtime parsing via `prefs.cpp`, key files (`bnetd.conf`, `d2cs.conf`, `d2dbs.conf`, `channel.conf`, `realm.conf`, `versioncheck.json`, `ad.json`, `bnmaps.conf`, `command_groups.conf`, `supportfile.conf`, `address_translation.conf`, `sql_DB_layout.conf`, `i18n/`)
+- [x] Storage layer: `storage_path` string format, file (plain/cdb) vs sql backends, sql sub-drivers (mysql/pgsql/sqlite3/odbc) gated by `WITH_*` options; reference `docs/storage.txt`
+- [x] Protocol handlers: bnet/bot/telnet/irc/wol/wgameres/apireg/file/udp/d2cs/init/w3route — list with port defaults from `setup_before.h`
+- [x] Lua scripting: when enabled, file layout under `lua/`, hook entry points (`handle_channel/client/command/game/server/user`), C++ glue files, registered C functions
+- [x] Logging: `eventlog(level, __FUNCTION__, "fmt {}", args)` template API, levels (none/trace/debug/info/warn/error/fatal/gui), `loglevels` config
+- [x] Build options matrix: `WITH_BNETD/D2CS/D2DBS/LUA/MYSQL/SQLITE3/PGSQL/ODBC/WIN32_GUI` and how they affect the outputs
+- [x] Verify: re-read each cited file and confirm every concrete claim (file path, function name, option flag, port number, default constant) matches the source
 
 ### Task 3: Write CLAUDE.md (root onboarding doc)
 
