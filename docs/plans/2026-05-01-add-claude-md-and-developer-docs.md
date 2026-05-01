@@ -75,23 +75,23 @@ Sections:
 - Create: `CLAUDE.md`
 
 Sections:
-- [ ] Project summary: one paragraph — what PvPGN-PRO is, what it serves, fork lineage
-- [ ] Quick orientation: pointer to `README.md` (build/install), `README.DEV` (coding style), `docs/architecture.md` (this PR's new file), `docs/readme.md` (other docs index), `UPDATE`/`NEWS` (release/migration notes)
-- [ ] Build commands: `cmake -G "Unix Makefiles" -H./ -B./build && cd build && make` for Linux; with options `-DWITH_LUA=ON -DWITH_MYSQL=ON -DWITH_SQLITE3=ON -DWITH_PGSQL=ON -DWITH_ODBC=ON`; Windows path via Magic Builder or `cmake -G "Visual Studio 14 2015"`; `make install` and `make uninstall`/`make purge` targets
-- [ ] Test commands: enable testing in CMake, then `ctest` from build dir; tests live in `src/test/` (currently bigint, bnetsrp3)
-- [ ] How to run for dev: `bnetd -f` (foreground), `-c <conf>` to point at a config, valgrind recipe from `README.DEV`
-- [ ] Codebase map at-a-glance (terse table of `src/` subdirs and their roles, with link to `docs/architecture.md` for depth)
-- [ ] Coding conventions (summarized from `README.DEV` with link): tabs for indent, RAII, exceptions derived from `std::exception`, const-ref catch, namespace `pvpgn::*`, no static — use unnamed namespace, `common/setup_before.h` first / `common/setup_after.h` last in includes, function definitions split type/name across lines, `getString`/`setString` accessors, no function bodies in headers (except templates), fmt-style `{}` placeholders in eventlog
-- [ ] Logging: how to log (`eventlog(eventlog_level_info, __FUNCTION__, "msg {}", arg);`), `ERROR0`/`WARN1`/etc. macros, log levels and where the file is written (`logfile` in `bnetd.conf`)
-- [ ] Configuration workflow when adding a new option: declare in `prefs.cpp`/`prefs.h`, add template in `conf/bnetd.conf.in`, document in `UPDATE`
-- [ ] Storage backends: short summary plus link to `docs/storage.txt`
-- [ ] Lua scripting: short summary plus pointers to `lua/` and the C++ bridge (`luainterface.cpp`, `luafunctions.cpp`, `luaobjects.cpp`, `luawrapper.cpp`)
-- [ ] Adding a new chat command: pointer to `command.cpp`, `command_groups.conf`, `bnalias.conf`, and Lua `handle_command.lua` for script-side commands
-- [ ] Adding a new protocol handler: pointer to `handle_*.cpp`/`.h` pattern and `handlers.h`
-- [ ] Common pitfalls / gotchas: header include order (`setup_before.h` must be first), raw `static` is disallowed by the project style, do not put bodies in `.h`, use `xalloc`/`xstrdup` rather than raw `malloc` where existing code does, fdwatch sockets must be removed in `conn_destroy` before close
-- [ ] CI: Travis (Linux) and AppVeyor (Windows + storage matrix) and CodeQL (cpp) — what each runs
-- [ ] Where to ask / report: GitHub issues on pvpgn/pvpgn-server (per `README.md`)
-- [ ] Verify: walk every code/path/option reference and confirm against the snapshot; any item that cannot be verified is removed or rewritten
+- [x] Project summary: one paragraph — what PvPGN-PRO is, what it serves, fork lineage
+- [x] Quick orientation: pointer to `README.md` (build/install), `README.DEV` (coding style), `docs/architecture.md` (this PR's new file), `docs/readme.md` (other docs index), `UPDATE`/`NEWS` (release/migration notes)
+- [x] Build commands: `cmake -G "Unix Makefiles" -H./ -B./build && cd build && make` for Linux; with options `-DWITH_LUA=ON -DWITH_MYSQL=ON -DWITH_SQLITE3=ON -DWITH_PGSQL=ON -DWITH_ODBC=ON`; Windows path via Magic Builder or `cmake -G "Visual Studio 14 2015"`; `make install` and `make uninstall`/`make purge` targets
+- [x] Test commands: enable testing in CMake, then `ctest` from build dir; tests live in `src/test/` (currently bigint, bnetsrp3)
+- [x] How to run for dev: `bnetd -f` (foreground), `-c <conf>` to point at a config, valgrind recipe from `README.DEV`
+- [x] Codebase map at-a-glance (terse table of `src/` subdirs and their roles, with link to `docs/architecture.md` for depth)
+- [x] Coding conventions (summarized from `README.DEV` with link): tabs for indent, RAII, exceptions derived from `std::exception`, const-ref catch, namespace `pvpgn::*`, no static — use unnamed namespace, `common/setup_before.h` first / `common/setup_after.h` last in includes, function definitions split type/name across lines, `getString`/`setString` accessors, no function bodies in headers (except templates), fmt-style `{}` placeholders in eventlog
+- [x] Logging: how to log (`eventlog(eventlog_level_info, __FUNCTION__, "msg {}", arg);`), `ERROR0`/`WARN1`/etc. macros, log levels and where the file is written (`logfile` in `bnetd.conf`)
+- [x] Configuration workflow when adding a new option: declare in `prefs.cpp`/`prefs.h`, add template in `conf/bnetd.conf.in`, document in `UPDATE`
+- [x] Storage backends: short summary plus link to `docs/storage.txt`
+- [x] Lua scripting: short summary plus pointers to `lua/` and the C++ bridge (`luainterface.cpp`, `luafunctions.cpp`, `luaobjects.cpp`, `luawrapper.cpp`)
+- [x] Adding a new chat command: pointer to `command.cpp`, `command_groups.conf`, `bnalias.conf`, and Lua `handle_command.lua` for script-side commands
+- [x] Adding a new protocol handler: pointer to `handle_*.cpp`/`.h` pattern and `handlers.h`
+- [x] Common pitfalls / gotchas: header include order (`setup_before.h` must be first), raw `static` is disallowed by the project style, do not put bodies in `.h`, use `xalloc`/`xstrdup` rather than raw `malloc` where existing code does, fdwatch sockets must be removed in `conn_destroy` before close
+- [x] CI: Travis (Linux) and AppVeyor (Windows + storage matrix) and CodeQL (cpp) — what each runs
+- [x] Where to ask / report: GitHub issues on pvpgn/pvpgn-server (per `README.md`)
+- [x] Verify: walk every code/path/option reference and confirm against the snapshot; any item that cannot be verified is removed or rewritten
 
 ### Task 4: Index the new architecture doc
 
