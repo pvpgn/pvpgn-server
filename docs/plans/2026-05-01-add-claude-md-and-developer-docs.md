@@ -46,8 +46,8 @@ This is a documentation-only change. No source code, build files, or runtime beh
 - Skim core modules to confirm responsibilities: `src/common/fdwatch.h`, `src/common/eventlog.h`, `src/common/setup_before.h`, `src/common/conf.h`, `src/common/packet.h`, `src/bnetd/connection.h`, `src/bnetd/storage.h`, `src/bnetd/prefs.h`, `src/bnetd/luainterface.h`
 
 Steps:
-- [ ] Build a short outline (in working notes, not committed) listing every section the two new documents will contain
-- [ ] Verify the outline against the actual file inventory (no claims about modules that do not exist)
+- [x] Build a short outline (in working notes, not committed) listing every section the two new documents will contain
+- [x] Verify the outline against the actual file inventory (no claims about modules that do not exist)
 
 ### Task 2: Write docs/architecture.md (developer architecture overview)
 
