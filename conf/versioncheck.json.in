@@ -1,6 +1,19 @@
 {
     "WAR3": {
         "IX86": {
+            "0x1d": {
+                "checkRevisionFile": "ver-IX86-1.mpq",
+                "equation": "A=1239576727 C=1604096186 B=4198521212 4 A=A+S B=B-C C=C^A A=A+B",
+                "entries": [
+                    {
+                        "title": "Warcraft III - 1.29.2",
+                        "version": "1.29.2.15",
+                        "hash": "0x3cc7eaf6",
+                        "fileMetadata": "Warcraft III.exe 05/01/18 18:19:51 14854632",
+                        "versionTag": "WAR3_1292"
+                    }
+                ]
+            },
             "0x1c": {
                 "checkRevisionFile": "ver-IX86-1.mpq",
                 "equation": "A=1239576727 C=1604096186 B=4198521212 4 A=A+S B=B-C C=C^A A=A+B",
@@ -455,6 +468,19 @@
     },
     "W3XP": {
         "IX86": {
+            "0x1d": {
+                "checkRevisionFile": "ver-IX86-1.mpq",
+                "equation": "A=1239576727 C=1604096186 B=4198521212 4 A=A+S B=B-C C=C^A A=A+B",
+                "entries": [
+                    {
+                        "title": "Warcraft III - TFT 1.29.2",
+                        "version": "1.29.2.15",
+                        "hash": "0x3cc7eaf6",
+                        "fileMetadata": "Warcraft III.exe 05/01/18 18:19:51 14854632",
+                        "versionTag": "W3XP_1292"
+                    }
+                ]
+            },
             "0x1c": {
                 "checkRevisionFile": "ver-IX86-1.mpq",
                 "equation": "A=1239576727 C=1604096186 B=4198521212 4 A=A+S B=B-C C=C^A A=A+B",
