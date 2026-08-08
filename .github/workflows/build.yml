@@ -1,0 +1,47 @@
+name: build
+
+on:
+  push:
+    branches: [develop, master]
+  pull_request:
+    branches: [develop, master]
+
+jobs:
+  linux:
+    name: Linux (gcc, x64)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake zlib1g-dev libcurl4-openssl-dev
+
+      # CMAKE_POLICY_VERSION_MINIMUM is only needed while cmake_minimum_required
+      # is below 3.5, which CMake 4 refuses. Harmless on CMake 3.x.
+      - name: Configure
+        run: >
+          cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+
+      - name: Build
+        run: cmake --build build -j"$(nproc)"
+
+  windows:
+    name: Windows (MSVC, Win32)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Win32 is the supported Windows target: the vendored libs in lib/
+      # (curl, zlib, d2gelib) are x86, and src/d2warden/HashGameSeed.asm is
+      # 32-bit MASM, so an x64 build cannot succeed.
+      - name: Configure
+        run: >
+          cmake -S . -B build -A Win32
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+
+      - name: Build
+        run: cmake --build build --config RelWithDebInfo
