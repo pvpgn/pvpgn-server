@@ -271,7 +271,7 @@ static int on_client_creategamereq(t_connection * c, t_packet * packet)
 	} else if (!gq && gqlist_find_game(gamename)) {
 		eventlog(eventlog_level_info,__FUNCTION__,"game name {} is already exist in game queue",gamename);
 		reply=D2CS_CLIENT_CREATEGAMEREPLY_NAME_EXIST;
-	} else if (!(gs=d2gslist_choose_server())) {
+	} else if (!(gs=d2gslist_choose_server(gamename,gamedesc))) {
 		if (gq) {
 			eventlog(eventlog_level_error,__FUNCTION__,"client {} is already in game queue",d2cs_conn_get_sessionnum(c));
 			conn_set_gamequeue(c,NULL);

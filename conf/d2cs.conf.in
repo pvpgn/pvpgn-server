@@ -35,6 +35,11 @@ servaddrs		=	0.0.0.0:6113
 # Example: gameservlist = 192.168.1.10
 # (if you have a d2gs running on a machine with the IP 192.168.1.10)
 #
+# A client can pick a specific server from this list by naming it in the game
+# description: a description of "GS1" requests the first server listed here,
+# "GS2" the second, and so on. If that server is down or full, d2cs falls back
+# to the least loaded server as usual.
+#
 # YOU MUST CHANGE THIS OR D2CS WON'T WORK PROPERLY
 #
 # WARNING!! DO NOT USE "127.0.0.1" or "localhost" !!!
