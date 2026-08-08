@@ -25,6 +25,7 @@
 #include <cstring>
 
 #include "compat/psock.h"
+#include "compat/strncasecmp.h"
 #include "common/addr.h"
 #include "common/eventlog.h"
 #include "common/xalloc.h"
@@ -41,6 +42,9 @@ namespace pvpgn
 	{
 
 		static t_list		* d2gslist_head = NULL;
+		/* the configured gslist addresses, kept in config order so a client can
+		 * request a specific server by its position (game description "GSn") */
+		static t_addrlist	* d2gs_addrs = NULL;
 		static unsigned int	d2gs_id = 0;
 		static unsigned int	total_d2gs = 0;
 
@@ -84,7 +88,8 @@ namespace pvpgn
 						gs = d2gs_create(addr_num_to_ip_str(addr_get_ip(curr_laddr)));
 					if (gs) BIT_SET_FLAG(gs->flag, D2GS_FLAG_VALID);
 				}
-				addrlist_destroy(gsaddrs);
+				if (d2gs_addrs) addrlist_destroy(d2gs_addrs);
+				d2gs_addrs = gsaddrs;
 			}
 
 			BEGIN_LIST_TRAVERSE_DATA(d2gslist_head, gs, t_d2gs)
@@ -113,6 +118,8 @@ namespace pvpgn
 				return -1;
 			}
 			d2gslist_head = NULL;
+			if (d2gs_addrs) addrlist_destroy(d2gs_addrs);
+			d2gs_addrs = NULL;
 			return 0;
 		}
 
@@ -201,21 +208,48 @@ namespace pvpgn
 				return NULL;
 		}
 
-		extern t_d2gs * d2gslist_choose_server(void)
+		/* a game server can host a game only if it is authed and has a free slot */
+		static int d2gs_can_host(t_d2gs const * gs)
+		{
+			return gs->active && gs->connection && gs->state == d2gs_state_authed &&
+				gs->maxgame && gs->gamenum < gs->maxgame;
+		}
+
+		/* a game description of "GSn" asks for the n-th server of the gslist */
+		static t_d2gs * d2gslist_find_gs_by_desc(char const * game_desc)
+		{
+			t_addr	* gs_addr;
+			int	gs_idx;
+
+			if (!game_desc || strncasecmp(game_desc, "gs", 2)) return NULL;
+			if ((gs_idx = std::atoi(&game_desc[2])) <= 0) return NULL;
+			gs_idx--;
+			if (!d2gs_addrs || gs_idx >= addrlist_get_length(d2gs_addrs)) return NULL;
+			if (!(gs_addr = (t_addr *)list_get_data_by_pos(d2gs_addrs, gs_idx))) return NULL;
+			return d2gslist_find_gs_by_ip(addr_get_ip(gs_addr));
+		}
+
+		extern t_d2gs * d2gslist_choose_server(char const * game_name, char const * game_desc)
 		{
 			t_d2gs			* gs;
 			t_d2gs			* ogs;
 			unsigned int		percent;
 			unsigned int		min_percent = 100;
 
+			if ((gs = d2gslist_find_gs_by_desc(game_desc))) {
+				if (d2gs_can_host(gs)) {
+					eventlog(eventlog_level_info, __FUNCTION__, "using requested game server {} (id: {}) for game {} ({})",
+						addr_num_to_ip_str(gs->ip), gs->id, game_name, game_desc);
+					return gs;
+				}
+				eventlog(eventlog_level_info, __FUNCTION__, "requested game server {} (id: {}) for game {} ({}) is unavailable, choosing another",
+					addr_num_to_ip_str(gs->ip), gs->id, game_name, game_desc);
+			}
+
 			ogs = NULL;
 			BEGIN_LIST_TRAVERSE_DATA_CONST(d2gslist_head, gs, t_d2gs)
 			{
-				if (!gs->active) continue;
-				if (!gs->connection) continue;
-				if (gs->state != d2gs_state_authed) continue;
-				if (!gs->maxgame) continue;
-				if (gs->gamenum >= gs->maxgame) continue;
+				if (!d2gs_can_host(gs)) continue;
 				percent = 100 * gs->gamenum / gs->maxgame;
 				if (percent < min_percent) {
 					min_percent = percent;

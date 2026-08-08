@@ -205,7 +205,7 @@ static int on_d2gs_authreply(t_connection * c, t_packet * packet)
 	}
 
 	if (reply==D2CS_D2GS_AUTHREPLY_SUCCEED) {
-		eventlog(eventlog_level_info,__FUNCTION__,"game server {} authed",addr_num_to_ip_str(d2cs_conn_get_addr(c)));
+		eventlog(eventlog_level_info,__FUNCTION__,"game server {} (id: {}) authed with version 0x{:X}",addr_num_to_ip_str(d2cs_conn_get_addr(c)),conn_get_d2gs_id(c),version);
 		d2cs_conn_set_state(c,conn_state_authed);
 		d2gs_send_server_conffile(gs, c);
 		d2gs_send_init_info(gs, c);
@@ -269,6 +269,7 @@ static int on_d2gs_echoreply(t_connection * c, t_packet * packet)
 
 static int on_d2gs_creategamereply(t_connection * c, t_packet * packet)
 {
+	eventlog(eventlog_level_debug,__FUNCTION__,"got create game reply from gs {}",conn_get_d2gs_id(c));
 	t_packet	* opacket, * rpacket;
 	t_sq		* sq;
 	t_connection	* client;
