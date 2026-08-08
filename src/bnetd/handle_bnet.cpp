@@ -4866,14 +4866,14 @@ namespace pvpgn
 			if (conn_get_clienttag(c) != CLIENTTAG_WAR3XP_UINT
 				|| bn_int_get(packet->u.client_changeclient.clienttag) != CLIENTTAG_WARCRAFT3_UINT)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "[{}] invalid attempt to change client from {X} to {X}", conn_get_socket(c), conn_get_clienttag(c), bn_int_get(packet->u.client_changeclient.clienttag));
+				eventlog(eventlog_level_error, __FUNCTION__, "[{}] invalid attempt to change client from {} to {}", conn_get_socket(c), clienttag_uint_to_str(conn_get_clienttag(c)), clienttag_uint_to_str(bn_int_get(packet->u.client_changeclient.clienttag)));
 				conn_set_state(c, conn_state_destroy);
 				return -1;
 			}
 
 			conn_set_clienttag(c, bn_int_get(packet->u.client_changeclient.clienttag));
 
-			eventlog(eventlog_level_info, __FUNCTION__, "[{}] changed client to {X}", conn_get_socket(c), bn_int_get(packet->u.client_changeclient.clienttag));
+			eventlog(eventlog_level_info, __FUNCTION__, "[{}] changed client to {}", conn_get_socket(c), clienttag_uint_to_str(bn_int_get(packet->u.client_changeclient.clienttag)));
 
 			return 0;
 		}
