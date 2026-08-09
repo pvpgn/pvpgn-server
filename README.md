@@ -105,6 +105,19 @@ env ASSUME_ALWAYS_YES=yes pkg install git cmake curl
 # PostgreSQL?
 ```
 
+#### macOS
+Install the Xcode Command Line Tools (provides Apple Clang, make, and the zlib/libcurl headers from the macOS SDK — no Homebrew packages are needed for these), then install CMake via [Homebrew](https://brew.sh):
+```
+xcode-select --install
+brew install git cmake
+```
+
+For Lua support, Lua 5.1 must be compiled and installed from source (newer versions are not supported yet). Installing to a user-local prefix avoids sudo:
+```
+curl -fsSL https://www.lua.org/ftp/lua-5.1.5.tar.gz | tar -xz
+cd lua-5.1.5 && make macosx && make install INSTALL_TOP="$HOME/lua51"
+```
+
 ### Generate a makefile or Visual Studio solution
 
 ```
@@ -115,6 +128,13 @@ cmake -DCMAKE_BUILD_TYPE="RelWithDebInfo" ../
 ```
 
 - On Linux, you may want to specify a custom installation directory by passing `-DCMAKE_INSTALL_PREFIX=/usr/local/pvpgn` to CMake.
+- On macOS:
+  - CMake 4.x (the current Homebrew version) no longer supports this project's minimum CMake version, so add `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` to the CMake command.
+  - When building with `-DWITH_LUA=true`, also pass `-DCMAKE_PREFIX_PATH="$HOME/lua51"` (the Lua 5.1 install prefix from the step above). Without it, CMake will pick up any newer Homebrew Lua (5.4/5.5), which fails to compile.
+  - Full example:
+    ```
+    cmake -DCMAKE_BUILD_TYPE="RelWithDebInfo" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DWITH_LUA=true -DCMAKE_PREFIX_PATH="$HOME/lua51" ../
+    ```
 - Additional CMake options are:
   - `-DWITH_BNETD=true`
   - `-DWITH_D2CS=true`
@@ -128,10 +148,11 @@ cmake -DCMAKE_BUILD_TYPE="RelWithDebInfo" ../
 
 ### Build and install
 
-#### Linux
+#### Linux / macOS
 ```
 make && make install
 ```
+On macOS, the default install prefix (`/usr/local`) requires `sudo make install`; alternatively pass `-DCMAKE_INSTALL_PREFIX=$HOME/pvpgn` to CMake to install without sudo.
 
 #### Windows (Visual Studio)
 First open *Developer PowerShell for VS ...* or *Developer Command Prompt for VS ...*
