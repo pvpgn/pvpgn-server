@@ -136,21 +136,20 @@ jobs:
       # is 32-bit MASM, so an x64 build cannot succeed.
       # Runs in cmd: PowerShell mangles -DCMAKE_POLICY_VERSION_MINIMUM=3.5
       # into "3", which cmake_minimum_required then rejects.
-      # The install prefix must be set at configure time (install paths are
-      # absolute; DESTDIR is not usable on Windows). Harmless at runtime:
-      # the Windows layout only uses paths relative to the executables.
       - name: Configure
         shell: cmd
-        run: cmake -S . -B build -A Win32 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=%CD%\stage\pvpgn -DWITH_LUA=true
+        run: cmake -S . -B build -A Win32 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DWITH_LUA=true
 
       - name: Build
         shell: cmd
         run: cmake --build build --config RelWithDebInfo
 
+      # Windows install dirs are relative to the prefix (self-contained,
+      # relocatable layout), so --prefix at install time is all that's needed.
       - name: Package
         shell: pwsh
         run: |
-          cmake --install build --config RelWithDebInfo
+          cmake --install build --config RelWithDebInfo --prefix "$PWD\stage\pvpgn"
           # Runtime DLLs for the vendored import libs are not covered by install rules
           $bnetd = Get-ChildItem -Recurse stage\pvpgn -Filter bnetd.exe | Select-Object -First 1
           if (-not $bnetd) { Write-Error "bnetd.exe not found in install tree"; exit 1 }
