@@ -3,11 +3,10 @@ name: build
 on:
   push:
     branches: [develop, master, ci-release-binaries]
+    tags: ['1.*', 'v*']
   pull_request:
     branches: [develop, master]
   workflow_dispatch:
-  release:
-    types: [published]
 
 permissions:
   contents: write
@@ -63,12 +62,6 @@ jobs:
           name: ${{ env.PKG }}
           path: ${{ env.PKG }}.tar.gz
 
-      - name: Attach to release
-        if: github.event_name == 'release'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ github.event.release.tag_name }}" "$PKG.tar.gz" --clobber
-
   macos:
     name: macOS (Apple Clang, arm64)
     runs-on: macos-latest
@@ -119,12 +112,6 @@ jobs:
           name: ${{ env.PKG }}
           path: ${{ env.PKG }}.tar.gz
 
-      - name: Attach to release
-        if: github.event_name == 'release'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ github.event.release.tag_name }}" "$PKG.tar.gz" --clobber
-
   windows:
     name: Windows (MSVC, Win32)
     runs-on: windows-latest
@@ -174,9 +161,25 @@ jobs:
           name: ${{ env.PKG }}
           path: ${{ env.PKG }}.zip
 
-      - name: Attach to release
-        if: github.event_name == 'release'
-        shell: pwsh
+  # On a version tag, gather the three platform packages into a DRAFT release.
+  # A human reviews the draft (all assets present, notes) and publishes it.
+  # Only runs if every platform built successfully.
+  release:
+    name: Draft release
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [linux, macos, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create draft release and attach binaries
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ github.event.release.tag_name }}" "$env:PKG.zip" --clobber
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || \
+            gh release create "$GITHUB_REF_NAME" --draft --title "$GITHUB_REF_NAME" --generate-notes
+          gh release upload "$GITHUB_REF_NAME" dist/* --clobber
