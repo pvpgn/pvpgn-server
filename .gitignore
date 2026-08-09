@@ -9,3 +9,4 @@
 /.vs
 /CMakeSettings.json
 /.vscode
+.DS_Store
