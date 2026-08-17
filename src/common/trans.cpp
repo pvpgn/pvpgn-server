@@ -114,7 +114,7 @@ namespace pvpgn
 				eventlog(eventlog_level_error, __FUNCTION__, "missing include on line {} of file \"{}\"", line, filename);
 				continue;
 			}
-			/* add exlude networks */
+			/* add exclude networks */
 			tmp = xstrdup(exclude);
 			npos = 0;
 			while (tmp[npos]) {

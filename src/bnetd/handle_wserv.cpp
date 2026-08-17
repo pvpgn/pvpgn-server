@@ -93,13 +93,13 @@ namespace pvpgn
 			char const *ftppassword;
 
 			/**
-			 *  Heres the imput expected:
+			 *  Heres the input expected:
 			 *  vercheck [SKU] [version]
 			 *
 			 *  Here is output expected for ServServ server:
-			 *  1) Update non-existant:
-			 *  :[servername] 602 [username] :Update record non-existant
-			 *  2) Update existant:
+			 *  1) Update non-existent:
+			 *  :[servername] 602 [username] :Update record non-existent
+			 *  2) Update existent:
 			 *  :[servername] 606 [username] :[ftpserveraddr] [ftpusername] [ftppaswd] [path] [file.rtp] [newversion] [SKU] REQ
 			 */
 
@@ -123,7 +123,7 @@ namespace pvpgn
 				}
 				else
 				{
-					irc_send(conn, RPL_UPDATE_NONEX, ":Update record non-existant");
+					irc_send(conn, RPL_UPDATE_NONEX, ":Update record non-existent");
 				}
 			}
 			else

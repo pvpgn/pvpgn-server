@@ -62,7 +62,7 @@ namespace pvpgn
 
 		static int	gui_run = TRUE;		/* default state: run gui */
 		static int	d2dbs_run = TRUE;	/* default state: run d2dbs */
-		static int	d2dbs_running = FALSE;	/* currect state: not running */
+		static int	d2dbs_running = FALSE;	/* current state: not running */
 
 		int fprintf(FILE *stream, const char *format, ...)
 		{

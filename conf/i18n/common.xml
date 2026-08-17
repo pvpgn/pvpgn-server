@@ -1909,7 +1909,7 @@
       <translate></translate>
     </item>
     <item id="511" file="ipban.cpp" function="ipban_func_check">
-      <original>Error occured.</original>
+      <original>Error occurred.</original>
       <translate></translate>
     </item>
     <item id="512" file="ipban.cpp" function="ipban_func_check">
@@ -1985,7 +1985,7 @@
       <translate></translate>
     </item>
     <item id="441" file="mail.cpp" function="mail_func_delete">
-      <original>Succesfully deleted message.</original>
+      <original>Successfully deleted message.</original>
       <translate></translate>
     </item>
     <item id="436" file="mail.cpp" function="mail_func_read">
@@ -2013,7 +2013,7 @@
       <translate></translate>
     </item>
     <item id="433" file="mail.cpp" function="mail_func_send">
-      <original>Receiver has reached his mail quota. Your message will NOT be sent.</original>
+      <original>Receiver has reached their mail quota. Your message will NOT be sent.</original>
       <translate></translate>
     </item>
     <item id="434" file="mail.cpp" function="mail_func_send">
@@ -2066,6 +2066,70 @@
     </item>
     <item id="443" file="redirect.lua" function="api.message_send_text">
       <original>User "{}" is offline</original>
+      <translate></translate>
+    </item>
+    <item id="516" file="clan.cpp" function="clan_create">
+      <original>This is a newly created clan</original>
+      <translate></translate>
+    </item>
+    <item id="517" file="command.cpp" function="_handle_email_command">
+      <original>An error has occurred.</original>
+      <translate></translate>
+    </item>
+    <item id="518" file="command.cpp" function="_handle_email_command">
+      <original>Your email address is: {}</original>
+      <translate></translate>
+    </item>
+    <item id="519" file="command.cpp" function="_handle_email_command">
+      <original>Email address successfully set to {}.</original>
+      <translate></translate>
+    </item>
+    <item id="520" file="command.cpp" function="_handle_email_command">
+      <original>Successfully verified email address.</original>
+      <translate></translate>
+    </item>
+    <item id="521" file="command.cpp" function="_handle_email_command">
+      <original>The code has already expired.</original>
+      <translate></translate>
+    </item>
+    <item id="522" file="command.cpp" function="_handle_email_command">
+      <original>The code is incorrect.</original>
+      <translate></translate>
+    </item>
+    <item id="523" file="command.cpp" function="_handle_email_command">
+      <original>Regenerated verification code. Check your email.</original>
+      <translate></translate>
+    </item>
+    <item id="524" file="command.cpp" function="_handle_email_command">
+      <original>Your email address is already set to {}.</original>
+      <translate></translate>
+    </item>
+    <item id="525" file="command.cpp" function="_handle_email_command">
+      <original>Email address verification is disabled.</original>
+      <translate></translate>
+    </item>
+    <item id="526" file="command.cpp" function="_handle_email_command">
+      <original>The email address is too long, please use another one.</original>
+      <translate></translate>
+    </item>
+    <item id="527" file="command.cpp" function="_handle_email_command">
+      <original>You have not set an email address yet.</original>
+      <translate></translate>
+    </item>
+    <item id="528" file="command.cpp" function="_handle_email_command">
+      <original>An email has been sent, please check your inbox for the verification code.</original>
+      <translate></translate>
+    </item>
+    <item id="529" file="command.cpp" function="_handle_email_command">
+      <original>An error has occurred, could not send a verification email.</original>
+      <translate></translate>
+    </item>
+    <item id="530" file="command.cpp" function="_handle_finger_command">
+      <original>(Verified)</original>
+      <translate></translate>
+    </item>
+    <item id="531" file="command.cpp" function="_handle_finger_command">
+      <original>(Unverified)</original>
       <translate></translate>
     </item>
   </items>

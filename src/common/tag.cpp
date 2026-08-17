@@ -46,7 +46,7 @@ namespace pvpgn
 		return tag_str_to_uint(clienttag);
 	}
 
-	/* fixme: have all fuctions call tag_uint_to_str() */
+	/* fixme: have all functions call tag_uint_to_str() */
 	extern char const * clienttag_uint_to_str(t_clienttag clienttag)
 	{
 		switch (clienttag)
@@ -151,7 +151,7 @@ namespace pvpgn
 	 *
 	 * from calling function:
 	 *
-	 *    char tag_str[5]; // define first, then send into fuction
+	 *    char tag_str[5]; // define first, then send into function
 	 *    tag_uint_to_str(tag_str, tag_uint); // returns pointer to tag_str
 	 *
 	 * Nothing to malloc, nothing to free
@@ -489,7 +489,7 @@ namespace pvpgn
 			return CLIENTTAG_RENGDFDS_UINT;
 		case 32512:  /* Westwood Online API */
 			return CLIENTTAG_WWOL_UINT;
-		default:  /* Unknown Westwood Online game -> is anyone SKU that we havent??? */
+		default:  /* Unknown Westwood Online game -> is anyone SKU that we haven't??? */
 			return CLIENTTAG_WWOL_UINT;
 		}
 	}

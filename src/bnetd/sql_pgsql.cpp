@@ -198,7 +198,7 @@ namespace pvpgn
 			PGresult *pgres;
 
 			if (pgsql == NULL) {
-				eventlog(eventlog_level_error, __FUNCTION__, "pgsql driver not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "pgsql driver not initialized");
 				return NULL;
 			}
 
@@ -239,7 +239,7 @@ namespace pvpgn
 			int res;
 
 			if (pgsql == NULL) {
-				eventlog(eventlog_level_error, __FUNCTION__, "pgsql driver not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "pgsql driver not initialized");
 				return -1;
 			}
 

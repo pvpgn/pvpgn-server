@@ -65,7 +65,7 @@ max_connections = 1000
 # Both = 2 (default)
 lod_realm = 2
 
-# This sets whether you can convert a clasic char to
+# This sets whether you can convert a classic char to
 # an expansion char.
 # Allow Convert = 1
 # Don't allow Convert = 0
@@ -73,8 +73,8 @@ allow_convert = 0
 
 # here u can enter the symbols allowed in accountnames (additional to 
 # alphanumerical symbals which are always accepted). please note that
-# it is absolutly mandatory that u set up the same symbols here as in
-# bnetd.conf or else u wont be able to play D2 with some characters
+# it is absolutely mandatory that u set up the same symbols here as in
+# bnetd.conf or else u won't be able to play D2 with some characters
 # (those whose symbols are allowed in bnetd.conf but not here)
 # same warnings as in bnetd.conf apply here - be warned - and just
 # change something if you know what you are doing
@@ -142,7 +142,7 @@ allow_newchar		=	1
 # Do you want d2cs to check client for multilogin for security reason?
 check_multilogin	=	0
 
-# Maxinum number of character per account
+# Maximum number of character per account
 # Max allowed value is 18 (enforced by server)
 maxchar			=	8
 
@@ -153,7 +153,7 @@ maxchar			=	8
 # Do we need ascending or descending order for charlist?
 #charlist_sort_order = "ASC"
 
-# Maxinum number of games will be shown in join game list
+# Maximum number of games will be shown in join game list
 # Zero = infinite
 maxgamelist		=	20
 
@@ -161,7 +161,7 @@ maxgamelist		=	20
 # Otherwise, only game with difficulty = character difficulty will be shown
 gamelist_showall	=	0
 
-# Maxinum time in seconds that a user can idle
+# Maximum time in seconds that a user can idle
 # Zero = infinite
 idletime		=	3600
 
@@ -208,7 +208,7 @@ d2gs_version		=	0
 # Game server password
 d2gs_password		=	""
 
-# Maxinum number of second that a game will be shown on list( zero = infinite )
+# Maximum number of second that a game will be shown on list( zero = infinite )
 game_maxlifetime	=	0
 
 # Maximum level allowed in this (realm) game.
@@ -217,7 +217,7 @@ game_maxlifetime	=	0
 # !!! Use them at your own risk !!!
 # game_maxlevel       = 255
 
-# A game will be automatically destroied after how long time idle
+# A game will be automatically destroyed after how long time idle
 max_game_idletime	=	0
 
 # Allow Limitation created game with password, player number or level limit?
@@ -242,7 +242,7 @@ d2gs_restart_delay	=	300
 
 # ladder start time
 # format: yyyy-mm-dd hh:mm:ss
-# be carefull:
+# be careful:
 # all chars created before this date will revert to non-ladder chars
 ladder_start_time	=	""
 

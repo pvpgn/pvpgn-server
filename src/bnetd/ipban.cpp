@@ -29,6 +29,8 @@
 #include <cstring>
 #include <vector>
 
+#include <fmt/format.h>
+
 #include "compat/strsep.h"
 #include "compat/strcasecmp.h"
 
@@ -675,9 +677,7 @@ namespace pvpgn
 		{
 			t_elem const *	curr;
 			t_ipban_entry * 	entry;
-			char		tstr[MAX_MESSAGE_LEN];
 			unsigned int	counter;
-			char	 	timestr[50];
 			char *		ipstr;
 
 			counter = 0;
@@ -690,19 +690,45 @@ namespace pvpgn
 					eventlog(eventlog_level_error, __FUNCTION__, "ipbanlist contains NULL item");
 					return -1;
 				}
-				counter++;
-				if (entry->endtime == 0)
-					std::sprintf(timestr, "%s", localize(c, "(perm)").c_str());
-				else
-					std::sprintf(timestr, "(%.48s)", seconds_to_timestr(entry->endtime - now));
 
-				if (!(ipstr = ipban_entry_to_str(entry)))
+				ipstr = nullptr;
+
+				try
 				{
-					eventlog(eventlog_level_error, __FUNCTION__, "could not convert entry to string");
+					std::string timestr;
+					if (entry->endtime == 0)
+					{
+						timestr = fmt::format("{}", localize(c, "(perm)"));
+					}
+					else
+					{
+						timestr = fmt::format("({})", seconds_to_timestr(entry->endtime - now));
+					}
+
+					if (!(ipstr = ipban_entry_to_str(entry)))
+					{
+						eventlog(eventlog_level_error, __FUNCTION__, "could not convert entry to string");
+						continue;
+					}
+
+					char tstr[MAX_MESSAGE_LEN];
+					fmt::format_to_n(tstr, sizeof(tstr), "{}: {} {}", counter, ipstr, timestr);
+					message_send_text(c, message_type_info, c, tstr);
+				}
+				catch (const std::exception& e)
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "failed to send ip ban entry ({})", e.what());
+
+					if (ipstr != nullptr)
+					{
+						xfree(ipstr);
+					}
+
 					continue;
 				}
-				std::sprintf(tstr, "%u: %s %s", counter, ipstr, timestr);
-				message_send_text(c, message_type_info, c, tstr);
+
+				counter++;
+
 				xfree(ipstr);
 			}
 
@@ -724,7 +750,7 @@ namespace pvpgn
 				message_send_text(c, message_type_info, c, localize(c, "IP not banned."));
 				break;
 			case -1:
-				message_send_text(c, message_type_error, c, localize(c, "Error occured."));
+				message_send_text(c, message_type_error, c, localize(c, "Error occurred."));
 				break;
 			default:
 				msgtemp = localize(c, "IP banned by rule #{}.", res);
@@ -805,7 +831,6 @@ namespace pvpgn
 		static t_ipban_entry * ipban_str_to_ipban_entry(char const * ipstr)
 		{
 			char *          matched;
-			char *          whole;
 			char *          cp;
 			t_ipban_entry * entry;
 
@@ -847,7 +872,7 @@ namespace pvpgn
 				eventlog(eventlog_level_debug, __FUNCTION__, "entry: {} matched as ipban_type_wildcard", cp);
 
 				/* only xfree() info1! */
-				whole = xstrdup(cp);
+				char * whole = xstrdup(cp);
 				entry->info1 = std::strtok(whole, ".");
 				entry->info2 = std::strtok(NULL, ".");
 				entry->info3 = std::strtok(NULL, ".");
@@ -858,6 +883,7 @@ namespace pvpgn
 					xfree(entry->info1);
 					xfree(entry);
 					xfree(cp);
+					xfree(whole);
 					return NULL;
 				}
 			}

@@ -22,12 +22,12 @@
 # The entries are searched in the order listed in this file
 # Exclude networks are searched before include networks
 # Only the first matching line is used
-# Lines begining with '#' are ignored
+# Lines beginning with '#' are ignored
 #
 # If no match is found, the input ip will be returned.
 #
 # Network specification can be either NONE, ANY or x.y.z.t/bitlen:
-# - NONE = no neworks (same as 0.0.0.0/32)
+# - NONE = no networks (same as 0.0.0.0/32)
 # - ANY = All networks (same as 0.0.0.0/0)
 # x.y.z.t/bitlen : means matching the first bitlen bits from the x.y.z.t value
 # Example: if you have the network 192.168.0.x (where x is from 1 to 255) to 
@@ -42,9 +42,9 @@
 # Here you can translate the IP/port of the w3route IP/port as sent by pvpgn
 # to the WAR3 clients. You need this ONLY if you want to have external W3 
 # players that will play PlayGame/ArrangedTeam games.
-# Set exclude to the range of clients you want to recieve the input address
+# Set exclude to the range of clients you want to receive the input address
 #    instead of the output address
-# Set include to the range of clients you want to recieve the output address
+# Set include to the range of clients you want to receive the output address
 #
 # input (ip:port)   output (ip:port)   exclude (ip/netmask)    include (ip/netmask)
 #----------------- ------------------ ----------------------  ----------------------
@@ -68,9 +68,9 @@
 #
 # Set input address to the client to be translated 
 # Set output address to the address to be sent to the other clients 
-# Set exclude to the range of clients you want to recieve the input address 
+# Set exclude to the range of clients you want to receive the input address 
 #    instead of the output address 
-# Set include to the range of clients you want to recieve the output address 
+# Set include to the range of clients you want to receive the output address 
 #
 # input (ip:port)    output (ip:port)    exclude (ip/netmask)    include (ip/netmask)
 #-----------------  ------------------  ----------------------  ----------------------
@@ -93,9 +93,9 @@
 #
 # Set input address to the ip of d2cs (same as the ip in the realm.conf)
 # Set output address to the address to be sent to the clients
-# Set exclude to the range of clients you want to recieve the input address
+# Set exclude to the range of clients you want to receive the input address
 #    instead of the output address
-# Set include to the range of client you want to recieve the output address
+# Set include to the range of client you want to receive the output address
 #
 # input (ip:port)    output (ip:port)    exclude (ip/netmask)    include (ip/netmask)
 #-----------------  ------------------  ----------------------  ----------------------
@@ -115,9 +115,9 @@
 #
 # Set input address to the ip of d2gs (same as the gameservlist in d2cs.conf)
 # Set output address to the address to be sent to the clients
-# Set exclude to the range of clients you want to recieve the input address
+# Set exclude to the range of clients you want to receive the input address
 #    instead of the output address
-# Set include to the range of client you want to recieve the output address
+# Set include to the range of client you want to receive the output address
 #
 # input (ip:port)    output (ip:port)    exclude (ip/netmask)    include (ip/netmask)
 #-----------------  ------------------  ----------------------  ----------------------

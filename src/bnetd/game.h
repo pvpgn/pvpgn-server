@@ -155,11 +155,13 @@ namespace pvpgn
 		{
 			game_speed_none,
 			game_speed_slowest,
+			game_speed_evenslower, // only applicable for WC2
 			game_speed_slower,
 			game_speed_slow,
 			game_speed_normal,
 			game_speed_fast,
 			game_speed_faster,
+			game_speed_evenfaster, // only applicable for WC2
 			game_speed_fastest
 		} t_game_speed;
 

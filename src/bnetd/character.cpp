@@ -215,7 +215,7 @@ namespace pvpgn
 				case character_class_barbarian:
 					data_in_hex = "84 80 FF FF FF FF FF FF FF FF FF FF FF 05 FF FF FF FF FF FF FF FF FF FF FF 01 81 80 80 80 FF FF FF";
 					break;
-				default: break; //should never reach that part ot the code... but to make compiler happy...
+				default: break; //should never reach that part of the code... but to make compiler happy...
 				}
 				break;
 			case character_expansion_lod:

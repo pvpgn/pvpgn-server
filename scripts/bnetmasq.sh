@@ -17,7 +17,7 @@
 #
 # Installation:
 #	Copy this file into your local init.d directory.
-#	The position of this directory may vary with diffrent
+#	The position of this directory may vary with different
 #	linux distributions. 
 #	On Debian/GNU Linux it's /etc/init.d
 #	On S.u.S.E. Linux it's /sbin/init.d		(I guess)

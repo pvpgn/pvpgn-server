@@ -31,15 +31,15 @@ namespace pvpgn
 		case WSAEINTR:		return "Interrupted function call";
 		case WSAEACCES:		return "Permission denied";
 		case WSAEFAULT:		return "Bad address";
-		case WSAEINVAL:		return "Inavlid argument";
+		case WSAEINVAL:		return "Invalid argument";
 		case WSAEMFILE:		return "Too many open files";
-		case WSAEWOULDBLOCK:	return "Resource temorarily unavailable";
+		case WSAEWOULDBLOCK:	return "Resource temporarily unavailable";
 		case WSAEINPROGRESS:	return "Operation now in progress";
 		case WSAEALREADY:		return "Operation already in progress";
 		case WSAENOTSOCK:		return "Socket operation on nonsocket";
 		case WSAEDESTADDRREQ:	return "Destination address required";
 		case WSAEMSGSIZE:		return "Message too long";
-		case WSAEPROTOTYPE:		return "Protocol wrong type fpr socket";
+		case WSAEPROTOTYPE:		return "Protocol wrong type for socket";
 		case WSAENOPROTOOPT:	return "Bad protocol option";
 		case WSAEPROTONOSUPPORT:	return "Protocol not supported";
 		case WSAESOCKTNOSUPPORT:	return "Socket type not supported";

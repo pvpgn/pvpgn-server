@@ -472,7 +472,7 @@ namespace pvpgn
 					if (ta->tid != a->tid)
 						set = 0;
 				}
-				if (!set)		/* check if search packet has been recieved from each team member */
+				if (!set)		/* check if search packet has been received from each team member */
 					return 0;
 				break;
 			case CLIENT_FINDANONGAME_AT_SEARCH:
@@ -482,7 +482,7 @@ namespace pvpgn
 						return -1;
 					}
 				}
-				for (i = 0; i < teamsize; i++) {	/* check if search packet has been recieved from each team member */
+				for (i = 0; i < teamsize; i++) {	/* check if search packet has been received from each team member */
 					if (!(ta = conn_get_anongame(tc[i])))
 						return 0;
 					if (ta->tid != a->tid)
@@ -535,7 +535,6 @@ namespace pvpgn
 			md = (t_matchdata*)xmalloc(sizeof(t_matchdata));
 			md->c = c;
 			md->map_prefs = map_prefs;
-			md->versiontag = conn_get_versioncheck(c) ? conn_get_versioncheck(c)->get_version_tag().c_str() : nullptr;
 
 			list_append_data(matchlists[queue][level], md);
 
@@ -806,7 +805,6 @@ namespace pvpgn
 			int level = _anongame_level_by_queue(c, queue);
 			int delta = 0;
 			int i;
-			t_matchdata *md;
 			t_elem *curr;
 			int diff;
 			t_anongame *a = conn_get_anongame(c);
@@ -827,10 +825,28 @@ namespace pvpgn
 					eventlog(eventlog_level_trace, __FUNCTION__, "Traversing level {} players", level + delta);
 
 					LIST_TRAVERSE(matchlists[queue][level + delta], curr) {
-						md = (t_matchdata*)elem_get_data(curr);
-						if (md->versiontag 
-							&& conn_get_versioncheck(c) 
-							&& !std::strcmp(md->versiontag, conn_get_versioncheck(c)->get_version_tag().c_str()) 
+						t_matchdata* md = (t_matchdata*)elem_get_data(curr);
+						if (md == nullptr)
+						{
+							eventlog(eventlog_level_error, __FUNCTION__, "got NULL matchdata");
+							continue;
+						}
+
+						if (md->c == nullptr)
+						{
+							eventlog(eventlog_level_error, __FUNCTION__, "got NULL connection");
+							continue;
+						}
+
+						const VersionCheck* const md_c_vc = select_versioncheck(conn_get_archtag(md->c), conn_get_clienttag(md->c), conn_get_versionid(md->c), conn_get_gameversion(md->c), conn_get_checksum(md->c));
+						const VersionCheck* const c_vc = select_versioncheck(conn_get_archtag(c), conn_get_clienttag(c), conn_get_versionid(c), conn_get_gameversion(c), conn_get_checksum(c));
+						if (md_c_vc == nullptr || c_vc == nullptr)
+						{
+							eventlog(eventlog_level_error, __FUNCTION__, "got NULL versioncheck");
+							continue;
+						}
+
+						if (md_c_vc->get_version_tag() == c_vc->get_version_tag()
 							&& (cur_prefs & md->map_prefs))
 						{
 							/* set maxlevel and minlevel to keep all players within 6 levels */
@@ -898,7 +914,7 @@ namespace pvpgn
 					delta = -delta;
 
 				if (level + delta < 0)
-					break;		/* cant really happen */
+					break;		/* can't really happen */
 
 			}
 			eventlog(eventlog_level_trace, __FUNCTION__, "[{}] Matching finished, not enough players (found {})", conn_get_socket(c), players[queue]);
@@ -917,7 +933,7 @@ namespace pvpgn
 			t_saf_pt2 *pt2;
 
 			/* FIXME: maybe periodically lookup w3routeaddr to support dynamic ips?
-			 * (or should dns lookup be even quick enough to do it everytime?)
+			 * (or should dns lookup be even quick enough to do it every time?)
 			 */
 
 			if (w3routeip == -1) {
@@ -1609,9 +1625,9 @@ namespace pvpgn
 		{
 			/* [smith] 20030427 fixed Big-Endian/Little-Endian conversion (Solaris bug) then
 			 * use  packet_append_data for append platform dependent data types - like
-			 * "int", cos this code was broken for BE platforms. it's rewriten in platform
-			 * independent style whis usege bn_int and other bn_* like datatypes and
-			 * fuctions for wor with datatypes - bn_int_set(), what provide right
+			 * "int", cos this code was broken for BE platforms. it's rewritten in platform
+			 * independent style whis usage bn_int and other bn_* like datatypes and
+			 * functions for wor with datatypes - bn_int_set(), what provide right
 			 * byteorder, not depended on LE/BE
 			 * fixed broken htonl() conversion for BE platforms - change it to
 			 * bn_int_nset(). i hope it's worked on intel too %) */

@@ -150,7 +150,6 @@ namespace pvpgn
 					char const *		clientexe;
 					char const *		owner;
 					char const *		cdkey;
-					const VersionCheck *versioncheck;
 				} client; /* client program specific data */
 				struct {
 					t_queue *		outqueue;  /* packets waiting to be sent */
@@ -189,14 +188,13 @@ namespace pvpgn
 					char const *		charname;
 				} d2;
 				struct {
-					char const *		w3_playerinfo; /* ADDED BY UNDYING SOULZZ 4/7/02 */
 					std::time_t			anongame_search_starttime;
 					/* [zap-zero] 20020527 - matching w3route connection for game connection /
 					 matching game connection for w3route connection */
 					/* FIXME: this "optimization" is so confusing leading to many possible bugs */
 					struct connection *	routeconn;
 					t_anongame *	anongame;
-					/* those will be filled when recieving 0x53ff and wiped out after 54ff */
+					/* those will be filled when receiving 0x53ff and wiped out after 54ff */
 					char const * client_proof;
 					char const * server_proof;
 				} w3;
@@ -231,6 +229,9 @@ namespace pvpgn
 #define INCLUDED_CONNECTION_PROTOS
 
 #include <ctime>
+#include <string>
+
+#include <nonstd/optional.hpp>
 
 #define JUST_NEED_TYPES
 #include "common/packet.h"
@@ -365,7 +366,7 @@ namespace pvpgn
 		extern int conn_unget_chatcharname(t_connection const * c, char const * name);
 		extern t_message_class conn_get_message_class(t_connection const * c, t_connection const * dst);
 		extern unsigned int conn_get_userid(t_connection const * c);
-		extern char const * conn_get_playerinfo(t_connection const * c);
+		extern nonstd::optional<std::string> conn_get_playerinfo(t_connection const * c);
 		extern int conn_set_playerinfo(t_connection const * c, char const * playerinfo);
 		extern char const * conn_get_realminfo(t_connection const * c);
 		extern int conn_set_realminfo(t_connection * c, char const * realminfo);
@@ -382,8 +383,6 @@ namespace pvpgn
 		extern int conn_quota_exceeded(t_connection * c, char const * message);
 		extern int conn_set_lastsender(t_connection * c, char const * sender);
 		extern char const * conn_get_lastsender(t_connection const * c);
-		const VersionCheck *conn_get_versioncheck(t_connection *c);
-		bool conn_set_versioncheck(t_connection *c, const VersionCheck* versioncheck);
 		extern int conn_get_echoback(t_connection * c);
 		extern void conn_set_echoback(t_connection * c, int echoback);
 		extern int conn_set_ircline(t_connection * c, char const * line);
@@ -395,9 +394,6 @@ namespace pvpgn
 		extern int conn_set_udpok(t_connection * c);
 		extern int conn_get_welcomed(t_connection const * c);
 		extern void conn_set_welcomed(t_connection * c, int welcomed);
-
-		extern int conn_set_w3_playerinfo(t_connection * c, char const * w3_playerinfo);
-		extern const char * conn_get_w3_playerinfo(t_connection * c);
 
 		extern int conn_get_crtime(t_connection *c);
 
@@ -431,8 +427,6 @@ namespace pvpgn
 		extern int conn_get_user_count_by_clienttag(t_clienttag ct);
 
 		extern unsigned int connlist_count_connections(unsigned int addr);
-
-		extern int conn_update_w3_playerinfo(t_connection * c);
 
 		extern int conn_get_passfail_count(t_connection * c);
 		extern int conn_set_passfail_count(t_connection * c, unsigned int failcount);

@@ -153,6 +153,7 @@ namespace pvpgn
 		extern char const * prefs_get_command_groups_file(void);
 		extern char const * prefs_get_tournament_file(void);
 		extern char const * prefs_get_customicons_file(void);
+		extern char const* prefs_get_email_verification_file(void);
 		extern char const * prefs_get_scriptdir(void);
 		extern char const * prefs_get_aliasfile(void);
 
@@ -170,6 +171,11 @@ namespace pvpgn
 		extern unsigned int prefs_get_passfail_count(void);
 		extern unsigned int prefs_get_passfail_bantime(void);
 		extern unsigned int prefs_get_maxusers_per_channel(void);
+		extern unsigned int prefs_get_verify_account_email(void);
+		extern void prefs_set_verify_account_email(bool enable);
+		extern unsigned int prefs_get_verify_account_email_expiration(void);
+		extern char const* prefs_get_verify_account_email_from_address(void);
+		extern char const* prefs_get_verify_account_email_from_name(void);
 		extern char const * prefs_get_supportfile(void);
 		extern char const * prefs_get_allowed_clients(void);
 		extern char const * prefs_get_ladder_games(void);
@@ -182,6 +188,14 @@ namespace pvpgn
 		extern unsigned int prefs_get_log_commands(void);
 		extern char const * prefs_get_log_command_groups(void);
 		extern char const * prefs_get_log_command_list(void);
+		extern char const * prefs_get_smtp_ca_cert_store_file(void);
+		extern char const * prefs_get_smtp_ca_cert_store_remote_url(void);
+		extern unsigned int prefs_get_smtp_ca_cert_store_fetch_interval(void);
+		extern char const * prefs_get_smtp_server_url(void);
+		extern unsigned int prefs_get_smtp_port(void);
+		extern char const * prefs_get_smtp_username(void);
+		extern char const * prefs_get_smtp_password(void);
+
 
 		/**
 		*  Westwood Online Extensions

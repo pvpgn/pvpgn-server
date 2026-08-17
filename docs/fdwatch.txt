@@ -50,10 +50,10 @@ A. the code flow before fdwatch
     - after the syscall returns, pvpgn cycles through each address configured
     in bnetd.conf and checks if they are read available (if a new connection 
     is to be made)
-    - pvpgn doesnt want to accept new connections when in shutdown phase but 
-    it did it the wrong way: it completly ignored the listening sockets if 
+    - pvpgn does not want to accept new connections when in shutdown phase but 
+    it did it the wrong way: it completely ignored the listening sockets if 
     in shutdown phase, this made that once a connection was pending while in 
-    shutdown phase, select/poll imediatly returns because it has it in the read 
+    shutdown phase, select/poll immediately returns because it has it in the read 
     availability list and thus pvpgn was using 99% cpu while in shutdown phase
     - anyway, after this, pvpgn does a O(n) cycle through each t_connection to 
     check if its socket is read/write available
@@ -81,7 +81,7 @@ B. the code flow after fdwatch
 
 This is it! :)
 No cycles, no O(n^2), not even a O(n) there (well in fact there is something 
-similar to a O(n) inside fdwatch() but about that read bellow).
+similar to a O(n) inside fdwatch() but about that read below).
 
 FAQ:
 1. Q: but where do the new connections get into the fdwatch inspection 
@@ -134,7 +134,7 @@ fdwatch() call, and calls the handler function (which was set when the socket
 was added to the socket inspection list) giving it arguments a void * parameter 
 (also set when socket was added to the inspection list), and the type of readiness
 (read/write). Currently, pvpgn has 3 possible handlers: handle_tcp, handle_udp 
-and handle_accept. Each of this calls acordingly sd_accept, sd_tcpinput, 
+and handle_accept. Each of this calls accordingly sd_accept, sd_tcpinput, 
 sd_tcpoutput, sd_udpinput (UDP sends are done directly, not queueing them and 
 checking for socket readiness to write, maybe this is another bug ?)
 

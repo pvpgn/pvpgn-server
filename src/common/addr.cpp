@@ -533,20 +533,24 @@ namespace pvpgn
 		}
 
 		tstr = xstrdup(str);
+		int fail = 0;
+		int success = 0;
 		for (tok = std::strtok(tstr, ","); tok; tok = std::strtok(NULL, ",")) /* std::strtok modifies the string it is passed */
 		{
 			if (!(addr = addr_create_str(tok, defipaddr, defport)))
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "could not create addr");
-				xfree(tstr);
-				return -1;
+				eventlog(eventlog_level_error, __FUNCTION__, "could not create addr for {}", tok);
+				fail++;
+				continue;
 			}
+
 			list_append_data(addrlist, addr);
+			success++;
 		}
 
 		xfree(tstr);
 
-		return 0;
+		return (fail == 0 || success > 0) ? 0 : -1;
 	}
 
 	extern t_addrlist * addrlist_create(char const * str, unsigned int defipaddr, unsigned short defport)

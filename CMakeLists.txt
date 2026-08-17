@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.1.0)
 
 # Put the include dirs which are in the source or build tree
 # before all other include dirs, so the headers in the sources
-# are prefered over the already installed ones
+# are preferred over the already installed ones
 # since cmake 2.4.1
 set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
 
@@ -15,6 +15,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 option(WITH_BNETD "compile the bnetd target" ON)
 option(WITH_D2CS "compile the d2cs target" ON)
 option(WITH_D2DBS "compile the d2dbs target" ON)
+if(WIN32)
+	option(WITH_D2GS "compile the d2gs 1.13c (beta/unstable) target" ON)
+endif(WIN32)
 option(WITH_LUA "enable Lua support" OFF)
 if(WIN32)
 	option(WITH_WIN32_GUI "enable GUI building (default on)" ON)
@@ -33,29 +36,20 @@ include(ConfigureChecks.cmake)
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	# using Clang
 
-	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wno-idiomatic-parentheses -pedantic")
+	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-implicit-fallthrough -Wno-parentheses -Wno-unused-parameter -pedantic")
 
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	# using G++
 
-	if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.1)
-		message(FATAL_ERROR "G++ 5.1 or higher required")
-	endif()
-
-	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -pedantic -Wno-variadic-macros" )
+	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-implicit-fallthrough -Wno-parentheses -Wno-unused-parameter -pedantic" )
 
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	# using Visual Studio
 
-	if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.0)
-		message(FATAL_ERROR "Visual Studio 2015 or higher required")
-	endif()
-
 	add_definitions(
 		-D_CRT_SECURE_NO_DEPRECATE
 		-D_CRT_NONSTDC_NO_DEPRECATE
-		-DUNICODE
-		-D_UNICODE
+		-DNOMINMAX
 	)
 	
 	# DEBUG compiler flags:
@@ -78,7 +72,6 @@ endif()
 
 add_subdirectory(conf)
 add_subdirectory(files)
-add_subdirectory(lib/fmt)
 add_subdirectory(man)
 add_subdirectory(src)
 if(WITH_LUA)
@@ -95,7 +88,7 @@ configure_file(
 
 add_custom_target(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_MODULE_PATH}/cmake_uninstall.cmake)
-	
+
 # purge target
 configure_file(
     "${CMAKE_MODULE_PATH}/cmake_purge.cmake.in"
@@ -104,3 +97,4 @@ configure_file(
 
 add_custom_target(purge
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_MODULE_PATH}/cmake_purge.cmake)
+

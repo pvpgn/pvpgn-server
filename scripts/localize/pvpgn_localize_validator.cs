@@ -86,11 +86,11 @@ namespace pvpgn_localize_validator
             if (a.Count(f => f == '{') != b.Count(f => f == '{') && a.Count(f => f == '}') != b.Count(f => f == '}'))
                 logerror(translate, "missing argument in translation?");
 
-            // * reduntant or missing spaces at start
+            // * redundant or missing spaces at start
             if (get_pos(a, ' ') != get_pos(b, ' '))
                 logerror(translate, "spaces count at the beginning of the translation is not equal with original");
 
-            // * reduntant or missing spaces at the end
+            // * redundant or missing spaces at the end
             if (get_pos(a, ' ', true) != get_pos(b, ' ', true))
                 logerror(translate, "spaces count at the end of the translation is not equal with original");
         }

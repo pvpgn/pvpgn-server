@@ -180,7 +180,7 @@ namespace pvpgn
 		 *     C D E          A D E   The winner may be in the
 		 * A B  C E       B C  A E    2 players or the 3 players
 		 *  A    C         B    A     group. In either case, a
-		 *    A              A        second player must be choosen
+		 *    A              A        second player must be chosen
 		 *                            to be either the one playing
 		 * against A in the 2-players subtree or being the winner
 		 * of the 2-player subtree if A is in the 3-players subtree.

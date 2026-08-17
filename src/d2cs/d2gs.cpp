@@ -334,11 +334,11 @@ namespace pvpgn
 			ASSERT(c, -1);
 
 			if (gs->active && gs->connection) {
-				eventlog(eventlog_level_warn, __FUNCTION__, "game server {} is already actived, deactive previous connection first", gs->id);
+				eventlog(eventlog_level_warn, __FUNCTION__, "game server {} is already active, deactivate previous connection first", gs->id);
 				d2gs_deactive(gs, gs->connection);
 			}
 			total_d2gs++;
-			eventlog(eventlog_level_info, __FUNCTION__, "game server {} (id: {}) actived ({} total)", addr_num_to_addr_str(d2cs_conn_get_addr(c),
+			eventlog(eventlog_level_info, __FUNCTION__, "game server {} (id: {}) active ({} total)", addr_num_to_addr_str(d2cs_conn_get_addr(c),
 				d2cs_conn_get_port(c)), gs->id, total_d2gs);
 			gs->state = d2gs_state_authed;
 			gs->connection = c;
@@ -354,7 +354,7 @@ namespace pvpgn
 
 			ASSERT(gs, -1);
 			if (!gs->active || !gs->connection) {
-				eventlog(eventlog_level_warn, __FUNCTION__, "game server {} is not actived yet", gs->id);
+				eventlog(eventlog_level_warn, __FUNCTION__, "game server {} is not active yet", gs->id);
 				return -1;
 			}
 			if (gs->connection != c) {
@@ -362,7 +362,7 @@ namespace pvpgn
 				return 0;
 			}
 			total_d2gs--;
-			eventlog(eventlog_level_info, __FUNCTION__, "game server {} (id: {}) deactived ({} left)", addr_num_to_addr_str(d2cs_conn_get_addr(gs->connection), d2cs_conn_get_port(gs->connection)), gs->id, total_d2gs);
+			eventlog(eventlog_level_info, __FUNCTION__, "game server {} (id: {}) deactivated ({} left)", addr_num_to_addr_str(d2cs_conn_get_addr(gs->connection), d2cs_conn_get_port(gs->connection)), gs->id, total_d2gs);
 			gs->state = d2gs_state_none;
 			gs->connection = NULL;
 			gs->active = 0;
@@ -374,7 +374,7 @@ namespace pvpgn
 			}
 			END_LIST_TRAVERSE_DATA()
 			if (gs->gamenum != 0) {
-				eventlog(eventlog_level_error, __FUNCTION__, "game server {} deactived but still with games left", gs->id);
+				eventlog(eventlog_level_error, __FUNCTION__, "game server {} deactivated but still with games left", gs->id);
 			}
 			gs->gamenum = 0;
 			return 0;

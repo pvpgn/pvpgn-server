@@ -26,6 +26,9 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+
+#include <nonstd/optional.hpp>
 
 #include "compat/strcasecmp.h"
 #include "common/irc_protocol.h"
@@ -109,7 +112,7 @@ namespace pvpgn
 		static int _handle_invdel_command(t_connection * conn, int numparams, char ** params, char * text);
 		static int _handle_userip_command(t_connection * conn, int numparams, char ** params, char * text);
 
-		/* Ladder server commands (we will probalby move this commands to any another handle file */
+		/* Ladder server commands (we will probably move this commands to any another handle file */
 		static int _handle_listsearch_command(t_connection * conn, int numparams, char ** params, char * text);
 		static int _handle_rungsearch_command(t_connection * conn, int numparams, char ** params, char * text);
 		static int _handle_highscore_command(t_connection * conn, int numparams, char ** params, char * text);
@@ -312,11 +315,11 @@ namespace pvpgn
 		static int _handle_user_command(t_connection * conn, int numparams, char ** params, char * text)
 		{
 			/**
-			 *  In WOL isnt used USER command (only for backward compatibility)
+			 *  In WOL isn't used USER command (only for backward compatibility)
 			 *  RFC 2812 says:
 			 *  USER <user> <mode> <unused> :<realname>
 			 *
-			 *  There is WOL imput expected:
+			 *  There is WOL input expected:
 			 *  USER UserName HostName irc.westwood.com :RealName
 			 */
 
@@ -327,7 +330,7 @@ namespace pvpgn
 
 			if (conn_get_user(conn)) {
 				/* FIXME: Send real ERROR code/message */
-				irc_send(conn, ERR_ALREADYREGISTRED, ":You are already registred");
+				irc_send(conn, ERR_ALREADYREGISTRED, ":You are already registered");
 			}
 			else {
 				eventlog(eventlog_level_debug, __FUNCTION__, "[{}][** WOL **] got USER: user=\"{}\"", conn_get_socket(conn), user);
@@ -386,7 +389,7 @@ namespace pvpgn
 				e = irc_get_listelems(params[0]);
 				/* FIXME: support wildcards! */
 
-				/* start amadeo: code was sent by some unkown fellow of pvpgn (maybe u wanna give us your name
+				/* start amadeo: code was sent by some unknown fellow of pvpgn (maybe u wanna give us your name
 				   for any credits), it adds nick-registration, i changed some things here and there... */
 				for (i = 0; ((e) && (e[i])); i++) {
 					if (strcasecmp(e[i], "matchbot") == 0) {
@@ -482,20 +485,12 @@ namespace pvpgn
 				return 0;
 			}
 
-			class_topic Topic;
-			topicstr = Topic.get(channel_get_name(gamechannel));
+			nonstd::optional<std::string> topic = channel_get_topic(gamechannel);
 
-			if (topicstr.empty() == false) {
-				if (std::strlen(gamename) + 1 + 20 + 1 + 1 + std::strlen(topicstr.c_str()) > MAX_IRC_MESSAGE_LEN) {
-					WARN0("LISTREPLY length exceeded");
-					return 0;
-				}
-			}
-			else {
-				if (std::strlen(gamename) + 1 + 20 + 1 + 1 > MAX_IRC_MESSAGE_LEN) {
-					WARN0("LISTREPLY length exceeded");
-					return 0;
-				}
+			if (std::strlen(gamename) + 1 + 20 + 1 + 1 + topic.value_or("").length() > MAX_IRC_MESSAGE_LEN)
+			{
+				WARN0("LISTREPLY length exceeded");
+				return 0;
 			}
 
 			/***
@@ -513,7 +508,7 @@ namespace pvpgn
 			std::strcat(temp, gamename);
 			std::strcat(temp, " ");
 
-			std::snprintf(temp_a, sizeof(temp_a), "%u ", game_get_ref(game)); /* curent players */
+			std::snprintf(temp_a, sizeof(temp_a), "%u ", game_get_ref(game)); /* current players */
 			std::strcat(temp, temp_a);
 
 			std::snprintf(temp_a, sizeof(temp_a), "%u ", game_get_maxplayers(game)); /* max players */
@@ -538,8 +533,9 @@ namespace pvpgn
 
 			std::strcat(temp, "::");
 
-			if (topicstr.c_str()) {
-				std::snprintf(temp_a, sizeof(temp_a), "%s", topicstr.c_str());  /* topic */
+			if (topic.has_value())
+			{
+				std::snprintf(temp_a, sizeof(temp_a), "%s", topic.value().c_str());  /* topic */
 				std::strcat(temp, temp_a);
 			}
 
@@ -668,7 +664,7 @@ namespace pvpgn
 		}
 
 		/**
-		*  Fallowing commands are only in Westwood Online protocol
+		*  Following commands are only in Westwood Online protocol
 		*/
 		static int _handle_cvers_command(t_connection * conn, int numparams, char ** params, char * text)
 		{
@@ -677,7 +673,7 @@ namespace pvpgn
 			/* Ignore command but set clienttag */
 
 			/**
-			*  Heres the imput expected:
+			*  Heres the input expected:
 			*  CVERS [oldvernum] [SKU]
 			*
 			*  SKU is specific number for any WOL client (Tiberian sun, RedAlert 2 etc.)
@@ -700,14 +696,14 @@ namespace pvpgn
 			t_clienttag clienttag;
 
 			/**
-			*  Heres the imput expected:
+			*  Heres the input expected:
 			*  vercheck [SKU] [version]
 			*
 			*  Heres the output expected:
 			*
-			*  1) Update non-existant:
+			*  1) Update non-existent:
 			*  :[servername] 379 [username] :none none none 1 [SKU] NONREQ
-			*  2) Update existant:
+			*  2) Update existent:
 			*  :[servername] 379 [username] :none none none [oldversnum] [SKU] REQ
 			*/
 
@@ -891,7 +887,7 @@ namespace pvpgn
 		static int _handle_getinsider_command(t_connection * conn, int numparams, char ** params, char * text)
 		{
 			/**
-			 * Here is imput expected:
+			 * Here is input expected:
 			 *   GETINSIDER [nickname]
 			 * Here is output expected:
 			 *   :[servername] 399 [nick] [nickname]`0
@@ -1196,7 +1192,7 @@ namespace pvpgn
 					std::snprintf(_temp, sizeof(_temp), "0 :%s", wolname); /* User found in channel wolname */
 				}
 				else
-					std::snprintf(_temp, sizeof(_temp), "1 :"); /* user not loged or have not allowed find */
+					std::snprintf(_temp, sizeof(_temp), "1 :"); /* user not logged or have not allowed find */
 
 				irc_send(conn, RPL_FIND_USER, _temp);
 			}
@@ -1220,7 +1216,7 @@ namespace pvpgn
 					std::snprintf(_temp, sizeof(_temp), "0 :%s,0", wolname); /* User found in channel wolname */
 				}
 				else
-					std::snprintf(_temp, sizeof(_temp), "1 :"); /* user not loged or have not allowed find */
+					std::snprintf(_temp, sizeof(_temp), "1 :"); /* user not logged or have not allowed find */
 
 				irc_send(conn, RPL_FIND_USER_EX, _temp);
 			}
@@ -1250,9 +1246,9 @@ namespace pvpgn
 				}
 
 				if (paged)
-					std::snprintf(_temp, sizeof(_temp), "0 :"); /* Page was succesfull */
+					std::snprintf(_temp, sizeof(_temp), "0 :"); /* Page was successful */
 				else
-					std::snprintf(_temp, sizeof(_temp), "1 :"); /* User not loged in or have not allowed page */
+					std::snprintf(_temp, sizeof(_temp), "1 :"); /* User not logged in or have not allowed page */
 
 				irc_send(conn, RPL_PAGE, _temp);
 			}
@@ -1269,7 +1265,7 @@ namespace pvpgn
 			t_game * game;
 
 			/**
-			*  Imput expected:
+			*  Input expected:
 			*   STARTG [channel_name] [nick1](,nick2_optional)
 			*
 			*  Heres the output expected (this can have up-to 8 entries (ie 8 players):
@@ -1323,7 +1319,14 @@ namespace pvpgn
 					std::strcat(temp, ":");
 				}
 
-				game_set_status(game, game_status_started);
+				if (conn_get_clienttag(conn) == CLIENTTAG_RENEGADE_UINT || conn_get_clienttag(conn) == CLIENTTAG_RENGDFDS_UINT)
+				{
+					game_set_status(game, game_status_open);
+				}
+				else
+				{
+					game_set_status(game, game_status_started);
+				}
 
 				std::snprintf(_temp_a, sizeof(_temp_a), "%u %" PRId64, game_get_id(game), static_cast<std::int64_t>(game_get_start_time(game)));
 				std::strcat(temp, _temp_a);
@@ -1350,7 +1353,7 @@ namespace pvpgn
 			std::memset(temp, 0, sizeof(temp));
 
 			/**
-			*  Heres the imput expected
+			*  Heres the input expected
 			*  ADVERTR [channel]
 			*
 			*  Heres the output expected
@@ -1380,7 +1383,7 @@ namespace pvpgn
 			std::memset(temp, 0, sizeof(temp));
 
 			/**
-			*  Heres the imput expected
+			*  Heres the input expected
 			*  chanchk [channel]
 			*
 			*  Heres the output expected
@@ -1460,7 +1463,7 @@ namespace pvpgn
 			std::memset(temp, 0, sizeof(temp));
 
 			/**
-			*  Heres the imput expected
+			*  Heres the input expected
 			*  ADDBUDDY [buddy_name]
 			*
 			*  Heres the output expected
@@ -1480,7 +1483,7 @@ namespace pvpgn
 					std::snprintf(temp, sizeof(temp), "%s :No such nick", params[0]);
 					irc_send(conn, ERR_NOSUCHNICK, temp);
 					/* NOTE: this is not dumped from WOL, this not shows message
-					  but in Emperor doesnt gives name to list, in RA2 have no efect */
+					  but in Emperor does not gives name to list, in RA2 have no effect */
 				}
 			}
 			else
@@ -1498,7 +1501,7 @@ namespace pvpgn
 			std::memset(temp, 0, sizeof(temp));
 
 			/**
-			*  Heres the imput expected
+			*  Heres the input expected
 			*  DELBUDDY [buddy_name]
 			*
 			*  Heres the output expected
@@ -1554,7 +1557,7 @@ namespace pvpgn
 			int i;
 
 			/**
-			 *  Here is the imput expected:
+			 *  Here is the input expected:
 			 *  INVMSG [channel] [unknown] [invited],[invited2_optional]
 			 *  [unknown] can be 1 or 2
 			 *
@@ -1711,7 +1714,7 @@ namespace pvpgn
 								std::strcat(data, temp);
 							}
 							else
-								std::strcat(data, "NOTFOUND\r\n");
+								std::strcat(data, "NOTFOUND\r");
 						}
 					}
 					irc_unget_ladderelems(e);
@@ -1815,7 +1818,7 @@ namespace pvpgn
 				unsigned points = 258;
 				unsigned wins = 0;
 				unsigned losses = 0;
-				unsigned unknown = 0;  // Here is nuber before Nick and Honor Badges in Yuri (1-999)
+				unsigned unknown = 0;  // Here is number before Nick and Honor Badges in Yuri (1-999)
 				unsigned disconnects = 0;
 				char temp[MAX_IRC_MESSAGE_LEN];
 				char data[MAX_IRC_MESSAGE_LEN];

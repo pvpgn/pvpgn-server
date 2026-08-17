@@ -140,7 +140,7 @@ namespace pvpgn
 
 
 		/* This routine std::gets keyboard input. It handles printing the prompt, cursor positioning, and
-		   text scrolling. It unfortunatly assumes that the chars read from stdin are in ASCII. */
+		   text scrolling. It unfortunately assumes that the chars read from stdin are in ASCII. */
 		/* visible: -1=nothing, 0=prompt only, 1=prompt and text */
 		extern int client_get_comm(char const * prompt, char * text, unsigned int maxlen, unsigned int * curpos, int visible, int redraw, unsigned int width)
 		{

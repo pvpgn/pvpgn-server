@@ -167,7 +167,7 @@ namespace pvpgn
 			t_sqlite3_res *res;
 
 			if (db == NULL) {
-				eventlog(eventlog_level_error, __FUNCTION__, "sqlite3 driver not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "sqlite3 driver not initialized");
 				return NULL;
 			}
 
@@ -192,7 +192,7 @@ namespace pvpgn
 		static int sql_sqlite3_query(const char* query)
 		{
 			if (db == NULL) {
-				eventlog(eventlog_level_error, __FUNCTION__, "sqlite3 driver not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "sqlite3 driver not initialized");
 				return -1;
 			}
 
@@ -276,7 +276,7 @@ namespace pvpgn
 		static void sql_sqlite3_escape_string(char *escape, const char *from, int len)
 		{
 			if (db == NULL) {
-				eventlog(eventlog_level_error, __FUNCTION__, "sqlite3 driver not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "sqlite3 driver not initialized");
 				return;
 			}
 			p_sqlite3_snprintf(len * 2 + 1, escape, "%q", from);

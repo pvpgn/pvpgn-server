@@ -60,13 +60,15 @@ namespace pvpgn
 
 		extern int attrlayer_load_default(void)
 		{
-			if (defattrs) attrlayer_unload_default();
-
-			defattrs = attrgroup_create_storage(storage->get_defacct());
-			if (!defattrs) {
-				eventlog(eventlog_level_error, __FUNCTION__, "could not create attrgroup");
-				return -1;
+			if (defattrs == NULL) {
+				defattrs = attrgroup_create_storage(storage->get_defacct());
+				if (!defattrs) {
+					eventlog(eventlog_level_error, __FUNCTION__, "could not create attrgroup");
+					return -1;
+				}
 			}
+			// reset flag to load possible new default attributes
+			defattrs->flags = ATTRGROUP_FLAG_NONE;
 
 			return attrgroup_load(defattrs, "BNET");
 		}
@@ -95,7 +97,7 @@ namespace pvpgn
 				next = elist_next(curr);
 			}
 
-			/* elist_for_each_safe splitted into separate startup for userstep function */
+			/* elist_for_each_safe split into separate startup for userstep function */
 			for (; curr != &loadedlist; curr = next, next = elist_next(curr)) {
 				if (!FLAG_ISSET(flags, FS_ALL) && tcount >= prefs_get_user_step()) break;
 
@@ -139,7 +141,7 @@ namespace pvpgn
 				next = elist_next(curr);
 			}
 
-			/* elist_for_each_safe splitted into separate startup for userstep function */
+			/* elist_for_each_safe split into separate startup for userstep function */
 			for (; curr != &dirtylist; curr = next, next = elist_next(curr)) {
 				if (!FLAG_ISSET(flags, FS_ALL) && tcount >= prefs_get_user_step()) break;
 

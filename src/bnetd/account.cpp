@@ -80,8 +80,8 @@ namespace pvpgn
 
 		static unsigned int account_hash(char const *username)
 		{
-			register unsigned int h;
-			register std::size_t len = std::strlen(username);
+			unsigned int h;
+			std::size_t len = std::strlen(username);
 
 			int c;
 			for (h = 5381; len > 0; --len, ++username) {
@@ -286,7 +286,7 @@ namespace pvpgn
 		{
 			if (!account) {
 				eventlog(eventlog_level_error, __FUNCTION__, "got NULL account");
-				return 0;
+				return -1;
 			}
 
 			if (!key) {
@@ -425,7 +425,7 @@ namespace pvpgn
 				return -1;
 			}
 
-			/* load accounts without force, indexed storage types wont be loading */
+			/* load accounts without force, indexed storage types won't be loading */
 			accountlist_load_all(ST_NONE);
 			maxuserid = storage->read_maxuserid();
 
@@ -697,7 +697,7 @@ namespace pvpgn
 			assert(passhash1 != NULL);
 
 			res = account_create(username, passhash1);
-			if (!res) return NULL; /* eventlog reported ealier */
+			if (!res) return NULL; /* eventlog reported earlier */
 
 			if (!accountlist_add_account(res)) {
 				account_destroy(res);
@@ -803,7 +803,7 @@ namespace pvpgn
 				}
 			}
 
-			// If friend isnt in list return -1 to tell func NO
+			// If friend isn't in list return -1 to tell func NO
 			return -1;
 		}
 

@@ -88,6 +88,8 @@
 #include "handle_apireg.h"
 #include "i18n.h"
 #include "userlog.h"
+#include "account_email_verification.h"
+#include "smtp.h"
 #ifdef WIN32
 #include "win32/windump.h"
 #endif
@@ -128,7 +130,7 @@ static int bnetd_oom_handler(void)
 
 	eventlog(eventlog_level_fatal, __FUNCTION__, "out of memory, forcing immediate shutdown");
 
-	/* shutdown immediatly */
+	/* shutdown immediately */
 	server_quit_delay(-1);
 
 	return 1;	/* ask xalloc codes to retry the allocation request */
@@ -137,7 +139,7 @@ static int bnetd_oom_handler(void)
 static int oom_setup(void)
 {
 	/* use calloc so it initilizez the memory so it will make some lazy
-	 * allocators really alocate it (ex. the linux kernel)
+	 * allocators really allocate it (ex. the linux kernel)
 	 */
 	oom_buffer = calloc(1, OOM_SAFE_MEM);
 	if (!oom_buffer) return -1;
@@ -349,7 +351,7 @@ int pre_server_startup(void)
 		return STATUS_MATCHLISTS_FAILURE;
 	}
 	if (fdwatch_init(prefs_get_max_connections())) {
-		eventlog(eventlog_level_error, __FUNCTION__, "error initilizing fdwatch");
+		eventlog(eventlog_level_error, __FUNCTION__, "error initializing fdwatch");
 		return STATUS_FDWATCH_FAILURE;
 	}
 
@@ -373,10 +375,10 @@ int pre_server_startup(void)
 		{
 			AdBannerList.unload();
 		}
-		
+
 		AdBannerList.load(prefs_get_adfile());
 	}
-	catch (const std::exception& e)
+	catch (const std::exception & e)
 	{
 		eventlog(eventlog_level_error, __FUNCTION__, "{}", e.what());
 	}
@@ -418,8 +420,32 @@ int pre_server_startup(void)
 	teamlist_load();
 	if (realmlist_create(prefs_get_realmfile()) < 0)
 		eventlog(eventlog_level_error, __FUNCTION__, "could not load realm list");
-	//topiclist_load(std::string(prefs_get_topicfile()));
+	load_topic_conf(prefs_get_topicfile());
 	userlog_init();
+	if (prefs_get_verify_account_email() == 1)
+	{
+		if (smtp_init(prefs_get_smtp_ca_cert_store_file(), prefs_get_smtp_server_url(), prefs_get_smtp_port(), prefs_get_smtp_username(), prefs_get_smtp_password()))
+		{
+			eventlog(eventlog_level_info, __FUNCTION__, "Successfully initialized SMTP client");
+		}
+		else
+		{
+			eventlog(eventlog_level_error, __FUNCTION__, "Failed to initialize SMTP client");
+			eventlog(eventlog_level_error, __FUNCTION__, "Disabling account email verification");
+			prefs_set_verify_account_email(false);
+		}
+
+		if (!account_email_verification_load(prefs_get_email_verification_file(), prefs_get_servername(), prefs_get_verify_account_email_from_address(), prefs_get_verify_account_email_from_name()))
+		{
+			eventlog(eventlog_level_error, __FUNCTION__, "Failed to load email verification message");
+			eventlog(eventlog_level_error, __FUNCTION__, "Disabling account email verification");
+			prefs_set_verify_account_email(false);
+		}
+	}
+	else
+	{
+		eventlog(eventlog_level_debug, __FUNCTION__, "Config option 'verify_account_email' is false");
+	}
 
 #ifdef WITH_LUA
 	lua_load(prefs_get_scriptdir());
@@ -434,7 +460,10 @@ void post_server_shutdown(int status)
 	switch (status)
 	{
 	case 0:
-		//topiclist_unload();
+		unload_topic_conf();
+		account_email_verification_unload();
+		smtp_cleanup();
+		account_email_verification_unload();
 		realmlist_destroy();
 		teamlist_unload();
 		clanlist_unload();

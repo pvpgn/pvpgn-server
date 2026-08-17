@@ -24,7 +24,7 @@
 # client tag and version tag to find the needed update file.                 #
 #                                                                            #
 ##############################################################################
-# Battle.net related informations                                            #
+# Battle.net related information                                            #
 #----------------------------------------------------------------------------#
 # War3 and War3x clients have different mpq files for the different game     #
 # languages.  This is accounted for by the server, and the client will get   #
@@ -41,7 +41,7 @@
 # Make sure all the required mpq files are in the files directory or         #
 # autoupdate will not work.                                                  #
 #                                                                            #
-# The avaliable language files are:                                          #
+# The available language files are:                                          #
 #                                                                            #
 #   enUS  csCZ  deDE  esES  frFR  itIT  jaJA  koKR  plPL  ruRU  zhCN  zhTW   #
 #                                                                            #
@@ -50,13 +50,13 @@
 # archtag  clienttag  versiontag  -----update file-----                      #
 #                                                                            #
 ##############################################################################
-# Westwood Online related informations                                       #
+# Westwood Online related information                                       #
 #----------------------------------------------------------------------------#
-# For WOL autoupdate is used standart FTP protocol which is not included in  #
+# For WOL autoupdate is used standard FTP protocol which is not included in  #
 # PvPGN. The default WOL autoupdate entryes are writed according to          #
 # westwood's autoupdate FTP server settings (username, password, filepath).  #
 #                                                                            #
-# WOLv2 using diferent rtp files for the diferent SKUs. This is accounted    #
+# WOLv2 using different rtp files for the different SKUs. This is accounted    #
 # for by the server, and the client will get the correct file. Only one      #
 # entry is needed per arch, client, and version tag.                         #
 #                                                                            #
@@ -66,7 +66,7 @@
 # TibSun clients with SKU 4608 will receive the file "131075_65536_4608.rtp" #
 # TibSun clients with SKU 4610 will receive the file "131075_65536_4610.rtp" #
 #                                                                            #
-# The avaliable clients, theirs tags and SKUs are:                           #
+# The available clients, theirs tags and SKUs are:                           #
 #                                                                            #
 # Client name     CTag     SKUs                                              #
 # ---------------------------------------------------                        #

@@ -24,16 +24,16 @@
 #                                                                            #
 # The text or command is actually formatted text as used in the bnmotd file. #
 # It contains special formatting characters which can be used to specify the #
-# type of message or substitue special values (the hostname, the player's    #
+# type of message or substitute special values (the hostname, the player's    #
 # own name, and many more).  These all start with a percent sign (%).  There #
-# are also special formatters which subsitute arguments which were entered   #
+# are also special formatters which substitute arguments which were entered   #
 # by the user.  These start with a dollar sign.                              #
 #                                                                            #
 # $*             -  substitute all arguments here                            #
 # $0 through $9  -  substitute that argument here (0 means the command)      #
 # ${43}          -  substitute that argument here (0 means the command)      #
 # ${-19}         -  substitute arguments 0-19 here                           #
-# ${2-}          -  substitue all arguments from 2 until the end here        #
+# ${2-}          -  substitute all arguments from 2 until the end here        #
 #                                                                            #
 # %a             -  Number of registered accounts                            #
 # %c             -  Number of existing channels                              #

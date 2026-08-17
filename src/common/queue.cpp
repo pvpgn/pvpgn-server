@@ -111,7 +111,7 @@ namespace pvpgn
 
 		if (!temp)
 		{
-			//	eventlog(eventlog_level_debug, __FUNCTION__, "queue is NULL , initilizing");
+			//	eventlog(eventlog_level_debug, __FUNCTION__, "queue is NULL , initializing");
 			temp = (t_queue*)xmalloc(sizeof(t_queue));
 			temp->alen = temp->ulen = 0;
 			temp->ring = NULL;

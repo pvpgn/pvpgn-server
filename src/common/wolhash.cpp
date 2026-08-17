@@ -1,5 +1,5 @@
 /*
- * Original hash funcions Copyright (C)  Luigi Auriemma (aluigi@autistici.org)
+ * Original hash functions Copyright (C)  Luigi Auriemma (aluigi@autistici.org)
  * Copyright (C) 2007  Pelish (pelish@gmail.com)
  *
  * This program is free software; you can redistribute it and/or

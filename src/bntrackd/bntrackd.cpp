@@ -478,7 +478,7 @@ namespace {
 			"  -l FILE, --logfile=FILE        write event messages to FILE\n"
 			"  -o FILE, --outfile=FILE        write server list to FILE\n");
 		std::fprintf(stderr,
-			"  -p PORT, --port=PORT           listen for announcments on UDP port PORT\n"
+			"  -p PORT, --port=PORT           listen for announcements on UDP port PORT\n"
 			"  -P FILE, --pidfile=FILE        write pid to FILE\n"
 			"  -u SECS, --update SECS         write output file every SEC seconds\n"
 			"  -x, --XML                      write output file in XML format\n"

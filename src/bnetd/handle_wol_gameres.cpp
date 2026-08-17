@@ -21,7 +21,9 @@
 
 #include <cinttypes>
 #include <cstring>
+#include <ctime>
 
+#include "compat/localtime_s.h"
 #include "common/wol_gameres_protocol.h"
 #include "common/packet.h"
 #include "common/eventlog.h"
@@ -1262,17 +1264,26 @@ namespace pvpgn
 
 		static int _client_time(t_wol_gameres_result * game_result, wol_gameres_type type, int size, void const * data)
 		{
-			/* PELISH: Time when was game started. This time is WOL STARTG packet time +-2 sec */
-			std::time_t time;
-
 			switch (type) {
 			case wol_gameres_type_string:
 				DEBUG1("Game was start at {} ", (char *)data);
 				break;
 			case wol_gameres_type_time:
-				time = (std::time_t) bn_int_nget(*((bn_int *)data));
-				DEBUG1("Game was start at {} ", ctime(&time));
+			{
+				// PELISH: Time when was game started. This time is WOL STARTG packet time +-2 sec
+				std::time_t time = (std::time_t)bn_int_nget(*((bn_int*)data));
+				struct std::tm calendartime = {};
+				char buffer[256] = {};
+				if (pvpgn::localtime_s(&time, &calendartime) != nullptr && std::strftime(buffer, sizeof(buffer), "%c", &calendartime))
+				{
+					DEBUG1("Game was start at {} ", buffer);
+				}
+				else
+				{
+					DEBUG0("Game was start at ? ");
+				}
 				break;
+			}
 			default:
 				WARN1("got unknown gameres type {} for TIME", static_cast<int>(type));
 				break;
@@ -1300,7 +1311,7 @@ namespace pvpgn
 		{
 			switch (type) {
 			case wol_gameres_type_string:
-				DEBUG1("Procesor {}", (char *)data);
+				DEBUG1("Processor {}", (char *)data);
 				break;
 			default:
 				WARN1("got unknown gameres type {} for PROC", static_cast<int>(type));

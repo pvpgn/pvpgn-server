@@ -19,6 +19,7 @@
 "acct_userid int","NULL"
 "acct_passhash1 varchar(40)","NULL"
 "acct_email varchar(128)","NULL"
+"acct_email_verified varchar(6)","'false'"
 "auth_admin varchar(6)","'false'"
 "auth_normallogin varchar(6)","'true'"
 "auth_changepass varchar(6)","'true'"
@@ -39,6 +40,10 @@
 "acct_lastlogin_ip varchar(16)","NULL"
 :"DROP INDEX username"
 :"CREATE UNIQUE INDEX username2 ON ${prefix}BNET (username)"
+[${prefix}emailverification]
+"uid int NOT NULL PRIMARY KEY","'0'"
+"code varchar(64)","NULL"
+"expiration int", "'0'"
 [${prefix}WOL]
 "uid int NOT NULL PRIMARY KEY","'0'"
 "auth_apgar varchar(8)","NULL"

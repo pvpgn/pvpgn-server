@@ -172,7 +172,14 @@ namespace pvpgn
 			// mysql->reconnect = 1;
 #endif
 #if MYSQL_VERSION_ID >= 50019
+#if MYSQL_VERSION_ID < 80001
 			my_bool  my_true = true;
+#endif
+#if MYSQL_VERSION_ID >= 80001
+			// Since 8.0.1 the my_bool type is no longer used in MySQL source code. Any third-party code that used this type to represent C boolean variables should use the bool or int C type instead.
+			// The change from my_bool to bool means that the mysql.h header file now requires a C++ or C99 compiler to compile.
+			bool  my_true = true;
+#endif
 			if (mysql_options(mysql, MYSQL_OPT_RECONNECT, &my_true)){
 				eventlog(eventlog_level_warn, __FUNCTION__, "Failed to turn on MYSQL_OPT_RECONNECT.");
 			}
@@ -200,7 +207,7 @@ namespace pvpgn
 #endif
 #endif
 
-			/* allows identifers (specificly column names) to be quoted using double quotes (") in addition to ticks (`) */
+			/* allows identifiers (specifically column names) to be quoted using double quotes (") in addition to ticks (`) */
 			sql_mysql_query("SET sql_mode='ANSI_QUOTES'");
 
 			return 0;
@@ -226,7 +233,7 @@ namespace pvpgn
 			t_sql_res *res;
 
 			if (mysql == NULL) {
-				eventlog(eventlog_level_error, __FUNCTION__, "mysql driver not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "mysql driver not initialized");
 				return NULL;
 			}
 
@@ -252,7 +259,7 @@ namespace pvpgn
 		static int sql_mysql_query(const char * query)
 		{
 			if (mysql == NULL) {
-				eventlog(eventlog_level_error, __FUNCTION__, "mysql driver not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "mysql driver not initialized");
 				return -1;
 			}
 
@@ -345,7 +352,7 @@ namespace pvpgn
 		static void sql_mysql_escape_string(char *escape, const char *from, int len)
 		{
 			if (mysql == NULL) {
-				eventlog(eventlog_level_error, __FUNCTION__, "mysql driver not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "mysql driver not initialized");
 				return;
 			}
 			p_mysql_real_escape_string(mysql, escape, from, len);

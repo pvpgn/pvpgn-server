@@ -28,21 +28,21 @@ namespace pvpgn
 	class scoped_ptr
 	{
 	public:
-		/** initilize the object aquiring ownership of the given parameter (0 for no onwership) */
+		/** initialize the object acquiring ownership of the given parameter (0 for no onwership) */
 		explicit scoped_ptr(T* ptr_ = 0)
 			:ptr(ptr_) {}
 
-		/** initilize from a blind pointer supporting implicit conversion */
+		/** initialize from a blind pointer supporting implicit conversion */
 		template<typename V>
 		explicit scoped_ptr(V* ptr_)
 			:ptr(ptr_) {}
 
-		/** initilize the object transfering ownership from an std::unique_ptr<> */
+		/** initialize the object transferring ownership from an std::unique_ptr<> */
 		template<typename V>
 		explicit scoped_ptr(std::unique_ptr<V>& aptr)
 			:ptr(aptr.release()) {}
 
-		/** release memory if aquired ownershipt */
+		/** release memory if acquired ownershipt */
 		~scoped_ptr() throw() {
 			cleanup();
 		}
@@ -57,13 +57,13 @@ namespace pvpgn
 			return tmp;
 		}
 
-		/** reinitilize object, release owned resource first if any */
+		/** reinitialize object, release owned resource first if any */
 		void reset(T* ptr_ = 0) {
 			cleanup();
 			ptr = ptr_;
 		}
 
-		/** reinitilize object, supports implicit conversions */
+		/** reinitialize object, supports implicit conversions */
 		template<typename V>
 		void reset(V* ptr_) {
 			cleanup();

@@ -30,6 +30,8 @@
 
 # include "account.h"
 
+#include <nonstd/optional.hpp>
+
 #ifdef CHANNEL_INTERNAL_ACCESS
 
 #include <cstdio>
@@ -163,6 +165,9 @@ namespace pvpgn
 		extern int channel_conn_has_tmpVOICE(t_channel const * channel, t_connection * c);
 		extern t_connection * channel_get_first(t_channel const * channel);
 		extern t_connection * channel_get_next(void);
+		extern nonstd::optional<std::string> channel_get_topic(const t_channel* channel); // in topic.cpp
+		extern bool channel_set_topic(t_channel* channel, const std::string& topic); // in topic.cpp
+		extern bool channel_display_topic(t_channel* channel, t_connection* conn); // in topic.cpp
 
 		extern int channellist_create(void);
 		extern int channellist_destroy(void);

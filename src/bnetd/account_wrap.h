@@ -245,7 +245,7 @@ namespace pvpgn
 		extern int account_set_currentatteam(t_account * account, unsigned int teamcount);
 		extern int account_get_currentatteam(t_account * account);
 
-		extern int account_get_highestladderlevel(t_account * account, t_clienttag clienttag); //func will compare levels for AT, Solo/Team Ladder and out the higest level of the 3
+		extern int account_get_highestladderlevel(t_account * account, t_clienttag clienttag); //func will compare levels for AT, Solo/Team Ladder and out the highest level of the 3
 
 		// Determines the length of XP bar in profiles screen
 		extern int account_get_profile_calcs(t_account * account, int xp, unsigned int level);
@@ -264,6 +264,12 @@ namespace pvpgn
 
 		extern int account_set_email(t_account * account, std::string email);
 		extern char const * account_get_email(t_account * account);
+		extern int account_get_email_verified(t_account* account);
+		extern int account_set_email_verified(t_account* account, bool is_verified);
+		extern char const* account_get_emailverification_code(t_account* account);
+		extern int account_set_emailverification_code(t_account* account, char const * verification_code);
+		extern unsigned int account_get_emailverification_expiration(t_account* account);
+		extern int account_set_emailverification_expiration(t_account* account, unsigned int expiration_date);
 
 		extern int account_set_userlang(t_account * account, const char * lang);
 		extern int account_set_userlang(t_account * account, std::string lang);

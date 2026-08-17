@@ -44,7 +44,7 @@ NONE                        "Diablo II"	            D2XP  true  false false  NUL
 #----------------------------------------------------------------------------#
 # Note: The Westwood channels must be formatted like "Lob xx x".             #
 # Where xx=Game type number and x=channel number. First channel number is 0. #
-# For exemple "Lob 18 0" is the first channel for "Tiberian Sun".            #
+# For example "Lob 18 0" is the first channel for "Tiberian Sun".            #
 # The proper game type numbers are as follows:                               #
 #   - 12 = C&C Renegade channels                                             #
 #   - 14 = Dune 2000 channels                                                #
@@ -59,7 +59,7 @@ NONE                        "Diablo II"	            D2XP  true  false false  NUL
 # DO NOT USE game type nubers 38,39 and 40. This numbers are used for        #
 # Quick match services and are hardcoded in PvPGN.                           #
 #                                                                            #
-# In WOLv1 (Westwood Chat client) are not used "Lob xx x" formated channels. #
+# In WOLv1 (Westwood Chat client) are not used "Lob xx x" formatted channels. #
 #                                                                            #
 # ---special name--- 		-----short name----- 	cltag bots- -ops- -log- ctry- realm max -mod-#
 "Command n Conqr"           "Command n Conqr"       WCHT  true  false false  NULL NULL -1   false

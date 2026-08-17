@@ -35,7 +35,7 @@ namespace pvpgn
 	{
 
 		/*
-		 * This routine returns the number of miliseconds that have passed since one second
+		 * This routine returns the number of milliseconds that have passed since one second
 		 * before it is first called. This is used for timing fields in some packets.
 		 */
 		extern unsigned int get_ticks(void)

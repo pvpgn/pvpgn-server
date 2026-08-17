@@ -3,3 +3,5 @@ set(WIN32_SOURCES
 )
 
 add_library(win32 STATIC ${WIN32_SOURCES})
+
+target_compile_definitions(win32 PUBLIC UNICODE _UNICODE)

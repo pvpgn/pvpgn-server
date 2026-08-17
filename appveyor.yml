@@ -22,8 +22,7 @@ environment:
       db_id: 5
 
 configuration:
-# - Debug
-  - Release
+  - RelWithDebInfo
 
 matrix:
   fast_finish: true
@@ -40,15 +39,14 @@ install:
   - cmd: xcopy /E /R /K /Y /Q "c:\pvpgn" "c:\builder\source\"
   - cmd: cd c:\builder\
   - cmd: mkdir bin
-  - cmd: mkdir pdb
 
 before_build:
   - cmd: set APPVEYOR_REPO_COMMIT_SHORT=%APPVEYOR_REPO_COMMIT:~0,7%
   # read version string from version.h to %PVPGN_VERSION% and append commit string inside that file
   - cmd: module\tools\pvpgn_version.bat %APPVEYOR_REPO_COMMIT_SHORT%
   - cmd: set COMPLETE_BUILD_VERSION=pvpgn-%APPVEYOR_REPO_BRANCH%-%PVPGN_VERSION%-%APPVEYOR_REPO_COMMIT_SHORT%
-  - ps: $env:PVPGN_ZIP=$env:COMPLETE_BUILD_VERSION + "_" + $env:DB + $(If ($env:CONFIGURATION -ne "Release") {"_" + ($env:CONFIGURATION).ToLower()} Else {""}) + ".zip"
-  - ps: $env:PVPGN_PDB_ZIP=$env:COMPLETE_BUILD_VERSION + "_" + $env:DB + $(If ($env:CONFIGURATION -ne "Release") {"_" + ($env:CONFIGURATION).ToLower()} Else {".pdb"}) + ".zip"
+  - ps: $env:PVPGN_ZIP=$env:COMPLETE_BUILD_VERSION + "_" + $env:DB + ".zip"
+
 
 build_script:
 
@@ -56,27 +54,23 @@ build_script:
   # build_pvpgn.bat params:
   #  1. automatic build flag
   #  2. visual studio version
-  #  3. console or gui
+  #  3. console | gui | console x64 | gui x64
   #  4. storage type
   #  5. with or without lua
-  #  6. Release or Debug
+  #  6. RelWithDebInfo | Release | Debug
 
   # gui
   - cmd: build_pvpgn.bat auto auto 2 %DB_ID% y %CONFIGURATION%
-  - cmd: move /Y %CONFIGURATION%\*.pdb pdb\ # move pdb files
-  - cmd: copy /Y %CONFIGURATION%\* bin\ # backup binary files
+  - cmd: copy /Y release\* bin\ # backup binary files
   # console
   - cmd: build_pvpgn.bat auto auto 1 %DB_ID% y %CONFIGURATION%
-  - cmd: move /Y %CONFIGURATION%\*.pdb pdb\ # move pdb files
-  - cmd: move /Y bin\* %CONFIGURATION% # move back binaries after build console version
+  - cmd: move /Y bin\* release # move back binaries after build console version
   # create zip artifacts
-  - cmd: 7z.exe a %PVPGN_ZIP% .\%CONFIGURATION%\*
-  - cmd: 7z.exe a %PVPGN_PDB_ZIP% .\pdb\*
+  - cmd: 7z.exe a %PVPGN_ZIP% .\release\*
 
 deploy_script:
   - ps: |
       Push-AppveyorArtifact $env:PVPGN_ZIP
-      Push-AppveyorArtifact $env:PVPGN_PDB_ZIP
 
 # check the latest build executable for exists
 test:

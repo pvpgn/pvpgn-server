@@ -195,10 +195,10 @@ static int on_d2gs_authreply(t_connection * c, t_packet * packet)
 			version,conf_version);
 		reply=D2CS_D2GS_AUTHREPLY_BAD_VERSION;
 	} else if (prefs_get_d2gs_checksum() && try_checksum != checksum) {
-		eventlog(eventlog_level_error,__FUNCTION__,"game server {} checksum mismach 0x{:X} - 0x{:X}",conn_get_d2gs_id(c),try_checksum,checksum);
+		eventlog(eventlog_level_error,__FUNCTION__,"game server {} checksum mismatch 0x{:X} - 0x{:X}",conn_get_d2gs_id(c),try_checksum,checksum);
 		reply=D2CS_D2GS_AUTHREPLY_BAD_CHECKSUM;
 //	} else if (license_verify_reply(c, randnum, sign, signlen)) {
-//		eventlog(eventlog_level_error,__FUNCTION__,"game server {} std::signal mismach", conn_get_d2gs_id(c));
+//		eventlog(eventlog_level_error,__FUNCTION__,"game server {} std::signal mismatch", conn_get_d2gs_id(c));
 //		reply=D2CS_D2GS_AUTHREPLY_BAD_CHECKSUM;
 	} else {
 		reply=D2CS_D2GS_AUTHREPLY_SUCCEED;

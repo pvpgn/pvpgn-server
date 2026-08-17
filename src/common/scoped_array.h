@@ -26,16 +26,16 @@ namespace pvpgn
 	class scoped_array
 	{
 	public:
-		/** initilize the object aquiring ownership of the given parameter (0 for no onwership) */
+		/** initialize the object acquiring ownership of the given parameter (0 for no onwership) */
 		explicit scoped_array(T* ptr_ = 0)
 			:ptr(ptr_) {}
 
-		/** initilize the object from a blind pointer supporting implicit conversions */
+		/** initialize the object from a blind pointer supporting implicit conversions */
 		template<typename V>
 		explicit scoped_array(V* ptr_)
 			:ptr(ptr_) {}
 
-		/** release memory if aquired ownershipt */
+		/** release memory if acquired ownershipt */
 		~scoped_array() throw() {
 			cleanup();
 		}
@@ -50,13 +50,13 @@ namespace pvpgn
 			return tmp;
 		}
 
-		/** reinitilize object, release owned resource first if any */
+		/** reinitialize object, release owned resource first if any */
 		void reset(T* ptr_ = 0) {
 			cleanup();
 			ptr = ptr_;
 		}
 
-		/** reinitilize object, supports implicit conversions */
+		/** reinitialize object, supports implicit conversions */
 		template<typename V>
 		void reset(V* ptr_) {
 			cleanup();

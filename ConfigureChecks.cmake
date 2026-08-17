@@ -29,11 +29,54 @@ else(WIN32)
 endif(WIN32)
 
 # library checks
+message(STATUS "*** {fmt} ***")
+add_subdirectory(fmt)
+message(STATUS "*** {fmt} ***")
+
+set(USE_INCLUDED_ZLIB_LIBRARY OFF)
+
 if(WITH_BNETD)
+	if (WIN32 AND (NOT DEFINED CURL_LIBRARY OR NOT DEFINED CURL_INCLUDE_DIR))
+		set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/lib/curl/libcurl.lib)
+		set(CURL_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/)
+	endif()
+	find_package(CURL REQUIRED)
+	
+	set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+	find_package(Threads)
+
+	if (WIN32)
+		if (POLICY CMP0074)
+			cmake_policy(SET CMP0074 NEW)
+		endif()
+
+		if (NOT DEFINED ZLIB_ROOT)
+			set(USE_INCLUDED_ZLIB_LIBRARY ON)
+			set(ZLIB_ROOT ${CMAKE_SOURCE_DIR}/include/zlib/ ${CMAKE_SOURCE_DIR}/lib/zlib/)
+		endif()
+	endif()
+
 	find_package(ZLIB REQUIRED)
 endif(WITH_BNETD)
 
+if(WITH_D2GS)
+	add_library(d2gelib INTERFACE)
+	target_link_libraries(d2gelib INTERFACE ${CMAKE_SOURCE_DIR}/lib/d2gelib/d2server.lib)
+	target_include_directories(d2gelib INTERFACE ${CMAKE_SOURCE_DIR}/include/d2gelib/)
+	install(
+		FILES
+			"${PROJECT_SOURCE_DIR}/lib/d2gelib/d2server.dll"
+		DESTINATION
+			${SBINDIR}
+	)
+endif(WITH_D2GS)
+
 if(WITH_LUA)
+	if (WIN32 AND (NOT DEFINED LUA_LIBRARIES OR NOT DEFINED LUA_INCLUDE_DIR))
+		set(LUA_LIBRARIES ${CMAKE_SOURCE_DIR}/lib/lua/lua5.1.lib)
+		set(LUA_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/lua/)
+	endif()
+
     find_package(Lua REQUIRED)
 endif(WITH_LUA)
 
@@ -140,10 +183,64 @@ check_function_exists(getopt HAVE_GETOPT)
 check_function_exists(getpid HAVE_GETPID)
 check_function_exists(getpwnam HAVE_GETPWNAME)
 check_function_exists(getrlimit HAVE_GETRLIMIT)
+check_cxx_source_compiles("
+#include <ctime>
+int main() {
+	std::time_t t = std::time(NULL);
+	struct tm buf;
+	errno_t err = gmtime_s(&buf, &t);
+	return 0;
+}
+" HAVE_MICROSOFT_GMTIME_S)
+check_cxx_source_compiles("
+#include <ctime>
+int main() {
+	std::time_t t = std::time(NULL);
+	struct tm buf;
+	struct tm* retbuf = gmtime_s(&t, &buf);
+	return 0;
+}
+" HAVE_GMTIME_S)
+check_cxx_source_compiles("
+#include <ctime>
+int main() {
+	std::time_t t = std::time(NULL);
+	struct tm buf;
+	struct tm* retbuf = gmtime_r(&t, &buf);
+	return 0;
+}
+" HAVE_GMTIME_R)
 check_function_exists(gettimeofday HAVE_GETTIMEOFDAY)
 check_function_exists(getuid HAVE_GETUID)
 check_function_exists(ioctl HAVE_IOCTL)
 check_function_exists(kqueue HAVE_KQUEUE)
+check_cxx_source_compiles("
+#include <ctime>
+int main() {
+	std::time_t t = std::time(NULL);
+	struct tm buf;
+	errno_t err = localtime_s(&buf, &t);
+	return 0;
+}
+" HAVE_MICROSOFT_LOCALTIME_S)
+check_cxx_source_compiles("
+#include <ctime>
+int main() {
+	std::time_t t = std::time(NULL);
+	struct tm buf;
+	struct tm* retbuf = localtime_s(&t, &buf);
+	return 0;
+}
+" HAVE_LOCALTIME_S)
+check_cxx_source_compiles("
+#include <ctime>
+int main() {
+	std::time_t t = std::time(NULL);
+	struct tm buf;
+	struct tm* retbuf = localtime_r(&t, &buf);
+	return 0;
+}
+" HAVE_LOCALTIME_R)
 check_function_exists(_mkdir HAVE__MKDIR)
 check_function_exists(mkdir HAVE_MKDIR)
 check_function_exists(mmap HAVE_MMAP)
@@ -193,3 +290,11 @@ endif(HAVE_WINSOCK2_H)
 check_mkdir_args(MKDIR_TAKES_ONE_ARG)
 
 configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
+if (NOT HAVE_MICROSOFT_GMTIME_S AND NOT HAVE_GMTIME_S AND NOT HAVE_GMTIME_R)
+    message(FATAL_ERROR "At least one of HAVE_MICROSOFT_GMTIME_S, HAVE_GMTIME_S or HAVE_GMTIME_R needs to be found.")
+endif()
+
+if (NOT HAVE_MICROSOFT_LOCALTIME_S AND NOT HAVE_LOCALTIME_S AND NOT HAVE_LOCALTIME_R)
+    message(FATAL_ERROR "At least one of HAVE_MICROSOFT_LOCALTIME_S, HAVE_LOCALTIME_S or HAVE_LOCALTIME_R needs to be found.")
+endif()

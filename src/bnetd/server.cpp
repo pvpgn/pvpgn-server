@@ -87,6 +87,8 @@
 #include "anongame_infos.h"
 #include "topic.h"
 #include "i18n.h"
+#include "smtp.h"
+#include "account_email_verification.h"
 
 #ifdef HAVE_ARPA_INET_H
 # include <arpa/inet.h>
@@ -1255,6 +1257,7 @@ namespace pvpgn
 			next_savetime = starttime + prefs_get_user_sync_timer();
 			war3_ladder_updatetime = starttime - prefs_get_war3_ladder_update_secs();
 			output_updatetime = starttime - prefs_get_output_update_secs();
+			std::time_t download_smtp_ca_cert_store_time = starttime + (86400ll * prefs_get_smtp_ca_cert_store_fetch_interval()); // 86400 seconds in 1 day
 
 			for (;;)
 			{
@@ -1326,6 +1329,7 @@ namespace pvpgn
 					clanlist_save();
 					gamelist_check_voidgame();
 					ladders.save();
+					topiclist_save();
 					next_savetime += prefs_get_user_sync_timer();
 				}
 				accountlist_save(FS_NONE);
@@ -1347,6 +1351,13 @@ namespace pvpgn
 				{
 					output_updatetime = now;
 					output_write_to_file();
+				}
+
+				if (prefs_get_smtp_ca_cert_store_fetch_interval() != 0 && now >= download_smtp_ca_cert_store_time)
+				{
+					download_smtp_ca_cert_store_time = now + (86400ll * prefs_get_smtp_ca_cert_store_fetch_interval());
+
+					download_ca_cert_store();
 				}
 
 
@@ -1505,6 +1516,34 @@ namespace pvpgn
 						lua_load(prefs_get_scriptdir());
 					}
 #endif
+
+					if (prefs_get_verify_account_email() == 1)
+					{
+						if (do_restart == restart_mode_all || do_restart == restart_mode_smtp)
+						{
+							if (smtp_reconfig(prefs_get_smtp_ca_cert_store_file(), prefs_get_smtp_server_url(), prefs_get_smtp_port(), prefs_get_smtp_username(), prefs_get_smtp_password()))
+							{
+								eventlog(eventlog_level_info, __FUNCTION__, "Successfully reconfigured SMTP client");
+							}
+							else
+							{
+								eventlog(eventlog_level_error, __FUNCTION__, "Failed to reconfigure SMTP client");
+								eventlog(eventlog_level_error, __FUNCTION__, "Disabling account email verification");
+								prefs_set_verify_account_email(false);
+							}
+						}
+
+						if (do_restart == restart_mode_all || do_restart == restart_mode_accountemailverification)
+						{
+							account_email_verification_unload();
+							if (!account_email_verification_load(prefs_get_email_verification_file(), prefs_get_servername(), prefs_get_verify_account_email_from_address(), prefs_get_verify_account_email_from_name()))
+							{
+								eventlog(eventlog_level_error, __FUNCTION__, "Failed to load email verification message");
+								eventlog(eventlog_level_error, __FUNCTION__, "Disabling account email verification");
+								prefs_set_verify_account_email(false);
+							}
+						}
+					}
 
 					eventlog(eventlog_level_info, __FUNCTION__, "done reconfiguring");
 

@@ -87,7 +87,7 @@ extern int handle_signal(void)
 	}
 	if (signal_data.reload_config) {
 		signal_data.reload_config=0;
-		eventlog(eventlog_level_info,__FUNCTION__,"reloading configuartion file due to std::signal");
+		eventlog(eventlog_level_info,__FUNCTION__,"reloading configuration file due to std::signal");
 		if (prefs_reload(cmdline_get_preffile())<0) {
 			eventlog(eventlog_level_error,__FUNCTION__,"error reload configuration file,exitting");
 			return -1;

@@ -31,7 +31,7 @@ namespace pvpgn
 {
 
 	/***********************************************************************************/
-	/* first packet recieved from client - option decides which struct to use next */
+	/* first packet received from client - option decides which struct to use next */
 #define CLIENT_FINDANONGAME 			0x44ff
 #define SERVER_FINDANONGAME 			0x44ff
 	typedef struct

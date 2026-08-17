@@ -56,7 +56,6 @@
 using namespace pvpgn::d2dbs;
 using namespace pvpgn;
 
-static std::FILE * eventlog_fp;
 
 char serviceLongName[] = "d2dbs service";
 char serviceName[] = "d2dbs";
@@ -64,8 +63,6 @@ char serviceDescription[] = "Diablo 2 DataBase Server";
 
 int g_ServiceStatus = -1;
 
-static int init(void);
-static int cleanup(void);
 static int config_init(int argc, char * * argv);
 static int config_cleanup(void);
 static int setup_daemon(void);
@@ -135,16 +132,6 @@ static char * write_to_pidfile(void)
 	}
 
 	return pidfile;
-}
-
-static int init(void)
-{
-	return 0;
-}
-
-static int cleanup(void)
-{
-	return 0;
 }
 
 static int config_init(int argc, char * * argv)
@@ -221,8 +208,9 @@ static int config_cleanup(void)
 {
 	d2dbs_prefs_unload();
 	cmdline_unload();
+#ifndef WIN32_GUI
 	eventlog_close();
-	if (eventlog_fp) std::fclose(eventlog_fp);
+#endif
 	return 0;
 }
 
@@ -230,11 +218,11 @@ static int config_cleanup(void)
 #ifdef WIN32_GUI
 extern int app_main(int argc, char ** argv)
 #else
-extern int main(int argc, char ** argv)
+extern int main(int argc, char** argv)
 #endif
 {
 	int pid;
-	char * pidfile;
+	char* pidfile;
 
 #ifdef WIN32
 	// create a dump file whenever the gateway crashes
@@ -243,29 +231,36 @@ extern int main(int argc, char ** argv)
 
 	eventlog_set(stderr);
 	pid = config_init(argc, argv);
-	if (!(pid == 0)) {
+	if (!(pid == 0))
+	{
 		//		if (pid==1) pid=0;
 		return pid;
 	}
 	pidfile = write_to_pidfile();
-	eventlog(eventlog_level_info, __FUNCTION__, D2DBS_VERSION);
-	if (init() < 0) {
-		eventlog(eventlog_level_error, __FUNCTION__, "failed to init");
-		return -1;
-	}
-	else {
-		eventlog(eventlog_level_info, __FUNCTION__, "server initialized");
-	}
+
+
 #ifndef WIN32
 	d2dbs_handle_signal_init();
 #endif
-	dbs_server_main();
-	cleanup();
+
+	int startup_status = pre_server_startup();
+
+	if (startup_status == 0)
+	{
+		if (!server_process())
+		{
+			eventlog(eventlog_level_fatal, __FUNCTION__, "failed to initialize network (exiting)");
+		}
+	}
+
+	post_server_shutdown(startup_status);
+	
 	if (pidfile) {
 		if (std::remove(pidfile) < 0)
 			eventlog(eventlog_level_error, __FUNCTION__, "could not remove pid file \"{}\" (std::remove: {})", pidfile, std::strerror(errno));
 		xfree((void *)pidfile); /* avoid warning */
 	}
+	eventlog(eventlog_level_info, __FUNCTION__, "server has shut down");
 	config_cleanup();
 	return 0;
 }

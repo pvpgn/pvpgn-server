@@ -751,7 +751,7 @@ static int on_client_motdreq(t_connection * c, t_packet * packet)
 	motd = xstrdup(prefs_get_motd());
 	motd_len = std::strlen(motd);
 	if (motd_len > MAX_MOTD_LENGTH) {
-		WARN2("motd length ({}) exceeds maximun value ({})",motd_len,MAX_MOTD_LENGTH);
+		WARN2("motd length ({}) exceeds maximum value ({})",motd_len,MAX_MOTD_LENGTH);
 		motd[MAX_MOTD_LENGTH]='\0';
 	}
 	if ((rpacket=packet_create(packet_class_d2cs))) {

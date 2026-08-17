@@ -393,7 +393,7 @@ namespace pvpgn
 		}
 
 
-		/* Join two vector objects to string by delimeter */
+		/* Join two vector objects to string by delimiter */
 		template <class T, class A>
 		T join(const A &begin, const A &end, const T &t)
 		{

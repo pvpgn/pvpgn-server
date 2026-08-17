@@ -44,7 +44,7 @@ namespace pvpgn
 namespace pvpgn
 {
 
-	/* helpfull utility functions for common conf types like bool, int and str */
+	/* helpful utility functions for common conf types like bool, int and str */
 	extern int conf_set_bool(unsigned *pbool, const char *valstr, unsigned def);
 	extern int conf_set_int(unsigned *pint, const char *valstr, unsigned def);
 	extern int conf_set_str(const char **pstr, const char *valstr, const char *def);

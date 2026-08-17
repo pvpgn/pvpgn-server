@@ -420,7 +420,7 @@ namespace pvpgn
 			newxpcalc = (t_xpcalc_entry*)xrealloc(xpcalc, sizeof(t_xpcalc_entry)* (w3_xpcalc_maxleveldiff + 1));
 			xpcalc = newxpcalc;
 
-			/* OK, now we need to test couse if the user forgot to put some values
+			/* OK, now we need to test because if the user forgot to put some values
 			 * lots of profiles could get screwed up
 			 */
 
@@ -488,8 +488,8 @@ namespace pvpgn
 			/* we return the xp difference for the winner and the looser
 			 * we compute that from the xp charts also applying the loss factor for
 			 * lower level profiles
-			 * FIXME: ?! loss factor doesnt keep the sum of xp won/lost constant
-			 * DON'T CARE, cause current win/loss values aren't symetrical any more
+			 * FIXME: ?! loss factor does not keep the sum of xp won/lost constant
+			 * DON'T CARE, cause current win/loss values aren't symmetrical any more
 			 */
 			if (diff >= 0) {
 				*winxpdiff = xpcalc[absdiff].higher_winxp;
@@ -1095,7 +1095,7 @@ namespace pvpgn
 					readdata(fp, values, 4);
 					noe -= 4;
 
-					//handle differently dependant on ladderKey->ladderId
+					//handle differently depending on ladderKey->ladderId
 					if (t_account* account = accountlist_find_account_by_uid(values[0]))
 					{
 						uid = values[0];

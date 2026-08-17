@@ -1,4 +1,4 @@
-PvPGN CREDITS (also please see the original BNETD credits bellow):
+PvPGN CREDITS (also please see the original BNETD credits below):
 --------------------------------------------------------------------
 
 CREDITS
@@ -32,12 +32,12 @@ PROGRAMMING CONTRIBUTORS
 	 Clans, friends codes optimization, D2 stuff, w3 gameinfo etc.
 
 	TheUndying aka Undy (kainofchaos80@hotmail.com)
-	 PvPGN project starter, initial code maintainance and management, 
+	 PvPGN project starter, initial code maintenance and management, 
 	 initial W3 support codes, etc.
 
 	Zzzoom (servers@3dgames.com.ar)
 	 For persistent SQL connections patch, password brute force attacks 
-	 protection, various bug reports and very usefull profile dumps.
+	 protection, various bug reports and very useful profile dumps.
 
 MISC
 	Eggy (eggy@neostats.net)

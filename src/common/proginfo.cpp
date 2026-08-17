@@ -22,13 +22,17 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+
+#include <fmt/format.h>
+
 #include "common/setup_after.h"
 
 
 namespace pvpgn
 {
 
-	extern int verparts_to_vernum(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4, unsigned long * vernum)
+	extern int verparts_to_vernum(unsigned short v1, unsigned short v2, unsigned short v3, unsigned short v4, std::uint32_t* vernum)
 	{
 		if (!vernum)
 			return -1;
@@ -41,7 +45,7 @@ namespace pvpgn
 	}
 
 
-	extern int verstr_to_vernum(char const * verstr, unsigned long * vernum)
+	extern int verstr_to_vernum(char const * verstr, std::uint32_t* vernum)
 	{
 		unsigned long v1, v2, v3, v4;
 
@@ -82,16 +86,13 @@ namespace pvpgn
 	}
 
 
-	extern char const * vernum_to_verstr(unsigned long vernum)
+	extern std::string vernum_to_verstr(std::uint32_t vernum)
 	{
-		static char verstr[16];
-
-		std::sprintf(verstr, "%lu.%lu.%lu.%lu",
+		return fmt::format("{}.{}.{}.{}",
 			(vernum >> 24),
 			(vernum >> 16) & 0xff,
 			(vernum >> 8) & 0xff,
-			(vernum)& 0xff);
-		return verstr;
+			(vernum) & 0xff);
 	}
 
 }

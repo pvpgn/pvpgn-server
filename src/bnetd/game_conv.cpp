@@ -743,28 +743,57 @@ namespace pvpgn
 		}
 
 
-		extern t_game_speed bngspeed_to_gspeed(unsigned int bngspeed)
+		extern t_game_speed scspeed_to_gspeed(unsigned int bngspeed)
 		{
 			switch (bngspeed)
 			{
-			case CLIENT_GAMESPEED_SLOWEST:
+			case CLIENT_GAMESPEED_STARCRAFT_SLOWEST:
 				return game_speed_slowest;
-			case CLIENT_GAMESPEED_SLOWER:
+			case CLIENT_GAMESPEED_STARCRAFT_SLOWER:
 				return game_speed_slower;
-			case CLIENT_GAMESPEED_SLOW:
+			case CLIENT_GAMESPEED_STARCRAFT_SLOW:
 				return game_speed_slow;
-			case CLIENT_GAMESPEED_NORMAL:
+			case CLIENT_GAMESPEED_STARCRAFT_NORMAL:
 				return game_speed_normal;
-			case CLIENT_GAMESPEED_FAST:
+			case CLIENT_GAMESPEED_STARCRAFT_FAST:
 				return game_speed_fast;
-			case CLIENT_GAMESPEED_FASTER:
+			case CLIENT_GAMESPEED_STARCRAFT_FASTER:
 				return game_speed_faster;
-			case CLIENT_GAMESPEED_FASTEST:
+			case CLIENT_GAMESPEED_STARCRAFT_FASTEST:
 				return game_speed_fastest;
 			default:
 				return game_speed_none;
 			}
 		}
+
+
+		extern t_game_speed wc2speed_to_gspeed(unsigned int bngspeed)
+		{
+			switch (bngspeed)
+			{
+			case CLIENT_GAMESPEED_WARCRAFT2_SLOWEST:
+				return game_speed_slowest;
+			case CLIENT_GAMESPEED_WARCRAFT2_EVENSLOWER:
+				return game_speed_evenslower;
+			case CLIENT_GAMESPEED_WARCRAFT2_SLOWER:
+				return game_speed_slower;
+			case CLIENT_GAMESPEED_WARCRAFT2_SLOW:
+				return game_speed_slow;
+			case CLIENT_GAMESPEED_WARCRAFT2_NORMAL:
+				return game_speed_normal;
+			case CLIENT_GAMESPEED_WARCRAFT2_FAST:
+				return game_speed_fast;
+			case CLIENT_GAMESPEED_WARCRAFT2_FASTER:
+				return game_speed_faster;
+			case CLIENT_GAMESPEED_WARCRAFT2_EVENFASTER:
+				return game_speed_evenfaster;
+			case CLIENT_GAMESPEED_WARCRAFT2_FASTEST:
+				return game_speed_fastest;
+			default:
+				return game_speed_none;
+			}
+		}
+
 
 		t_game_speed w3speed_to_gspeed(unsigned int w3speed)
 		{
@@ -992,7 +1021,7 @@ namespace pvpgn
 
 					if ((game->type == game_type_diablo2closed))
 					{
-						eventlog(eventlog_level_debug, __FUNCTION__, "D2 bug workarround needed (open games tagged as closed)");
+						eventlog(eventlog_level_debug, __FUNCTION__, "D2 bug workaround needed (open games tagged as closed)");
 						game->type = game_type_diablo2open;
 					}
 				}
@@ -1013,7 +1042,7 @@ namespace pvpgn
 					If the corresponding bit is a '0' then subtract 1 from the character.
 					(We decode info data and remove the bitmask bytes from info data in following description)
 					0x09 -- 5 bytes (char[5], map options)
-					0x0e -- 1 bytes (0, seems to be a seperate sign)
+					0x0e -- 1 bytes (0, seems to be a separate sign)
 					0x0f -- 2 bytes (short, mapsize x)
 					0x11 -- 2 bytes (short, mapsize y)
 					0x13 -- 4 bytes (long, unknown, map checksum ?)
@@ -1037,7 +1066,7 @@ namespace pvpgn
 				pstr = _w3_decrypt_mapinfo(pstr);
 				if (!pstr) return -1;
 				/* after decryption we dont have the mask bytes anymore so offsets need
-				 * to be adjusted acordingly */
+				 * to be adjusted accordingly */
 				game_set_speed(game, w3speed_to_gspeed(bn_byte_get(*((bn_byte*)(pstr)))));
 				game_set_mapsize_x(game, bn_short_get(*((bn_short*)(pstr + 5))));
 				game_set_mapsize_y(game, bn_short_get(*((bn_short*)(pstr + 7))));
@@ -1145,9 +1174,20 @@ namespace pvpgn
 			 * multiplying each piece by 32.
 			 * for example, 34 = (32*3) x (32*4) = 96 x 128
 			 */
-			/* special handling for mapsize. empty is 256x256 */
+			/* special handling for mapsize. */
 			if ((mapsize[0] == '\0') || (str_to_uint(mapsize, &bngmapsize) < 0))
-				bngmapsize = 88; /* 256x256 */
+			{
+				if (clienttag == CLIENTTAG_WARCIIBNE_UINT)
+				{
+					// WarCraft II null mapsize = 128x128
+					bngmapsize = 44;
+				}
+				else
+				{
+					// StarCraft null mapsize = 256x256
+					bngmapsize = 88;
+				}
+			}
 			game_set_mapsize_x(game, (bngmapsize / 10) * 32);
 			game_set_mapsize_y(game, (bngmapsize % 10) * 32);
 
@@ -1158,8 +1198,24 @@ namespace pvpgn
 
 			/* special handling for gamespeed. empty is fast */
 			if ((speed[0] == '\0') || (str_to_uint(speed, &bngspeed) < 0))
-				bngspeed = CLIENT_GAMESPEED_FAST;
-			game_set_speed(game, bngspeed_to_gspeed(bngspeed));
+			{
+				if (clienttag == CLIENTTAG_WARCIIBNE_UINT)
+				{
+					bngspeed = CLIENT_GAMESPEED_WARCRAFT2_NULL;
+				}
+				else
+				{
+					bngspeed = CLIENT_GAMESPEED_STARCRAFT_NULL;
+				}
+			}
+			if (clienttag == CLIENTTAG_WARCIIBNE_UINT)
+			{
+				game_set_speed(game, wc2speed_to_gspeed(bngspeed));
+			}
+			else
+			{
+				game_set_speed(game, scspeed_to_gspeed(bngspeed));
+			}
 
 			/* special handling for maptype. empty is self-made */
 			if ((maptype[0] == '\0') || (str_to_uint(maptype, &bngmaptype) < 0))

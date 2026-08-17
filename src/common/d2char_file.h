@@ -72,7 +72,7 @@ description
 base type (1 byte)
 item quality (unknown size)
 Magic (blue name)
-modifer level
+modifier level
 magic dword 1
 magic dword 2
 */

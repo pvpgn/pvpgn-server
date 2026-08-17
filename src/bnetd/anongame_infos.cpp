@@ -1602,7 +1602,7 @@ namespace pvpgn
 				/* AT 2v2v2     */{ 0x04, 0x00, 0x02, 0x3F, 0x02 }	/* 17   */
 			};
 
-			/* hack to give names for new gametypes untill there added to anongame_infos.c */
+			/* hack to give names for new gametypes until there added to anongame_infos.c */
 			const char * anongame_gametype_names[ANONGAME_TYPES] = {
 				"One vs. One",
 				"Two vs. Two",

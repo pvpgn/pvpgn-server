@@ -611,7 +611,7 @@ namespace pvpgn
 						}
 
 						if (intvalue == 0 || intvalue == 0x2F)
-							intvalue = 0x3F; /* hack to make all races availiable */
+							intvalue = 0x3F; /* hack to make all races available */
 
 						tournament_info->races = intvalue;
 					}

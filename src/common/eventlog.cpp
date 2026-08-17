@@ -30,6 +30,7 @@
 
 #include <fmt/format.h>
 
+#include "compat/localtime_s.h"
 #include "compat/strcasecmp.h"
 #include "common/hexdump.h"
 #ifdef WIN32_GUI
@@ -268,8 +269,7 @@ namespace pvpgn
 	{
 		std::va_list args;
 		char        time_string[EVENT_TIME_MAXLEN];
-		struct std::tm * tmnow;
-		std::time_t      now;
+		
 		std::FILE *      fp;
 
 		if (!(level&currlevel))
@@ -281,11 +281,15 @@ namespace pvpgn
 			return;
 
 		/* get the time before parsing args */
-		std::time(&now);
-		if (!(tmnow = std::localtime(&now)))
-			std::strcpy(time_string, "?");
-		else
-			std::strftime(time_string, EVENT_TIME_MAXLEN, EVENT_TIME_FORMAT, tmnow);
+		{
+			std::time_t now = (std::time_t)(-1);
+			std::time(&now);
+			struct std::tm tmnow = {};
+			if (now == (std::time_t)(-1) || pvpgn::localtime_s(&now, &tmnow) == nullptr)
+				std::strcpy(time_string, "?");
+			else
+				std::strftime(time_string, EVENT_TIME_MAXLEN, EVENT_TIME_FORMAT, &tmnow);
+		}
 
 		if (!module)
 		{

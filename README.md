@@ -7,14 +7,15 @@ PvPGN is a free and open source cross-platform server software that supports Bat
 [![License (GPL version 2)](https://img.shields.io/badge/license-GNU%20GPL%20version%202-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
 ![Language (C++)](https://img.shields.io/badge/powered_by-C++-brightgreen.svg?style=flat-square)
 [![Language (Lua)](https://img.shields.io/badge/powered_by-Lua-red.svg?style=flat-square)](https://lua.org)
-[![Github Releases (by Release)](https://img.shields.io/github/downloads/pvpgn/pvpgn-server/1.99.7.2.1/total.svg?maxAge=2592000)]()
+[![Latest release](https://img.shields.io/github/v/release/pvpgn/pvpgn-server?include_prereleases&style=flat-square)](https://github.com/pvpgn/pvpgn-server/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/pvpgn/pvpgn-server/total.svg?style=flat-square)](https://github.com/pvpgn/pvpgn-server/releases)
 
-[![Compiler (Microsoft Visual C++)](https://img.shields.io/badge/compiled_with-Microsoft%20Visual%20C++-yellow.svg?style=flat-square)](https://msdn.microsoft.com/en-us/vstudio/hh386302.aspx)
+[![Compiler (Microsoft Visual C++)](https://img.shields.io/badge/compiled_with-Microsoft%20Visual%20C++-yellow.svg?style=flat-square)](https://visualstudio.microsoft.com/)
 [![Compiler (LLVM/Clang)](https://img.shields.io/badge/compiled_with-LLVM/Clang-lightgrey.svg?style=flat-square)](http://clang.llvm.org/)
 [![Compiler (GCC)](https://img.shields.io/badge/compiled_with-GCC-yellowgreen.svg?style=flat-square)](https://gcc.gnu.org/)
+[![Compiler (Apple Clang)](https://img.shields.io/badge/compiled_with-Apple%20Clang-lightblue.svg?style=flat-square)](https://developer.apple.com/xcode/)
 
-[![Build Status](https://travis-ci.org/pvpgn/pvpgn-server.svg?branch=master)](https://travis-ci.org/pvpgn/pvpgn-server)
-[![Build status](https://ci.appveyor.com/api/projects/status/dqoj9lkvhfwthmn6)](https://ci.appveyor.com/project/HarpyWar/pvpgn)
+[![Build status](https://github.com/pvpgn/pvpgn-server/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/pvpgn/pvpgn-server/actions/workflows/build.yml)
 
 [Deleaker](http://www.deleaker.com/) helps us find memory leaks.
 
@@ -44,104 +45,124 @@ By default, tracking is enabled and is only used for the purpose of sending info
 - **Emperor: Battle for Dune**: 1.09
 
 \* WarCraft 3 clients are unable to connect to PvPGN servers without a client-side modification, through tools such as [W3L](https://github.com/w3lh/w3l), to disable server signature verification.
+
 \* StarCraft clients beginning with patch 1.18 will not be supported by PvPGN-PRO due to protocol changes. A 1.18.0 versioncheck entry is included for compatibility with bot software.
 
 ## Support
 [Create an issue](https://github.com/pvpgn/pvpgn-server/issues) if you have any questions, suggestions, or anything else to say about PvPGN-PRO. Please note that D2GS is not part of the PvPGN project and is therefore unsupported here.
-Set `loglevels = fatal,error,warn,info,debug,trace` in `bnetd.conf` before obtaining logs and posting them.
+
+You may also find people familiar with PvPGN at these Discord servers:
+- **#botdev** at [Discord - BNETDocs](https://discord.com/invite/u87WVeu)
+- **#pvpgn-d2gs-support** at [Discord - DIABLO2.ORG](https://discord.com/invite/FkFJNBu)
 
 ## Development
 Submit pull requests to contribute to this project. Utilize C++11 features and adhere to the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md) whenever possible.
 
 ## Building
-See [docs/ports.md](https://github.com/pvpgn/pvpgn-server/blob/master/docs/ports.md) for operating systems and compilers that have been confirmed to work with PvPGN. Any operating system that supports WinAPI or POSIX, and any C++11 compliant compiler should be able to build PvPGN. The CMake files have been hardcoded to reject compilers older than Visual Studio 2015 and GCC 5.1.
+See [docs/ports.md](https://github.com/pvpgn/pvpgn-server/blob/master/docs/ports.md) for operating systems and compilers that have been confirmed to work with PvPGN. Any operating system that supports WinAPI or POSIX, and any C++11 compliant compiler should be able to build PvPGN.
 
-#### Windows
-Use [Magic Builder](https://github.com/pvpgn/pvpgn-magic-builder).
+On Windows, [Magic Builder](https://github.com/pvpgn/pvpgn-magic-builder) is a convenient tool for building PvPGN.
 
-Alternatively, use cmake to generate the .sln project and build it from Visual Studio.
+### Obtain packages.
+
+#### Ubuntu / Debian 10
 ```
-cmake -g "Visual Studio 14 2015" -H./ -B./build
-```
-This will generate .sln in `build` directory.
-
-#### Linux in general
-Do not blindly run these commands. The main problem with older distributions is installing CMake 3.2.x and GCC 5, so external repositories are used in the examples.
-
-```
-apt-get install git install cmake make build-essential zlib1g-dev
-apt-get install liblua5.1-0-dev #Lua support
-apt-get install mysql-server mysql-client libmysqlclient-dev #MySQL support
-cd /home
-git clone https://github.com/pvpgn/pvpgn-server.git
-cmake -D CMAKE_INSTALL_PREFIX=/usr/local/pvpgn -D WITH_MYSQL=true -D WITH_LUA=true ../
-make
-make install
+apt install -y build-essential git cmake zlib1g-dev libcurl4-openssl-dev
+apt install -y liblua5.1-0-dev # Lua support
+apt install -y mysql-server mysql-client libmysqlclient-dev # MySQL support
+apt install -y sqlite3 libsqlite3-dev # SQLite3 support
+apt install -y postgresql libpq-dev # PostgreSQL support
 ```
 
-#### Ubuntu 16.04, 18.04
+#### CentOS 8
 ```
-sudo apt-get -y install build-essential git cmake zlib1g-dev
-git clone https://github.com/pvpgn/pvpgn-server.git
-cd pvpgn-server && cmake -G "Unix Makefiles" -H./ -B./build
-cd build && make
-```
-
-#### Ubuntu 14.04
-```
-sudo apt-get -y install build-essential zlib1g-dev git
-sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-sudo apt-get -y update
-sudo apt-get -y install gcc-5 g++-5
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
-sudo add-apt-repository -y ppa:george-edison55/cmake-3.x
-sudo apt-get update
-sudo apt-get -y install cmake
-git clone https://github.com/pvpgn/pvpgn-server.git
-cd pvpgn-server && cmake -G "Unix Makefiles" -H./ -B./build
-cd build && make
-```
-
-#### Debian 8 with clang compiler
-```
-sudo apt-get -y install build-essential zlib1g-dev clang libc++-dev git
-wget https://cmake.org/files/v3.7/cmake-3.7.1-Linux-x86_64.tar.gz
-tar xvfz cmake-3.7.1-Linux-x86_64.tar.gz
-git clone https://github.com/pvpgn/pvpgn-server.git
-cd pvpgn-server && CC=/usr/bin/clang CXX=/usr/bin/clang++ ../cmake-3.7.1-Linux-x86_64/bin/cmake -G "Unix Makefiles" -H./ -B./build
-cd build && make
+dnf -y install wget gcc-c++ make git cmake zlib-devel libcurl-devel
+dnf -y install readline-devel && wget -c https://www.lua.org/ftp/lua-5.1.5.tar.gz -O - | tar -xz && cd lua-5.1.5 && make linux && make install # Lua 5.1 must be compiled and installed from source. Newer version not supported yet.
+dnf -y install mysql-server mysql-devel
+dnf -y install sqlite-devel
+dnf -y install postgresql
 ```
 
 #### CentOS 7
 ```
-sudo yum -y install epel-release centos-release-scl
-sudo yum -y install git zlib-devel cmake3 devtoolset-4-gcc*
-sudo ln -s /usr/bin/cmake3 /usr/bin/cmake
-git clone https://github.com/pvpgn/pvpgn-server.git
-cd pvpgn-server
-CC=/opt/rh/devtoolset-4/root/usr/bin/gcc CXX=/opt/rh/devtoolset-4/root/usr/bin/g++ cmake -G "Unix Makefiles" -H./ -B./build
-cd build && make
+yum -y install epel-release centos-release-scl
+yum -y install git zlib-devel cmake3 libcurl-devel devtoolset-7-gcc*
+ln -s /usr/bin/cmake3 /usr/bin/cmake
+scl enable devtoolset-7 bash
 ```
 
-#### Fedora 25
+#### Fedora 32
 ```
-sudo dnf -y install gcc-c++ gcc make zlib-devel cmake git
-git clone https://github.com/pvpgn/pvpgn-server.git
-cd pvpgn-server
-cmake -G "Unix Makefiles" -H./ -B./build
-cd build && make
+dnf -y install gcc-c++ make git cmake zlib-devel libcurl-devel
+dnf -y install community-mysql-server
 ```
 
-#### FreeBSD 11
+#### FreeBSD 12
 ```
-sudo pkg install -y git cmake
-git clone https://github.com/pvpgn/pvpgn-server.git
-cd pvpgn-server
-cmake -G "Unix Makefiles" -H./ -B./build
-cd build && make
+env ASSUME_ALWAYS_YES=yes pkg install git cmake curl
+# Lua?
+# MySQL?
+# SQLite3?
+# PostgreSQL?
 ```
 
-Full instructions: [Русский](http://harpywar.com/?a=articles&b=2&c=1&d=74) | [English](http://harpywar.com/?a=articles&b=2&c=1&d=74&lang=en)
+#### macOS
+Install the Xcode Command Line Tools (provides Apple Clang, make, and the zlib/libcurl headers from the macOS SDK — no Homebrew packages are needed for these), then install CMake via [Homebrew](https://brew.sh):
+```
+xcode-select --install
+brew install git cmake
+```
+
+For Lua support, Lua 5.1 must be compiled and installed from source (newer versions are not supported yet). Installing to a user-local prefix avoids sudo:
+```
+curl -fsSL https://www.lua.org/ftp/lua-5.1.5.tar.gz | tar -xz
+cd lua-5.1.5 && make macosx && make install INSTALL_TOP="$HOME/lua51"
+```
+
+### Generate a makefile or Visual Studio solution
+
+```
+git clone https://github.com/pvpgn/pvpgn-server.git
+cd pvpgn-server && mkdir build && cd build
+
+cmake -DCMAKE_BUILD_TYPE="RelWithDebInfo" ../
+```
+
+- On Linux, you may want to specify a custom installation directory by passing `-DCMAKE_INSTALL_PREFIX=/usr/local/pvpgn` to CMake.
+- On macOS:
+  - CMake 4.x (the current Homebrew version) no longer supports this project's minimum CMake version, so add `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` to the CMake command.
+  - When building with `-DWITH_LUA=true`, also pass `-DCMAKE_PREFIX_PATH="$HOME/lua51"` (the Lua 5.1 install prefix from the step above). Without it, CMake will pick up any newer Homebrew Lua (5.4/5.5), which fails to compile.
+  - Full example:
+    ```
+    cmake -DCMAKE_BUILD_TYPE="RelWithDebInfo" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DWITH_LUA=true -DCMAKE_PREFIX_PATH="$HOME/lua51" ../
+    ```
+- Additional CMake options are:
+  - `-DWITH_BNETD=true`
+  - `-DWITH_D2CS=true`
+  - `-DWITH_D2DBS=true`
+  - `-DWITH_LUA=false`
+  - `-DWITH_WIN32_GUI=true`
+  - `-DWITH_MYSQL=false`
+  - `-DWITH_SQLITE3=false`
+  - `-DWITH_PGSQL=false`
+  - `-DWITH_ODBC=false`
+
+### Build and install
+
+#### Linux / macOS
+```
+make && make install
+```
+On macOS, the default install prefix (`/usr/local`) requires `sudo make install`; alternatively pass `-DCMAKE_INSTALL_PREFIX=$HOME/pvpgn` to CMake to install without sudo.
+
+#### Windows (Visual Studio)
+First open *Developer PowerShell for VS ...* or *Developer Command Prompt for VS ...*
+```
+msbuild pvpgn.sln -target:ALL_BUILD;INSTALL /p:Configuration="RelWithDebInfo"
+```
+#### Docker
+
+[Check this link](README_DOCKER.md)
 
 ## Hosting on LAN or VPS with private IP address
 Some VPS providers do not assign your server a direct public IP. If that is the case or you host at home behind NAT you need to setup the route translation in `address_translation.conf`. The public address is pushed as the route server address to game clients when seeking games. Failure to push the correct address to game clients results in players not being able to match and join games (long game search and error).
@@ -149,6 +170,7 @@ Some VPS providers do not assign your server a direct public IP. If that is the 
 If your network interface is directly bound to public IP, PvPGN can figure it out on it's own and this step is not necessary.
 
 ## License
+PvPGN-PRO is licensed under the GNU GPL v2 (or later). See LICENSE file for more information.
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License

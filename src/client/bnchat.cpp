@@ -1833,7 +1833,7 @@ extern int main(int argc, char * argv[])
 
 						{
 							char result = bn_byte_get(rpacket->u.server_clan_invitereply.result);
-							std::printf("Recieved result: %i\n", result);
+							std::printf("Received result: %i\n", result);
 							break;
 						}
 

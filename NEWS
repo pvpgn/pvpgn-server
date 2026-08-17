@@ -28,12 +28,12 @@
 
  o Better game result calculation
 
-    Game result decision has been completly changed to use a democratic 
-    ellection scheme (ie it bases the decision on the oppinions of the most 
-    results). This should solve problems with game results beeing wrong under 
+    Game result decision has been completely changed to use a democratic 
+    ellection scheme (ie it bases the decision on the opinions of the most 
+    results). This should solve problems with game results being wrong under 
     some situations (like team games).
 
- o New WIN32 compiler/enviroment support
+ o New WIN32 compiler/environment support
 
     Now you can compile PvPGN under WIN32 using complete GPL/free build tools 
     by using Dev-C++ project and additional tools (mingw, etc).
@@ -68,7 +68,7 @@
 
     Codes have been dramatically changed to use integers for storing of tags 
     (client tags, architecture tags, etc) and thus when comparing tags we use 
-    plain integer comparation instead of string comparation. This should 
+    plain integer comparison instead of string comparison. This should 
     reduce CPU usage a lot.
 
  o Optimized list handling codes
@@ -81,7 +81,7 @@
 
     We have unified all address translation files and codes to use a single 
     address_translation.conf file for this job. Also the file syntax has 
-    been completly changed to be more flexible and allow configuration of 
+    been completely changed to be more flexible and allow configuration of 
     almost any thinkable NAT setup.
 
  o IRC support reworked

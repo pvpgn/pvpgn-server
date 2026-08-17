@@ -207,7 +207,7 @@ namespace pvpgn
 			if (tempparams) {
 				*tempparams++ = '\0';
 				if (tempparams[0] == ':') {
-					text = tempparams + 1; /* theres just text, no params. skip the colon */
+					text = tempparams + 1; /* there's just text, no params. skip the colon */
 				}
 				else {
 					for (i = 0; tempparams[i] != '\0'; i++) {
@@ -266,11 +266,17 @@ namespace pvpgn
 			if (handle_irc_common_con_command(conn, command, numparams, params, text) != -1) {}
 			else if (conn_get_state(conn) != conn_state_loggedin)
 			{
+				eventlog(eventlog_level_debug, __FUNCTION__, "[{}] received unrecognized command from client before login (\"{}\")", conn_get_socket(conn), command);
+
 				std::string tmp(":Unrecognized command \"" + std::string(command) + "\" (before login)");
 				if (tmp.length() > MAX_IRC_MESSAGE_LEN)
-					irc_send(conn, ERR_UNKNOWNCOMMAND, tmp.c_str());
-				else
+				{
 					irc_send(conn, ERR_UNKNOWNCOMMAND, ":Unrecognized command (before login)");
+				}
+				else
+				{
+					irc_send(conn, ERR_UNKNOWNCOMMAND, tmp.c_str());
+				}
 			}
 			else
 			{

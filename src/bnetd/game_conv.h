@@ -39,7 +39,8 @@ namespace pvpgn
 		extern t_game_result bngresult_to_gresult(unsigned int bngresult);
 		extern t_game_maptype bngmaptype_to_gmaptype(unsigned int bngmaptype);
 		extern t_game_tileset bngtileset_to_gtileset(unsigned int bngtileset);
-		extern t_game_speed bngspeed_to_gspeed(unsigned int bngspeed);
+		extern t_game_speed scspeed_to_gspeed(unsigned int bngspeed);
+		extern t_game_speed wc2speed_to_gspeed(unsigned int bngspeed);
 		extern t_game_difficulty bngdifficulty_to_gdifficulty(unsigned int bngdifficulty);
 		extern int game_parse_info(t_game * game, char const * gameinfo);
 

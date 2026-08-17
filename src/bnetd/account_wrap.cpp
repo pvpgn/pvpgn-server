@@ -23,6 +23,8 @@
 #include <memory>
 #include <string>
 
+#include <fmt/format.h>
+
 #include "compat/strcasecmp.h"
 
 #include "common/bnet_protocol.h"
@@ -2398,7 +2400,7 @@ namespace pvpgn
 		}
 
 
-		/* value = icons delimeted by space */
+		/* value = icons delimited by space */
 		extern int account_set_user_iconstash(t_account * account, t_clienttag clienttag, char const * value)
 		{
 			std::string key("Record\\" + tag_uint_to_str2(clienttag) + "\\iconstash");
@@ -2465,7 +2467,7 @@ namespace pvpgn
 		// Orcs - Peon, Grunt, Tauren, Far Seer, Thrall, Nothing
 		// Undead - Acolyle, Ghoul, Abomination, Lich, Tichondrius, Nothing
 		// Night Elves - Wisp, Archer, Druid of the Claw, Priestess of the Moon, Furion Stormrage, Nothing
-		// Demons - Nothing, ???(wich unit is nfgn), Infernal, Doom Guard, Pit Lord/Manaroth, Archimonde
+		// Demons - Nothing, ???(which unit is nfgn), Infernal, Doom Guard, Pit Lord/Manaroth, Archimonde
 		// ADDED TFT ICON BY DJP 07/16/2003
 		static const char * profile_code[12][6] = {
 			{ NULL, "ngrd", "nadr", "nrdr", "nbwm", NULL },
@@ -2639,6 +2641,78 @@ namespace pvpgn
 			}
 
 			return account_set_strattr(account, "BNET\\acct\\email", email.c_str());
+		}
+
+		extern int account_get_email_verified(t_account* account)
+		{
+			if (account == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL account");
+				return -1;
+			}
+
+			return account_get_boolattr(account, "BNET\\acct\\email\\verified");
+		}
+
+		extern int account_set_email_verified(t_account* account, bool is_verified)
+		{
+			if (account == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL account");
+				return -1;
+			}
+
+			return account_set_boolattr(account, "BNET\\acct\\email\\verified", is_verified ? 1 : 0);
+		}
+
+		extern char const * account_get_emailverification_code(t_account* account)
+		{
+			if (account == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL account");
+				return nullptr;
+			}
+
+			return account_get_strattr(account, "emailverification\\code");
+		}
+
+		extern int account_set_emailverification_code(t_account* account, char const * verification_code)
+		{
+			if (account == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL account");
+				return -1;
+			}
+
+			if (verification_code == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL verification_code");
+				return -1;
+			}
+
+			return account_set_strattr(account, "emailverification\\code", verification_code);
+		}
+
+		extern unsigned int account_get_emailverification_expiration(t_account* account)
+		{
+			if (account == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL account");
+				return 0;
+			}
+
+			return account_get_numattr(account, "emailverification\\expiration");
+		}
+
+		extern int account_set_emailverification_expiration(t_account* account, unsigned int expiration_date)
+		{
+			if (account == nullptr)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "got NULL account");
+				return -1;
+			}
+
+			return account_set_numattr(account, "emailverification\\expiration", expiration_date);
 		}
 
 		extern int account_set_userlang(t_account * account, const char * lang)

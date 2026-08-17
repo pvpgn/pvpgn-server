@@ -53,6 +53,7 @@ namespace pvpgn
 #include <string>
 #include <utility>
 
+#include "compat/localtime_s.h"
 #ifdef WIN32_GUI
 # include "common/gui_printf.h"
 #endif
@@ -91,16 +92,16 @@ namespace pvpgn
 		}
 
 		std::time_t now = std::time(nullptr);
-		std::tm* tmnow = std::localtime(&now);
+		std::tm tmnow = {};
 		std::string time;
-		if (!tmnow)
+		if (now == (std::time_t)(-1) || pvpgn::localtime_s(&now, &tmnow) == nullptr)
 		{
 			time = "?";
 		}
 		else
 		{
 			std::stringstream temp;
-			temp << std::put_time(tmnow, EVENT_TIME_FORMAT);
+			temp << std::put_time(&tmnow, EVENT_TIME_FORMAT);
 			time = fmt::format("{}", temp.str());
 		}
 

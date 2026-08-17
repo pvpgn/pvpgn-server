@@ -50,7 +50,7 @@ Configuration files changed:
     file too if you have your accounts on SQL
 - conf/bnetd.conf : added Westwood Online (WOL) configuration options; woladdr
     to specify the address to listen for WOL clients, woltimezone for the 
-    server timezone to send to clients, wollong for the server longitute, 
+    server timezone to send to clients, wollong for the server longitude, 
     wollat for the server latitude
 - conf/bnetd.conf : changed "servaddrs" directive to not be totally commented 
     and be as ":" by default in bnetd.conf (if "servaddrs" is commented this 
@@ -99,7 +99,7 @@ Configuration files changed:
 ==============================
 
 Because of the many changes in 1.7.0 we recommend to use a clean install 
-and update the configuration files as necesarry. Things to note:
+and update the configuration files as necessary. Things to note:
 1. you now need GNU make to build PvPGN on POSIX systems (on Linux this is 
 just "make" but on *BSD is "gmake")
 2. d2trans,gametrans,w3trans have been unified under address_translation.conf 

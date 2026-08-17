@@ -62,7 +62,7 @@
 /*      RPL_ATTEMPTINGREROUTE 51           aircd extension */
 
 /*
- * Numberic replies from server commands.
+ * Numeric replies from server commands.
  * These are currently in the range 200-399.
  */
 
@@ -85,7 +85,7 @@
 #define RPL_STATSNLINE       214 /* unused */
 #define RPL_STATSILINE       215
 #define RPL_STATSKLINE       216
-#define RPL_STATSPLINE       217        /* Undernet extenstion */
+#define RPL_STATSPLINE       217        /* Undernet extension */
 /*      RPL_STATSQLINE       217           Various */
 #define RPL_STATSYLINE       218
 #define RPL_ENDOFSTATS       219        /* See also RPL_STATSDLINE */
@@ -298,7 +298,7 @@
 /*      RPL_NOUSERS          395        Dalnet/EFnet/IRCnet */
 
 /*
- * Numberic replies from server commands.
+ * Numeric replies from server commands.
  * These are currently in the range 600-699.
  */
 /*		RPL_LOGON			 600		   dalnet,unreal
@@ -456,7 +456,7 @@
 #define ERR_BANNEDFROMCHAN   474
 #define ERR_BADCHANNELKEY    475
 #define ERR_BADCHANMASK      476        /* Undernet extension */
-/*      ERR_NEEDREGGEDNICK   477           DalNet Extention */
+/*      ERR_NEEDREGGEDNICK   477           DalNet Extension */
 #define ERR_BANLISTFULL      478        /* Undernet extension */
 /* 	ERR_LINKFAIL	     479	unreal */
 

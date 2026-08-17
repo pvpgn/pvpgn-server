@@ -24,7 +24,11 @@
 #include <cstring>
 #include <cctype>
 #include <cstdlib>
+#include <string>
 
+#include <nonstd/optional.hpp>
+
+#include "compat/localtime_s.h"
 #include "compat/strcasecmp.h"
 #include "common/irc_protocol.h"
 #include "common/eventlog.h"
@@ -140,9 +144,8 @@ namespace pvpgn
 		extern int handle_irc_welcome(t_connection * conn)
 		{
 			char temp[MAX_IRC_MESSAGE_LEN];
-			std::time_t temptime;
+			
 			char const * tempname;
-			char const * temptimestr;
 
 			if (!conn) {
 				eventlog(eventlog_level_error, __FUNCTION__, "got NULL connection");
@@ -163,10 +166,17 @@ namespace pvpgn
 				std::sprintf(temp, ":Maximum length exceeded");
 			irc_send(conn, RPL_YOURHOST, temp);
 
-			temptime = server_get_starttime(); /* FIXME: This should be build time */
-			temptimestr = std::ctime(&temptime);
+			char temptimestr[256] = {};
+			{
+				std::time_t temptime = server_get_starttime(); /* FIXME: This should be build time */;
+				struct std::tm calendartime = {};
+				if (pvpgn::localtime_s(&temptime, &calendartime) == nullptr || std::strftime(temptimestr, sizeof(temptimestr), "%c", &calendartime) == 0)
+				{
+					std::strcpy(temptimestr, "?");
+				}
+			}
 			if ((25 + std::strlen(temptimestr) + 1) <= MAX_IRC_MESSAGE_LEN)
-				std::sprintf(temp, ":This server was created %s", temptimestr); /* FIXME: is ctime() portable? */
+				std::sprintf(temp, ":This server was created %s", temptimestr);
 			else
 				std::sprintf(temp, ":Maximum length exceeded");
 			irc_send(conn, RPL_CREATED, temp);
@@ -216,7 +226,7 @@ namespace pvpgn
 				realname = text;
 
 				if (conn_get_user(conn)) {
-					irc_send(conn, ERR_ALREADYREGISTRED, ":You are already registred");
+					irc_send(conn, ERR_ALREADYREGISTRED, ":You are already registered");
 				}
 				else {
 					eventlog(eventlog_level_debug, __FUNCTION__, "[{}] got USER: user=\"{}\" realname=\"{}\"", conn_get_socket(conn), user, realname);
@@ -260,7 +270,7 @@ namespace pvpgn
 				e = irc_get_listelems(params[0]);
 				/* FIXME: support wildcards! */
 
-				/* start amadeo: code was sent by some unkown fellow of pvpgn (maybe u wanna give us your name
+				/* start amadeo: code was sent by some unknown fellow of pvpgn (maybe u wanna give us your name
 				   for any credits), it adds nick-registration, i changed some things here and there... */
 				for (i = 0; ((e) && (e[i])); i++) {
 					if (strcasecmp(e[i], "NICKSERV") == 0) {
@@ -433,21 +443,19 @@ namespace pvpgn
 
 		static int _handle_list_command(t_connection * conn, int numparams, char ** params, char * text)
 		{
-			std::string tmp;
 			irc_send(conn, RPL_LISTSTART, "Channel :Users Names"); /* backward compatibility */
 
 			if (numparams == 0)
 			{
 				t_elem const * curr;
-				class_topic Topic;
 				LIST_TRAVERSE_CONST(channellist(), curr)
 				{
 					t_channel const * channel = (const t_channel*)elem_get_data(curr);
 					char const * tempname = irc_convert_channel(channel, conn);
-					std::string topicstr = Topic.get(channel_get_name(channel));
+					nonstd::optional<std::string> topic = channel_get_topic(channel);
 
 					/* FIXME: AARON: only list channels like in /channels command */
-					tmp = std::string(tempname) + " " + std::to_string(channel_get_length(channel)) + " :" + topicstr;
+					std::string tmp = fmt::format("{} {} :{}", tempname, channel_get_length(channel), topic.value_or(""));
 
 					if (tmp.length() > MAX_IRC_MESSAGE_LEN)
 						eventlog(eventlog_level_warn, __FUNCTION__, "LISTREPLY length exceeded");
@@ -459,7 +467,6 @@ namespace pvpgn
 			{
 				int i;
 				char ** e;
-				class_topic Topic;
 
 				e = irc_get_listelems(params[0]);
 				/* FIXME: support wildcards! */
@@ -474,10 +481,10 @@ namespace pvpgn
 					if (!channel)
 						continue; /* channel doesn't exist */
 
-					std::string topicstr = Topic.get(channel_get_name(channel));
+					nonstd::optional<std::string> topic = channel_get_topic(channel);
 					char const * tempname = irc_convert_channel(channel, conn);
 
-					tmp = std::string(tempname) + " " + std::to_string(channel_get_length(channel)) + " :" + topicstr;
+					std::string tmp = fmt::format("{} {} :{}", tempname, channel_get_length(channel), topic.value_or(""));
 
 					if (tmp.length() > MAX_IRC_MESSAGE_LEN)
 						eventlog(eventlog_level_warn, __FUNCTION__, "LISTREPLY length exceeded");

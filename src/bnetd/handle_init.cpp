@@ -109,7 +109,7 @@ namespace pvpgn
 					conn_set_class(c, conn_class_d2cs_bnetd);
 					if (handle_d2cs_init(c) < 0)
 					{
-						eventlog(eventlog_level_info, __FUNCTION__, "faild to init d2cs connection");
+						eventlog(eventlog_level_info, __FUNCTION__, "failed to init d2cs connection");
 						return -1;
 					}
 				}

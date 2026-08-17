@@ -25,6 +25,7 @@
 #include <cerrno>
 #include <cstdlib>
 
+#include "compat/localtime_s.h"
 #include "compat/strdup.h"
 #include "compat/strcasecmp.h"
 #include "common/eventlog.h"
@@ -177,23 +178,28 @@ namespace pvpgn
 
 			if (logflag)
 			{
-				std::time_t      now;
-				struct std::tm * tmnow;
-				char        dstr[64];
-				char        timetemp[CHANLOG_TIME_MAXLEN];
+				char        dstr[64] = {};
+				char        timetemp[CHANLOG_TIME_MAXLEN] = {};
 
-				now = std::time(NULL);
-
-				if (!(tmnow = std::localtime(&now)))
+				std::time_t now = std::time(nullptr);
+				struct std::tm tmnow = {};
+				if (pvpgn::localtime_s(&now, &tmnow) == nullptr)
+				{
 					dstr[0] = '\0';
+					std::strcpy(timetemp, "?");
+				}
 				else
+				{
 					std::sprintf(dstr, "%04d%02d%02d%02d%02d%02d",
-					1900 + tmnow->tm_year,
-					tmnow->tm_mon + 1,
-					tmnow->tm_mday,
-					tmnow->tm_hour,
-					tmnow->tm_min,
-					tmnow->tm_sec);
+						1900 + tmnow.tm_year,
+						tmnow.tm_mon + 1,
+						tmnow.tm_mday,
+						tmnow.tm_hour,
+						tmnow.tm_min,
+						tmnow.tm_sec);
+
+					std::strftime(timetemp, sizeof(timetemp), CHANLOG_TIME_FORMAT, &tmnow);
+				}
 
 				channel->logname = (char*)xmalloc(std::strlen(prefs_get_chanlogdir()) + 9 + std::strlen(dstr) + 1 + 6 + 1); /* dir + "/chanlog-" + dstr + "-" + id + NUL */
 				std::sprintf(channel->logname, "%s/chanlog-%s-%06u", prefs_get_chanlogdir(), dstr, channel->id);
@@ -215,10 +221,6 @@ namespace pvpgn
 					else
 						std::fprintf(channel->log, "clienttag=none\n");
 
-					if (tmnow)
-						std::strftime(timetemp, sizeof(timetemp), CHANLOG_TIME_FORMAT, tmnow);
-					else
-						std::strcpy(timetemp, "?");
 					std::fprintf(channel->log, "created=\"%s\"\n\n", timetemp);
 					std::fflush(channel->log);
 				}
@@ -290,15 +292,14 @@ namespace pvpgn
 
 			if (channel->log)
 			{
-				std::time_t      now;
-				struct std::tm * tmnow;
-				char        timetemp[CHANLOG_TIME_MAXLEN];
-
-				now = std::time(NULL);
-				if ((!(tmnow = std::localtime(&now))))
+				std::time_t now = std::time(nullptr);
+				struct std::tm tmnow = {};
+				char timetemp[CHANLOG_TIME_MAXLEN] = {};
+				
+				if (pvpgn::localtime_s(&now, &tmnow) == nullptr)
 					std::strcpy(timetemp, "?");
 				else
-					std::strftime(timetemp, sizeof(timetemp), CHANLOG_TIME_FORMAT, tmnow);
+					std::strftime(timetemp, sizeof(timetemp), CHANLOG_TIME_FORMAT, &tmnow);
 				std::fprintf(channel->log, "\ndestroyed=\"%s\"\n", timetemp);
 
 				if (std::fclose(channel->log) < 0)
@@ -473,7 +474,7 @@ namespace pvpgn
 			for (user = channel_get_first(channel); user; user = channel_get_next())
 			{
 				message_send_text(connection, message_type_adduser, user, NULL);
-				/* In WOL gamechannels we send JOINGAME ack explicitely to self */
+				/* In WOL gamechannels we send JOINGAME ack explicitly to self */
 				if (!conn_get_game(connection))
 					message_send_text(user, message_type_join, connection, NULL);
 			}
@@ -633,15 +634,14 @@ namespace pvpgn
 
 			if (channel->log)
 			{
-				std::time_t       now;
-				struct std::tm *  tmnow;
-				char         timetemp[CHANLOG_TIME_MAXLEN];
+				std::time_t now = std::time(nullptr);
+				struct std::tm tmnow = {};
+				char timetemp[CHANLOG_TIME_MAXLEN] = {};
 
-				now = std::time(NULL);
-				if ((!(tmnow = std::localtime(&now))))
+				if (pvpgn::localtime_s(&now, &tmnow) == nullptr)
 					std::strcpy(timetemp, "?");
 				else
-					std::strftime(timetemp, sizeof(timetemp), CHANLOGLINE_TIME_FORMAT, tmnow);
+					std::strftime(timetemp, sizeof(timetemp), CHANLOGLINE_TIME_FORMAT, &tmnow);
 
 				if (fromuser)
 					std::fprintf(channel->log, "%s: \"%s\" \"%s\"\n", timetemp, conn_get_username(me), text);
@@ -1595,7 +1595,7 @@ namespace pvpgn
 
 			acc = conn_get_account(c);
 
-			/* well... unfortunatly channel_get_name never returns NULL but "" instead
+			/* well... unfortunately channel_get_name never returns NULL but "" instead
 			   so we first have to check if user is in a channel at all */
 			if ((!conn_get_channel(c)) || (!(channel = channel_get_name(conn_get_channel(c)))))
 				return -1;

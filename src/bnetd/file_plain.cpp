@@ -168,7 +168,7 @@ namespace pvpgn
 
 		static t_attr * plain_read_attr(const char *filename, const char *key)
 		{
-			/* flat file storage doesnt know to read selective attributes */
+			/* flat file storage does not know to read selective attributes */
 			return NULL;
 		}
 

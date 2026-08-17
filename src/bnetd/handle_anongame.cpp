@@ -114,7 +114,7 @@ namespace pvpgn
 					 bn_int	wins
 					 bn_int	losses
 					 bn_byte rank
-					 bn_byte progess bar
+					 bn_byte progress bar
 					 bn_int	xp
 					 bn_int	rank
 					 bn_byte 0x06 <-- random + 5 races
@@ -575,7 +575,7 @@ namespace pvpgn
 			if (prefs_get_custom_icons() == 1 && customicons_allowed_by_client(clienttag) && customicons_get_icon_by_account(account, clienttag))
 				return 0;
 
-			/*FIXME: In this case we do not get a 'count' but insted of it we get the icon
+			/*FIXME: In this case we do not get a 'count' but instead of it we get the icon
 			that the client wants to set.'W3H2' for an example. For now it is ok, since they share
 			the same position	on the packet*/
 			desired_icon = bn_int_get(packet->u.client_findanongame.count);
@@ -601,7 +601,6 @@ namespace pvpgn
 			//FIXME: Still need a way to 'refresh the user/channel'
 			//_handle_rejoin_command(conn_get_account(c),"");
 			/* ??? channel_update_userflags() */
-			conn_update_w3_playerinfo(c);
 
 			channel_rejoin(c);
 			return 0;
@@ -613,7 +612,7 @@ namespace pvpgn
 		static int check_user_icon(t_account * account, const char * user_icon)
 		{
 			unsigned int i, len;
-			char temp_str[2];
+			char temp_str[2] = {};
 			char user_race;
 			int number;
 
@@ -621,7 +620,7 @@ namespace pvpgn
 			if (len != 4)
 				eventlog(eventlog_level_error, __FUNCTION__, "got invalid user icon '{}'", user_icon);
 
-			for (i = 0; i < len && i < 2; i++)
+			for (i = 0; i < len && i < sizeof(temp_str); i++)
 				temp_str[i] = user_icon[i];
 
 			number = temp_str[0] - '0';
@@ -716,7 +715,7 @@ namespace pvpgn
 				t_gamelang gamelang = conn_get_gamelang(c);
 				bn_int_tag_get((bn_int const *)&gamelang, langstr, 5);
 
-				/* Send seperate packet for each item requested
+				/* Send separate packet for each item requested
 				 * sending all at once overloaded w3xp
 				 * [Omega] */
 				for (i = 0; i < bn_byte_get(packet->u.client_findanongame_inforeq.noitems); i++){
@@ -809,7 +808,7 @@ namespace pvpgn
 			return 0;
 		}
 
-		/* tournament notice disabled at this time, but responce is sent to cleint */
+		/* tournament notice disabled at this time, but response is sent to client */
 		static int _client_anongame_tournament(t_connection * c, t_packet const * const packet)
 		{
 			t_packet * rpacket;
@@ -935,7 +934,7 @@ namespace pvpgn
 			 * use [type-6] to show client "eliminated" or "continue"
 			 *     timestamp , countdown & round number (of next round) must be set if clinet continues
 			 *
-			 * use [type-7] to make cleint wait for 44FF packet option 1 to start game (A guess, not tested)
+			 * use [type-7] to make client wait for 44FF packet option 1 to start game (A guess, not tested)
 			 *
 			 * not sure if there is overall winner packet sent at end of last final round
 			 */

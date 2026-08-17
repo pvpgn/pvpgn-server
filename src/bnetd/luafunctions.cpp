@@ -24,6 +24,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <sstream>
+#include <type_traits>
 
 #include "compat/strcasecmp.h"
 #include "common/tag.h"
@@ -74,7 +75,7 @@ namespace pvpgn
 		{
 			const char *text;
 			const char *username_src, *username_dst;
-			int message_type;
+			auto message_type = static_cast<std::underlying_type<t_message_type>::type>(message_type_null);
 			t_connection *c_src = NULL, *c_dst = NULL;
 
 			try
@@ -89,10 +90,12 @@ namespace pvpgn
 			catch (const std::exception& e)
 			{
 				eventlog(eventlog_level_error, __FUNCTION__, "{}", e.what());
+				return -1;
 			}
 			catch (...)
 			{
 				eventlog(eventlog_level_error, __FUNCTION__, "lua exception\n");
+				return -1;
 			}
 
 			// get user connections
@@ -106,8 +109,15 @@ namespace pvpgn
 			// send message
 			if (c_dst)
 			{
+				if ((message_type < static_cast<std::underlying_type<t_message_type>::type>(message_type_adduser))
+					|| (message_type > static_cast<std::underlying_type<t_message_type>::type>(message_type_null)))
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "got out-of-bounds t_message_type value {}", message_type);
+					return -1;
+				}
+
 				// src connection can be NULL if message_type == message_type_whisper (message will be sent from the server name)
-				message_send_text(c_dst, (t_message_type)message_type, c_src, text);
+				message_send_text(c_dst, static_cast<t_message_type>(message_type), c_src, text);
 			}
 
 			return 0;

@@ -143,7 +143,7 @@ namespace pvpgn
 			ERROR2("out of bounds idx [{}] (max: {})", idx, fdw_maxcons);
 			return -1;
 		}
-		/* do not allow completly reset the access because then backend codes
+		/* do not allow completely reset the access because then backend codes
 		 * can get confused */
 		if (!rw) {
 			ERROR0("tried to reset rw, not allowed");
@@ -151,7 +151,7 @@ namespace pvpgn
 		}
 
 		if (!fdw_rw(fdw_fds + idx)) {
-			ERROR0("found reseted rw");
+			ERROR0("found reset rw");
 			return -1;
 		}
 
@@ -170,7 +170,7 @@ namespace pvpgn
 
 		t_fdwatch_fd *cfd = fdw_fds + idx;
 		if (!fdw_rw(cfd)) {
-			ERROR0("found reseted rw");
+			ERROR0("found reset rw");
 			return -1;
 		}
 

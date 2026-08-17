@@ -158,6 +158,7 @@ const char * const BNETD_SUPPORT_FILE = "conf/supportfile.conf";
 const char * const BNETD_COMMAND_GROUPS_FILE = "conf/command_groups.conf";
 const char * const BNETD_TOURNAMENT_FILE = "conf/tournament.conf";
 const char * const BNETD_CUSTOMICONS_FILE = "conf/icons.conf";
+const char * const BNETD_EMAIL_VERIFICATION_FILE = "conf/email_verification.conf";
 const char * const BNETD_ALIASFILE = "conf/bnalias.conf";
 /* time limit for new member as newer(whom cannot be promoted) in clan, (hrs) */
 const unsigned CLAN_NEWER_TIME = 168;
@@ -169,7 +170,7 @@ const unsigned CLAN_DEFAULT_MIN_INVITES = 2;
 
 const unsigned MAX_FRIENDS = 20;
 
-/* maximum ammount of bytes sent in a single server.c/sd_tcpoutput call */
+/* maximum amount of bytes sent in a single server.c/sd_tcpoutput call */
 const unsigned BNETD_MAX_OUTBURST = 16384;
 
 /* default files relative to FILE_DIR */
@@ -236,6 +237,8 @@ const char * const BNETD_EXEINFO_MATCH = "true";
 const unsigned PVPGN_VERSION_TIMEDIV = 0; /* no timediff check by default */
 const int PVPGN_CACHE_MEMLIMIT = 5000000;  /* bytes */
 const char * const PVPGN_DEFAULT_SYMB = "-_[]";
+const unsigned int BNETD_SMTP_CERT_STORE_FETCH_INTERVAL = 30;
+const unsigned int BNETD_SMTP_PORT = 587;
 
 const char * const BNETD_LOG_COMMAND_GROUPS = "2345678";
 const char * const BNETD_LOG_COMMAND_LIST = "";
@@ -387,7 +390,7 @@ const int BNETD_MAX_SOCKVAL = 8192;
  * select() hackery... works most places, need to add autoconf checks
  * because some systems may redefine FD_SETSIZE, have it as a variable,
  * or not have the concept of such a value.
- * dizzy: this is a total hack. only WIN32 so far specifies this as beeing
+ * dizzy: this is a total hack. only WIN32 so far specifies this as being
  * "legal"; in UNIX in general it should be NOT because the kernel interface
  * of select will never notice your userland changes to the fd_sets
  */

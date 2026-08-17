@@ -73,7 +73,7 @@ namespace pvpgn
 			{
 				if (!(team->members[i] = accountlist_find_account_by_uid(team->teammembers[i])))
 				{
-					eventlog(eventlog_level_error, __FUNCTION__, "at least one non-existant member (id {}) in team {} - discarding team", team->teammembers[i], team->teamid);
+					eventlog(eventlog_level_error, __FUNCTION__, "at least one non-existent member (id {}) in team {} - discarding team", team->teammembers[i], team->teamid);
 					//FIXME: delete team file now???
 					return team->teamid; //we return teamid even though we have an error, we don't want unintentional overwriting
 				}

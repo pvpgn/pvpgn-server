@@ -178,7 +178,7 @@ namespace pvpgn
 		/*
 		 *  Check to see if an update exists for the clients version
 		 *  return file name if there is one
-		 *  retrun NULL if no update exists
+		 *  return NULL if no update exists
 		 */
 
 		extern char * autoupdate_check(t_tag archtag, t_tag clienttag, t_tag gamelang, char const * versiontag, char const * sku)

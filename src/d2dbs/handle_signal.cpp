@@ -79,7 +79,7 @@ namespace pvpgn
 			}
 			if (signal_data.exit_time) {
 				now = std::time(NULL);
-				if (now >= (signed)signal_data.exit_time) {
+				if (now >= signal_data.exit_time) {
 					signal_data.exit_time = 0;
 					eventlog(eventlog_level_info, __FUNCTION__, "shutdown server due to std::signal");
 					return -1;
@@ -87,7 +87,7 @@ namespace pvpgn
 			}
 			if (signal_data.reload_config) {
 				signal_data.reload_config = 0;
-				eventlog(eventlog_level_info, __FUNCTION__, "reloading configuartion file due to std::signal");
+				eventlog(eventlog_level_info, __FUNCTION__, "reloading configuration file due to std::signal");
 				if (d2dbs_prefs_reload(cmdline_get_preffile()) < 0) {
 					eventlog(eventlog_level_error, __FUNCTION__, "error reload configuration file,exitting");
 					return -1;
@@ -181,6 +181,11 @@ namespace pvpgn
 			std::signal(s, on_signal);
 		}
 #endif
+
+		std::time_t d2dbs_get_exit_time()
+		{
+			return signal_data.exit_time;
+		}
 
 	}
 

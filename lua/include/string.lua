@@ -6,7 +6,7 @@
 ]]--
 
 
--- Split text into table by delimeter
+-- Split text into table by delimiter
 --  Usage example: string.split("one,two",",")
 function string:split(str, sep)	
 	str = str or '%s+'

@@ -153,7 +153,7 @@ namespace {
 			return 0;
 
 		std::fprintf(stderr, "%s: unsupported clienttag \"%s\"\n", progname, clienttag);
-		// aaron: dunno what we should return in case of this.. but returning nothing was definetly wrong
+		// aaron: dunno what we should return in case of this.. but returning nothing was definitely wrong
 		return -1;
 	}
 

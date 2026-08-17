@@ -29,6 +29,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "compat/localtime_s.h"
 #include "compat/strcasecmp.h"
 #include "compat/mkdir.h"
 #include "compat/statmacros.h"
@@ -335,7 +336,7 @@ namespace pvpgn
 
 			Mailbox mbox(account_get_uid(recv));
 			if (get_mail_quota(recv) <= mbox.size()) {
-				message_send_text(c, message_type_error, c, localize(c, "Receiver has reached his mail quota. Your message will NOT be sent."));
+				message_send_text(c, message_type_error, c, localize(c, "Receiver has reached their mail quota. Your message will NOT be sent."));
 				return;
 			}
 
@@ -383,9 +384,19 @@ namespace pvpgn
 					ostr.str("");
 					ostr << std::setfill('0') << std::setw(2) << std::right << (it - mlist.begin()) << "    "
 						<< std::setfill(' ') << std::setw(14) << std::left << it->sender() << ' ';
-					char buff[128];
-					std::strftime(buff, sizeof(buff), "%a %b %d %H:%M:%S %Y", std::localtime(&it->timestamp()));
-					ostr << buff;
+					{
+						struct std::tm tmmailtimestamp = {};
+						char buff[128];
+						if (pvpgn::localtime_s(&it->timestamp(), &tmmailtimestamp) == nullptr)
+						{
+							std::snprintf(buff, sizeof(buff), "Error");
+						}
+						else
+						{
+							std::strftime(buff, sizeof(buff), "%a %b %d %H:%M:%S %Y", &tmmailtimestamp);
+						}
+						ostr << buff;
+					}
 					message_send_text(c, message_type_info, c, ostr.str().c_str());
 				}
 
@@ -404,7 +415,12 @@ namespace pvpgn
 					std::ostringstream ostr;
 					ostr << "Message #" << idx << " from " << mail.sender() << " on ";
 					char buff[128];
-					std::strftime(buff, sizeof(buff), "%a %b %d %H:%M:%S %Y", std::localtime(&mail.timestamp()));
+					struct std::tm tmmailtimestamp = {};
+					if (pvpgn::localtime_s(&mail.timestamp(), &tmmailtimestamp) == nullptr)
+					{
+						throw Mailbox::ReadError("pvpgn::localtime_s() failed");
+					}
+					std::strftime(buff, sizeof(buff), "%a %b %d %H:%M:%S %Y", &tmmailtimestamp);
 					ostr << buff << ':';
 					message_send_text(c, message_type_info, c, ostr.str().c_str());
 					message_send_text(c, message_type_info, c, mail.message().c_str());
@@ -441,7 +457,7 @@ namespace pvpgn
 				}
 
 				mbox.erase(std::atoi(token.c_str()));
-				message_send_text(c, message_type_info, c, localize(c, "Succesfully deleted message."));
+				message_send_text(c, message_type_info, c, localize(c, "Successfully deleted message."));
 			}
 		}
 

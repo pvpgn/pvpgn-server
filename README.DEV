@@ -28,7 +28,7 @@ configuration file called bnetd.conf). We considered that as a sign of respect
 from us to the bnetd coders we keep their names on the code they written (but
 on the new code of course we may name them different).
 
-Arround the time of pvpgn 1.7.9 release we have branched the codes and started 
+Around the time of pvpgn 1.7.9 release we have branched the codes and started 
 to work on pvpgn 2.x, the next big version, a C++ based version.
 
 3. Objective
@@ -91,7 +91,7 @@ the code look "the same" makes its reading a lot more easier so, finding
 bugs easier so coding better.
 
 Other overlooked aspect for newbie coders is code replication. Please DONT
-copy and paste code arround !!! If you need to copy common functionality from
+copy and paste code around !!! If you need to copy common functionality from
 some place, think about making some API of that functionalilty, put it in
 some classes and use it from both places. I repeat, DONT replicate code.
 
@@ -154,7 +154,7 @@ d. Exceptions and error handling
 "Errors are not always exceptions". Keep this in mind!
 
 But generally, errors are exceptions. In the common sense and in turn, in the 
-codes. In case of errors (that is errors that shouldnt happen too often, not 
+codes. In case of errors (that is errors that shouldn't happen too often, not 
 common case errors) the codes should throw an exception. Exceptions allows for 
 a very clean and versatile way to detach the place of error detection to the 
 place of error handling (in C you detect an error in some low-level codes and 
@@ -166,17 +166,17 @@ alternative SLOW code path. It is slow (much slower than normal code flow) and
 this is why it should be used to signal relatively "rare" events (thus called 
 exceptions) and not something "common".
 
-But using exceptions you might be carefull with them to not "leak" resources. 
+But using exceptions you might be careful with them to not "leak" resources. 
 The problem is that if you allocate some resource in some codes and then you 
 might get an exception (not even from your codes but indirectly from codes you 
-call) you need to make sure the resources aquired are released BEFORE the 
+call) you need to make sure the resources acquired are released BEFORE the 
 exception propagates out of your code scope. This is _easily_ done with C++ 
 and the RAII principle 
 (http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization). The 
 rule is simple, ALL resource aquisitions should be done using some kind of 
 wrappers that release the resource in their destructor. This also makes codes 
 a lot more simple when exiting code scope on non-error cases because you do 
-NOT need to explicitely release the "wrapped" resource as it will release 
+NOT need to explicitly release the "wrapped" resource as it will release 
 automatically when leaving the code scope.
 
 You are allowed ONLY to throw objects, NEVER throw basic types. All the 
@@ -185,7 +185,7 @@ the .what() method to get a C-string of the description of the error). It is
 best however, you derivate from std::runtime_error & co. You MAY create your 
 own exception class (with the limitations from above) IF AND ONLY IF your 
 exception represents an error that NEEDS to be handled differentely (ie 
-catched separately from other exceptions). All such user defined exception 
+caught separately from other exceptions). All such user defined exception 
 classes should be defined NESTED in the class that throws them.
 
 Catching exceptions should ONLY be done using the "const reference" catching 
@@ -200,7 +200,7 @@ should be)
 compiler even when out of memory condition is reached has to provide ENOUGH 
 memory to create a temporary object that (and this is what you do when 
 throwing an exception to be caught with reference, you throw like 
-throw MyException(); whcih means it creates a temporary object MyException() 
+throw MyException(); which means it creates a temporary object MyException() 
 and that object reference is passed to the handlers)
 
 e. Namespaces
@@ -269,12 +269,12 @@ rules already mentioned.
 g. Include order
 
 In .cpp files the first include should be "common/setup_before.h" followed by 
-the coresponding header of the cpp file (ie in clan.cpp after setup_before.h 
+the corresponding header of the cpp file (ie in clan.cpp after setup_before.h 
 you include clan.h).
 
 Then you include (this applies to headers too not only .cpp now) the headers 
 of standard C++ lib, then the headers from C90 as offered by standard C++ 
-(ex. <cstring> etc), then the POSIX/win32/system dependant headers.
+(ex. <cstring> etc), then the POSIX/win32/system dependent headers.
 
 h. Code Flow
 
@@ -292,7 +292,7 @@ of connection the following packets will be; classes of connections determine
 what packets can go through that connection.
 
 * MPQ: a format archive which is used by Blizzard clients and Battle.Net 
-servers. This files are used for containing verious files (sound/graphics in
+servers. This files are used for containing various files (sound/graphics in
 clients, AI scripts, update patches etc...)
 
 * versioncheck: also know as vcheck and sometimes just vc ; a client 
@@ -303,7 +303,7 @@ upgrade (see autoupdate).
 Appendix B. How to run PvPGN for debugging
 ===========================================
 
-It is very helpfull in finding out memory coruption bugs as soon as possible 
+It is very helpful in finding out memory coruption bugs as soon as possible 
 so while developing codes or just when running a server it is good that you 
 use some memory coruption run-time debuggers. I dont know about Win32 users 
 but on Unix/Linux there are some good options.
@@ -331,7 +331,7 @@ will give memory leak information when PvPGN exits.
 
 I encourage EVERYONE to use it if available (that is if you run PvPGN on 
 a supported platform). Only very big servers won't be able to do it because 
-there is no hardware powerfull enough to run a big server with valgrind (but 
+there is no hardware powerful enough to run a big server with valgrind (but 
 big means over 500 users online). You should test it with your server and if 
 it does not make your bnetd go over 90% CPU then you should be fine. If you 
 cannot run valgrind for any reason or if you are hunting for some bugs 
@@ -358,7 +358,7 @@ build process puts "-g -O2" so you need to edit Makefile file before compile
 and change it to "-g -O0". Then something like "make clean; make".
 
 On Unix/Linux to be able to get core dumps you first need to make sure your 
-core file size limit is set acordingly. Use "ulimit -c" for querying and 
+core file size limit is set accordingly. Use "ulimit -c" for querying and 
 setting this limit (I recommend setting it to "unlimited"). After that when 
 you start PvPGN make sure you are in a directory where you have write access 
 (so the OS when it wants to do the core dump it will be allowed to do so). 

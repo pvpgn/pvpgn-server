@@ -113,6 +113,9 @@ namespace pvpgn
 				if (packet_get_size(packet) < expectedsize + sizeof(t_client_w3route_gameresult_hero)*heroes_count)
 				{
 					eventlog(eventlog_level_error, __FUNCTION__, "gameresult packet is smaller than expected");
+					xfree(gameresult->heroes);
+					xfree(gameresult->players);
+					xfree(gameresult);
 					return NULL;
 				}
 

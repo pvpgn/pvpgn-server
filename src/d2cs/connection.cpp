@@ -235,7 +235,7 @@ namespace pvpgn
 			c->state = conn_state_init;
 			/* this is a kind of hack to not update fd but updating breaks kqueue
 			 * and the clean fix would require a cache a userland copy of the kernel
-			 * kqueue fds, considering that it also doesnt brake anything else should do
+			 * kqueue fds, considering that it also does not brake anything else should do
 			 * for the moment
 			 fdwatch_update_fd(c->sock, fdwatch_type_read); */
 			switch (c->cclass) {

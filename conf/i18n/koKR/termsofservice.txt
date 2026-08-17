@@ -9,8 +9,8 @@ PvPGN이 그대로 제공하고  보증서를 없다.
 1. Information found on PvPGN.
 PvPGN does not endorse or stand behind the accuracy, truthfulness or reliability of any information (including statements of opinion or advice) provided on or by means of PvPGN. Any and all statements made in forums, chat or during game play reflect only the views of their author.
 
-2. Disclaimer of Warrenty.
-PvPGN is provided to you "as is" without warrenty of any kind. PvPGN does not warrent that their programm will be uninterrupted or error free.
+2. Disclaimer of Warranty.
+PvPGN is provided to you "as is" without warranty of any kind. PvPGN does not warrent that their programm will be uninterrupted or error free.
 
 3. Limitations of Liability
 PvPGN is in no way liable for loss or damage of any kind resulting from the use of PvPGN, including but not limited to, loss of goodwill, work stoppage, computer failure or malfunction, or any and all other damages or losses, commercial or otherwise.

@@ -160,7 +160,7 @@ namespace pvpgn
 
 			if (def == NULL || clan == NULL || team == NULL || dir == NULL || driver == NULL)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "invalid storage_path line for file module (doesnt have a 'dir', a 'clan', a 'team', a 'default' token and a 'mode' token)");
+				eventlog(eventlog_level_error, __FUNCTION__, "invalid storage_path line for file module (does not have a 'dir', a 'clan', a 'team', a 'default' token and a 'mode' token)");
 				xfree((void *)copy);
 				return -1;
 			}
@@ -216,7 +216,7 @@ namespace pvpgn
 
 			if (accountsdir == NULL || file == NULL)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initialized");
 				return NULL;
 			}
 
@@ -254,7 +254,7 @@ namespace pvpgn
 
 			if (accountsdir == NULL || file == NULL)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initialized");
 				return -1;
 			}
 
@@ -296,7 +296,7 @@ namespace pvpgn
 		{
 			if (accountsdir == NULL || file == NULL)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initialized");
 				return -1;
 			}
 
@@ -327,7 +327,7 @@ namespace pvpgn
 		{
 			if (accountsdir == NULL || file == NULL)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initialized");
 				return NULL;
 			}
 
@@ -359,7 +359,7 @@ namespace pvpgn
 
 			if (defacct == NULL)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initialized");
 				return NULL;
 			}
 
@@ -371,7 +371,7 @@ namespace pvpgn
 		static int file_read_accounts(int flag, t_read_accounts_func cb, void *data)
 		{
 			if (!accountsdir) {
-				ERROR0("file storage not initilized");
+				ERROR0("file storage not initialized");
 				return -1;
 			}
 
@@ -405,7 +405,7 @@ namespace pvpgn
 
 			if (accountsdir == NULL)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "file storage not initialized");
 				return NULL;
 			}
 
@@ -487,6 +487,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: no first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 
@@ -495,6 +496,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					clanname++;
@@ -503,6 +505,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					*p = '\0';
@@ -510,6 +513,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 
@@ -518,6 +522,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					p++;
@@ -525,6 +530,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					motd = p + 1;
@@ -533,6 +539,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid clan file: invalid first line");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					*p = '\0';
@@ -541,6 +548,7 @@ namespace pvpgn
 					{
 						eventlog(eventlog_level_error, __FUNCTION__, "invalid first line in clanfile");
 						xfree((void*)clan);
+						std::fclose(fp);
 						continue;
 					}
 					clan->clanname = xstrdup(clanname);
@@ -784,7 +792,7 @@ namespace pvpgn
 						goto load_team_failure;
 					}
 
-					eventlog(eventlog_level_trace, __FUNCTION__, "succesfully loaded team {}", dentry);
+					eventlog(eventlog_level_trace, __FUNCTION__, "successfully loaded team {}", dentry);
 					cb(team);
 
 					goto load_team_success;

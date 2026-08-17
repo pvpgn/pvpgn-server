@@ -44,6 +44,13 @@ if(WITH_D2DBS)
     add_subdirectory(d2dbs)
 endif(WITH_D2DBS)
 
+if(WITH_D2GS)
+	add_subdirectory(d2gs)
+	add_subdirectory(d2server_patches)
+	add_subdirectory(d2warden)
+	add_subdirectory(patch_d2server)
+endif(WITH_D2GS)
+
 
 if(CMAKE_TESTING_ENABLED)
     add_subdirectory(test)

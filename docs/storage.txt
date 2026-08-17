@@ -38,15 +38,15 @@ future) and is compiled by default, chosen by default (with the "plain" mode)
 in configuration file (and the oldest and most used storage type). 
 
 The only advantages of the plain files storage type are that the account files 
-beeing human readable text are easy to read/write. It has the drawback of 
-beeing the slowest one.
+being human readable text are easy to read/write. It has the drawback of 
+being the slowest one.
 
 Starting with PvPGN version 1.6.0 (and their prereleases) we offer "cdb" 
 userfiles support. For who dont know, cdb is a constant non-relational 
 database. We included and adapted code from the tinycdb project to achieve this.
-Because cdb doesnt have any external dependencies and is pretty stable it is 
+Because cdb does not have any external dependencies and is pretty stable it is 
 (as the "file" driver) compiled by default. It has the advantage of potentially 
-beeing a lot faster than "file" storage driver (I say potentially because at 
+being a lot faster than "file" storage driver (I say potentially because at 
 this moment there are other things in the code which make cdb slow almost as 
 plain files, but this things will get soon fixed). It has the drawback of having 
 to use a separate tool to read/write this files outside PvPGN.
@@ -56,7 +56,7 @@ to use a separate tool to read/write this files outside PvPGN.
 For unix if you compiled your own source you need to add --with-mysql or 
 --with-pgsql to configure command line (read INSTALL.unix for general UNIX 
 installation details). Even if you give configure --with-mysql/--with-pgsql 
-parameter it will NOT compile MySQL/PGSQL support if it doesnt detect the 
+parameter it will NOT compile MySQL/PGSQL support if it does not detect the 
 MySQL/PGSQL includes and libraries. Check the configure output where it detects 
 the mysql/pgsql paths, it should find the right locations of your MySQL/PGSQL 
 includes and libs.
@@ -120,7 +120,7 @@ storage_path = sql:mode=mysql;host=127.0.0.1;name=PVPGN;user=pvpgn;pass=pvpgnroc
 storage_path = sql:mode=pgsql;host=127.0.0.1;name=pvpgn;user=pvpgn;pass=pvpgnrocks;default=0
 
 
-3. Start PvPGN. If all is well you should see a line similare to the one bellow 
+3. Start PvPGN. If all is well you should see a line similare to the one below 
 in your pvpgn logs:
 
 Nov 26 16:07:20 [info ] storage_init: using <driver> storage driver
@@ -154,7 +154,7 @@ Q: I see something like this in the logs "no known driver specified(<text>)",
 where <text> is not the driver I want, what should I do ?
 A: Somehow you did not configured in bnetd.conf to use your chosen driver . 
 Please see step 3 of this document. Make sure to have a SINGLE UNCOMMENTED 
-storage_path line (a SINGLE line which starts with storage_path and which DOESNT 
+storage_path line (a SINGLE line which starts with storage_path and which DOES NOT 
 have a # character in front of it)
 
 Q: I see sql in the list of available drivers but I get an error "error 

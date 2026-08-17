@@ -46,7 +46,7 @@ sub convertfile {
     open FILE, $dirpath ."/". $filen or die "Error opening file ". $dirpath ."/". $filen ."\n";
     $outpath = $dirpath2 ."/". $filen;
     if (open FILEOUT, $outpath) {
-	die "Found existent file : ". $outpath ."!! Plese provide an empty output directory !!";
+	die "Found existent file : ". $outpath ."!! Please provide an empty output directory !!";
     }
 
     close FILEOUT;

@@ -315,7 +315,7 @@ namespace pvpgn
 
 			/*	Playing with a expanstion char on a classic realm
 				will cause the game server to crash, therefore
-				I recommed setting allow_convert = 0 in the d2cs.conf
+				I recommend setting allow_convert = 0 in the d2cs.conf
 				We need to do this to prevent creating classic char
 				and converting to expantion on a classic realm.
 				LOD Char must be created on LOD realm	*/

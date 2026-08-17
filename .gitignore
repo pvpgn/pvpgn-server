@@ -8,3 +8,5 @@
 /lua5.1
 /.vs
 /CMakeSettings.json
+/.vscode
+.DS_Store

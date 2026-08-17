@@ -5,7 +5,7 @@
 * This code is available under the GNU Lesser General Public License:
 * http://www.gnu.org/licenses/lgpl.txt
 
-* Original hash funcion Copyright (C)  Luigi Auriemma (aluigi@autistici.org)
+* Original hash function Copyright (C)  Luigi Auriemma (aluigi@autistici.org)
 *
 * Comment:
 * Original algorithm starts at offset 0x0041d440 of wchat.dat of 4.221 US version

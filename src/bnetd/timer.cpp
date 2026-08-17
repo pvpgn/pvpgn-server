@@ -108,7 +108,7 @@ namespace pvpgn
 					elist_del(&timer->timers);
 					xfree((void*)timer);
 				}
-				else break; /* beeing sorted there is no need to go beyond this point */
+				else break; /* being sorted there is no need to go beyond this point */
 			}
 
 			return 0;

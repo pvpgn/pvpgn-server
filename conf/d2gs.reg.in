@@ -1,0 +1,36 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\D2Server\D2GS]
+@="Diablo II Close Game Server"
+"AutoUpdate"=dword:00000000
+"AutoUpdateUrl"="http://your.website.url/for.update"
+"AutoUpdateVer"=dword:00000000
+"AutoUpdateTimeout"=dword:00007530
+"D2CSIP"="192.168.1.1"
+"D2CSPort"=dword:000017e1
+"D2DBSIP"="192.168.1.1"
+"D2DBSPort"=dword:000017e2
+"MaxGames"=dword:00000001
+"MaxGameLife"=dword:00003840
+"AdminPassword"="9e75a42100e1b9e0b5d3873045084fae699adcb0"
+"AdminPort"=dword:000022b8
+"AdminTimeout"=dword:00000e10
+"D2CSSecrect"=""
+"EnableNTMode"=dword:00000001
+"EnablePreCacheMode"=dword:00000001
+"IdleSleep"=dword:00000001
+"BusySleep"=dword:00000001
+"CharPendingTimeout"=dword:00000258
+"DebugNetPacket"=dword:00000000
+"DebugEventCallback"=dword:00000000
+"EnableGSLog"=dword:00000001
+"EnableGELog"=dword:00000001
+"EnableGEMsg"=dword:00000000
+"EnableGEPatch"=dword:00000001
+"IntervalReconnectD2CS"=dword:00000032
+"MultiCPUMask"=dword:00000001
+"MaxPreferUsers"=dword:000000b4
+"MaxPacketPerSecond"=dword:000004b0
+"ServerConfFile"="D2Server.ini"
+"MOTD"="Hello world!"
+

@@ -62,7 +62,7 @@ i18ndir     = conf\i18n
 issuefile   = conf\bnissue.txt
 channelfile = conf\channel.conf
 adfile      = conf\ad.json
-topicfile   = conf\topics.conf
+topicfile   = conf\topics.json
 ipbanfile   = conf\bnban.conf
 transfile   = conf\address_translation.conf
 mpqfile     = conf\autoupdate.conf
@@ -81,6 +81,11 @@ anongame_infos_file = conf\anongame_infos.conf
 DBlayoutfile = conf\sql_DB_layout.conf
 supportfile = conf\supportfile.conf
 customicons_file = conf\icons.conf
+email_verification_file = "conf\email_verification.conf"
+# Path to a CA certificate store file in PEM format, relative to ${SYSCONFDIR}, 
+# containing X.509 certificates of public certificate authorities.
+# See https://curl.haxx.se/docs/caextract.html
+smtp_ca_cert_store_file = "conf\cacert.pem"
 
 
 #                                                                            #
@@ -215,10 +220,10 @@ userflush = 3600
 # Number of users checked for updates at once. Higher values make sense if you 
 # either have very fast hardware or you don't have many number of accounts.
 # Lower values make sense if you have very high CPU usage on the system you run
-# the server (dont make it too low or your system will save accounts continously).
+# the server (dont make it too low or your system will save accounts continuously).
 # Modify this value ONLY if you know what you are doing!!
 userstep = 100
-# Flush connected users? Set "false" and they will never flushed untill logout (it will consume more memory but less CPU usage, because of no queries to a file)
+# Flush connected users? Set "false" and they will never flushed until logout (it will consume more memory but less CPU usage, because of no queries to a file)
 userflush_connected = true
 
 # How often to send user latency tests in seconds.
@@ -288,7 +293,7 @@ hide_temp_channels = true
 disc_is_loss = false
 
 # List additional game types to be counted as ladder games
-# Curently allowed types: topvbot, melee, ffa, oneonone
+# Currently allowed types: topvbot, melee, ffa, oneonone
 # Example: ladder_games = "topvbot,oneonone"
 ladder_games = "none"
 
@@ -353,6 +358,20 @@ passfail_bantime = 300
 # Max users limit in private channels (0 = unlimited)
 maxusers_per_channel = 0
 
+# Verify account email address
+# Upon account registration, sends an email to the user with a code that will
+# be used to verify the registered email address.
+# Set smtp_server_url, smtp_port, smtp_username, and smtp_password before enabling.
+verify_account_email = false
+
+# Number of minutes before an account email verification code expires
+verify_account_email_expiration = 10
+
+# Email address to use for the 'From' field in email verification emails.
+verify_account_email_from_address = ""
+
+verify_account_email_from_name = ""
+
 #                                                                            #
 ##############################################################################
 
@@ -407,7 +426,7 @@ track = 60
 # Tracking server(s)
 # Use a comma delimited list of hostnames with optional UDP port numbers
 # after colons. (port 6114 is the default for the newer tracking protocol)
-trackaddrs = "track.pvpgn.pro,track.pvpgn.org,bntrack.darkwings.org,bnet.mivabe.nl,track.eurobattle.net"
+trackaddrs = "track.pvpgn.pro,track.pvpgn.org,bnet.mivabe.nl,track.eurobattle.net"
 
 # Change these to match your system, for example:
 location = "unknown"
@@ -493,7 +512,7 @@ initkill_timer = 120
 # This specifies the addresses where WOL connections should be accepted. See
 # the description of servaddrs for formatting information. Leave this field
 # blank if you do not want to accept WOL connections. If the wolv1 port is
-# not specifed then 4005 will be used. Also if wolv2 port is not specifed
+# not specified then 4005 will be used. Also if wolv2 port is not specified
 # then 4000 will be used. 
 # WOLv2 address includes servserv, game/chatting and ladder services.
 #
@@ -532,7 +551,7 @@ wol_autoupdate_password = "world96"
 # This specifies the addresses where IRC connections should be accepted. See
 # the description of servaddrs for formatting information. Leave this field
 # blank if you do not want to accept IRC connections.  If the port is not
-# specifed then 6667 will be used.
+# specified then 6667 will be used.
 #ircaddrs = ":6667"
 
 # This is the IRC network name. If this is not specified then the default of
@@ -557,7 +576,7 @@ wol_autoupdate_password = "world96"
 # This specifies the addresses where telnet connections should be accepted.
 # See the description of servaddrs for formatting information. Leave this
 # field # blank if you do not want to accept telnet connections.  If the port
-# is not specifed then 23 will be used.
+# is not specified then 23 will be used.
 #telnetaddrs = ":23"
 
 #                                                                            #
@@ -568,7 +587,7 @@ wol_autoupdate_password = "world96"
 #-----------------------------------------------------------------------------#
 # this is for all the guys, that want Warcraft 3 ladder, but don't want their
 # server to run with MySQL support.
-# For each ladder (solo, team, ffa, at) a corresponing file is created,
+# For each ladder (solo, team, ffa, at) a corresponding file is created,
 # so it's easy to build your ladder pages with them
 
 # the following value determines, at which rate, these files are created
@@ -632,3 +651,32 @@ log_command_groups = 2345678
 # set empty to log all commands
 log_command_list = ""
 
+#                                                                            #
+##############################################################################
+
+
+###############################################################################
+# SMTP                                                                        #
+#-----------------------------------------------------------------------------#
+
+# URL to download a new CA certificate store file.
+smtp_ca_cert_store_remote_url = "https://curl.haxx.se/ca/cacert.pem"
+
+# Number of days to wait before downloading a new cacert.pem
+# Recommended value: 30
+# Set to 0 to disable
+smtp_ca_cert_store_fetch_interval = 30
+
+# smtp_server_url = "smtp.gmail.com"
+smtp_server_url = ""
+
+smtp_port = 587
+
+smtp_username = ""
+
+# If your account has two-factor authentication (2FA) enabled, you will need to
+# create a token through your SMTP provider.
+smtp_password = ""
+
+#                                                                            #
+##############################################################################

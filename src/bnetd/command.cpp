@@ -36,6 +36,8 @@
 #include <iostream>
 #include <string>
 
+#include "compat/gmtime_s.h"
+#include "compat/localtime_s.h"
 #include "compat/strcasecmp.h"
 #include "common/tag.h"
 #include "common/util.h"
@@ -82,6 +84,7 @@
 #include "icons.h"
 #include "userlog.h"
 #include "i18n.h"
+#include "account_email_verification.h"
 
 #include "attrlayer.h"
 
@@ -231,8 +234,6 @@ namespace pvpgn
 			{
 				t_account * dest_a;
 				t_bnettime btlogin;
-				std::time_t ulogin;
-				struct std::tm * tmlogin;
 
 				if (!(dest_a = accountlist_find_account(dest))) {
 					message_send_text(c, message_type_error, c, localize(c, "Unknown user."));
@@ -242,11 +243,12 @@ namespace pvpgn
 				if (conn_get_class(c) == conn_class_bnet) {
 					btlogin = time_to_bnettime((std::time_t)account_get_ll_time(dest_a), 0);
 					btlogin = bnettime_add_tzbias(btlogin, conn_get_tzbias(c));
-					ulogin = bnettime_to_time(btlogin);
-					if (!(tmlogin = std::gmtime(&ulogin)))
+					std::time_t ulogin = bnettime_to_time(btlogin);
+					struct std::tm tmlogin = {};
+					if (pvpgn::gmtime_s(&ulogin, &tmlogin) == nullptr)
 						std::strcpy(msgtemp0, "?");
 					else
-						std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M:%S", tmlogin);
+						std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M:%S", &tmlogin);
 					msgtemp = localize(c, "User was last seen on: {}", msgtemp0);
 				}
 				else
@@ -421,6 +423,7 @@ namespace pvpgn
 		static int _handle_clearstats_command(t_connection * c, char const * text);
 		static int _handle_tos_command(t_connection * c, char const * text);
 		static int _handle_alert_command(t_connection * c, char const * text);
+		static int _handle_email_command(t_connection * c, char const * text);
 
 		static const t_command_table_row standard_command_table[] =
 		{
@@ -541,6 +544,7 @@ namespace pvpgn
 			{ "/language", handle_language_command },
 			{ "/lang", handle_language_command },
 			{ "/log", handle_log_command },
+			{ "/email", _handle_email_command},
 
 			{ NULL, NULL }
 
@@ -2252,28 +2256,27 @@ namespace pvpgn
 		{
 			t_bnettime  btsystem;
 			t_bnettime  btlocal;
-			std::time_t      now;
-			struct std::tm * tmnow;
 
 			btsystem = bnettime();
 
 			/* Battle.net time: Wed Jun 23 15:15:29 */
 			btlocal = bnettime_add_tzbias(btsystem, local_tzbias());
-			now = bnettime_to_time(btlocal);
-			if (!(tmnow = std::gmtime(&now)))
+			std::time_t now = bnettime_to_time(btlocal);
+			struct std::tm tmnow = {};
+			if (pvpgn::gmtime_s(&now, &tmnow) == nullptr)
 				std::strcpy(msgtemp0, "?");
 			else
-				std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M:%S", tmnow);
+				std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M:%S", &tmnow);
 			msgtemp = localize(c, "Server Time: {}", msgtemp0);
 			message_send_text(c, message_type_info, c, msgtemp);
 			if (conn_get_class(c) == conn_class_bnet)
 			{
 				btlocal = bnettime_add_tzbias(btsystem, conn_get_tzbias(c));
 				now = bnettime_to_time(btlocal);
-				if (!(tmnow = std::gmtime(&now)))
+				if (pvpgn::gmtime_s(&now, &tmnow) == nullptr)
 					std::strcpy(msgtemp0, "?");
 				else
-					std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M:%S", tmnow);
+					std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M:%S", &tmnow);
 				msgtemp = localize(c, "Your local time: {}", msgtemp0);
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
@@ -2313,8 +2316,6 @@ namespace pvpgn
 
 				if (conn_set_channel(c, text) < 0)
 					conn_set_channel(c, CHANNEL_NAME_BANNED); /* should not fail */
-				if ((conn_get_clienttag(c) == CLIENTTAG_WARCRAFT3_UINT) || (conn_get_clienttag(c) == CLIENTTAG_WAR3XP_UINT))
-					conn_update_w3_playerinfo(c);
 				command_set_flags(c);
 			}
 			else
@@ -2328,8 +2329,6 @@ namespace pvpgn
 
 			if (channel_rejoin(c) != 0)
 				message_send_text(c, message_type_error, c, localize(c, "You are not in a channel."));
-			if ((conn_get_clienttag(c) == CLIENTTAG_WARCRAFT3_UINT) || (conn_get_clienttag(c) == CLIENTTAG_WAR3XP_UINT))
-				conn_update_w3_playerinfo(c);
 			command_set_flags(c);
 
 			return 0;
@@ -2902,18 +2901,22 @@ namespace pvpgn
 
 		static int _news_cb(std::time_t date, t_lstr *lstr, void *data)
 		{
-			char	strdate[64];
-			struct std::tm 	*tm;
 			char	save, *p, *q;
 			t_connection *c = (t_connection*)data;
 
-			tm = std::localtime(&date);
-			if (tm)
-				std::strftime(strdate, 64, "%B %d, %Y", tm);
-			else
-				std::snprintf(strdate, sizeof strdate, "%s", localize(c, "(invalid date)").c_str());
-
-			message_send_text(c, message_type_info, c, strdate);
+			{
+				char strdate[64] = {};
+				struct std::tm tm = {};
+				if (pvpgn::localtime_s(&date, &tm) != nullptr)
+				{
+					std::strftime(strdate, sizeof(strdate), "%B %d, %Y", &tm);
+					message_send_text(c, message_type_info, c, strdate);
+				}
+				else
+				{
+					message_send_text(c, message_type_info, c, localize(c, "(invalid date)"));
+				}
+			}
 
 			for (p = lstr_get_str(lstr); *p;) {
 				for (q = p; *q && *q != '\r' && *q != '\n'; q++);
@@ -3297,7 +3300,6 @@ namespace pvpgn
 			t_elem const * curr;
 			t_connection * conn;
 			char           name[19];
-			char const *   channel_name;
 			char           clienttag_str[5];
 
 			if (!prefs_get_enable_conn_all() && !(account_get_command_groups(conn_get_account(c)) & command_get_group("/admin-con"))) /* default to false */
@@ -3336,10 +3338,15 @@ namespace pvpgn
 				conn = (t_connection*)elem_get_data(curr);
 				std::snprintf(name, sizeof name, "%s", conn_get_account(conn) ? conn_get_username(conn) : "(none)");
 
-				if (conn_get_channel(conn) != NULL)
+				std::string channel_name;
+				if (conn_get_channel(conn) != NULL && channel_get_name(conn_get_channel(conn)) != nullptr)
+				{
 					channel_name = channel_get_name(conn_get_channel(conn));
+				}
 				else
-					channel_name = localize(c, "none").c_str();
+				{
+					channel_name = localize(c, "none");
+				}
 
 				std::string game_name;
 				if (conn_get_game(conn) != NULL)
@@ -3353,7 +3360,7 @@ namespace pvpgn
 					tag_uint_to_str(clienttag_str, conn_get_fake_clienttag(conn)),
 					name,
 					conn_get_latency(conn),
-					channel_name,
+					channel_name.c_str(),
 					game_name.c_str());
 				else
 				if (prefs_get_hide_addr() && !(account_get_command_groups(conn_get_account(c)) & command_get_group("/admin-addr"))) /* default to false */
@@ -3366,7 +3373,7 @@ namespace pvpgn
 					conn_get_sessionkey(conn),
 					conn_get_flags(conn),
 					conn_get_latency(conn),
-					channel_name,
+					channel_name.c_str(),
 					game_name.c_str());
 				else
 					std::snprintf(msgtemp0, sizeof(msgtemp0), " %3d %-6.6s %-12.12s %4.4s %-15.15s 0x%08x 0x%04x %9u %-16.16s %-8.8s %.16s",
@@ -3378,7 +3385,7 @@ namespace pvpgn
 					conn_get_sessionkey(conn),
 					conn_get_flags(conn),
 					conn_get_latency(conn),
-					channel_name,
+					channel_name.c_str(),
 					game_name.c_str(),
 					addr_num_to_addr_str(conn_get_addr(conn), conn_get_port(conn)));
 
@@ -3395,8 +3402,6 @@ namespace pvpgn
 			t_connection * conn;
 			char *         tok;
 			t_clanmember * clanmemb;
-			std::time_t      then;
-			struct std::tm * tmthen;
 
 			std::vector<std::string> args = split_command(text, 1);
 
@@ -3413,9 +3418,6 @@ namespace pvpgn
 				return -1;
 			}
 
-			then = account_get_ll_ctime(account);
-			tmthen = std::localtime(&then); /* FIXME: determine user's timezone */
-
 			// do not display sex if empty
 			std::string sex = account_get_sex(account);
 			std::string pattern = "Login: {} {} Sex: {}";
@@ -3429,9 +3431,21 @@ namespace pvpgn
 				account_get_sex(account));
 			message_send_text(c, message_type_info, c, msgtemp);
 
-			std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M %Y", tmthen);
-			msgtemp = localize(c, "Created: {}", msgtemp0);
-			message_send_text(c, message_type_info, c, msgtemp);
+			{
+				std::time_t then = account_get_ll_ctime(account);
+				struct std::tm tmthen = {};
+				if (pvpgn::localtime_s(&then, &tmthen) == nullptr)
+				{
+					msgtemp = localize(c, "Created: {}", "?");
+				}
+				else
+				{
+					std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M %Y", &tmthen);
+					msgtemp = localize(c, "Created: {}", msgtemp0);
+				}
+
+				message_send_text(c, message_type_info, c, msgtemp);
+			}
 
 			if ((clanmemb = account_get_clanmember(account)))
 			{
@@ -3493,19 +3507,21 @@ namespace pvpgn
 				ip = localize(c, "unknown");
 
 			{
+				std::time_t then = account_get_ll_time(account);
+				struct std::tm tmthen = {};
 
-				then = account_get_ll_time(account);
-				tmthen = std::localtime(&then); /* FIXME: determine user's timezone */
-				if (tmthen)
-					std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M %Y", tmthen);
+				/* FIXME: determine user's timezone */
+				if (pvpgn::localtime_s(&then, &tmthen) != nullptr)
+					std::strftime(msgtemp0, sizeof(msgtemp0), "%a %b %d %H:%M %Y", &tmthen);
 				else
 					std::strcpy(msgtemp0, "?");
-
-				if (!(conn))
-					msgtemp = localize(c, "Last login {} from ", msgtemp0);
-				else
-					msgtemp = localize(c, "On since {} from ", msgtemp0);
 			}
+
+			if (!(conn))
+				msgtemp = localize(c, "Last login {} from ", msgtemp0);
+			else
+				msgtemp = localize(c, "On since {} from ", msgtemp0);
+
 			msgtemp += ip;
 			message_send_text(c, message_type_info, c, msgtemp);
 
@@ -3524,7 +3540,9 @@ namespace pvpgn
 					account_get_auth_mute(account) == 1 ? yes : no);
 				message_send_text(c, message_type_info, c, msgtemp);
 				
-				msgtemp = localize(c, "Email: {}", account_get_email(account));
+				msgtemp = localize(c, "Email: {} {}",
+					account_get_email(account),
+					account_get_email_verified(account) == 1 ? localize(c, "(Verified)") : localize(c, "(Unverified)"));
 				message_send_text(c, message_type_info, c, msgtemp);
 				
 				msgtemp = localize(c, "Last login Owner: {}", account_get_ll_owner(account));
@@ -3705,20 +3723,25 @@ namespace pvpgn
 			message_send_text(c, message_type_info, c, msgtemp);
 
 			{
-				t_account *  owner;
-				char const * tname;
-				char const * namestr;
+				std::string namestr;
 
-				if (!(owner = conn_get_account(game_get_owner(game))))
+				t_account* owner = conn_get_account(game_get_owner(game));
+				if (owner != nullptr)
 				{
-					tname = NULL;
-					namestr = localize(c, "none").c_str();
+					char const* tname = conn_get_loggeduser(game_get_owner(game));
+					if (tname != nullptr)
+					{
+						namestr = tname;
+					}
+					else
+					{
+						namestr = localize(c, "unknown");
+					}
 				}
 				else
-				if (!(tname = conn_get_loggeduser(game_get_owner(game))))
-					namestr = localize(c, "unknown").c_str();
-				else
-					namestr = tname;
+				{
+					namestr = localize(c, "none");
+				}
 
 				msgtemp = localize(c, "Owner: {}", namestr);
 
@@ -3750,24 +3773,22 @@ namespace pvpgn
 			message_send_text(c, message_type_info, c, msgtemp);
 
 			{
-				std::time_t      gametime;
-				struct std::tm * gmgametime;
-
-				gametime = game_get_create_time(game);
-				if (!(gmgametime = std::localtime(&gametime)))
+				struct std::tm gmgametime = {};
+				std::time_t gametime = game_get_create_time(game);
+				if (pvpgn::localtime_s(&gametime, &gmgametime) == nullptr)
 					std::strcpy(msgtemp0, "?");
 				else
-					std::strftime(msgtemp0, sizeof(msgtemp0), GAME_TIME_FORMAT, gmgametime);
+					std::strftime(msgtemp0, sizeof(msgtemp0), GAME_TIME_FORMAT, &gmgametime);
 				msgtemp = localize(c, "Created: {}", msgtemp0);
 				message_send_text(c, message_type_info, c, msgtemp);
 
 				gametime = game_get_start_time(game);
 				if (gametime != (std::time_t)0)
 				{
-					if (!(gmgametime = std::localtime(&gametime)))
+					if (pvpgn::localtime_s(&gametime, &gmgametime) == nullptr)
 						std::strcpy(msgtemp0, "?");
 					else
-						std::strftime(msgtemp0, sizeof(msgtemp0), GAME_TIME_FORMAT, gmgametime);
+						std::strftime(msgtemp0, sizeof(msgtemp0), GAME_TIME_FORMAT, &gmgametime);
 				}
 				else
 					std::strcpy(msgtemp0, "");
@@ -3791,10 +3812,18 @@ namespace pvpgn
 			message_send_text(c, message_type_info, c, msgtemp);
 
 			{
-				char const * mapname;
+				std::string mapname;
 
-				if (!(mapname = game_get_mapname(game)))
-					mapname = localize(c, "unknown").c_str();
+				if (game_get_mapname(game) != nullptr)
+				{
+					mapname = game_get_mapname(game);
+					
+				}
+				else
+				{
+					mapname = localize(c, "unknown");
+				}
+
 				msgtemp = localize(c, "Map: {}", mapname);
 				message_send_text(c, message_type_info, c, msgtemp);
 			}
@@ -3876,6 +3905,10 @@ namespace pvpgn
 				mode = restart_mode_anongame;
 			else if (mode_str == "lua")
 				mode = restart_mode_lua;
+			else if (mode_str == "smtp")
+				mode = restart_mode_smtp;
+			else if (mode_str == "accountemailverification")
+				mode = restart_mode_accountemailverification;
 			else
 			{
 				message_send_text(c, message_type_info, c, localize(c, "Invalid mode."));
@@ -4565,8 +4598,6 @@ namespace pvpgn
 			{
 				unsigned int oldflags = conn_get_flags(c);
 				conn_set_clienttag(c, clienttag);
-				if ((clienttag == CLIENTTAG_WARCRAFT3_UINT) || (clienttag == CLIENTTAG_WAR3XP_UINT))
-					conn_update_w3_playerinfo(c);
 				channel_rejoin(c);
 				conn_set_flags(c, oldflags);
 				channel_update_userflags(c);
@@ -4693,7 +4724,7 @@ namespace pvpgn
 			if (strcasecmp(value, "null") == 0)
 				value = NULL;
 
-			std::sprintf(msgtemp0, " \"%.64s\" (%.128s = \"%.128s\")", account_get_name(account), key, value);
+			std::snprintf(msgtemp0, sizeof(msgtemp0), " \"%.64s\" (%.128s = \"%.128s\")", account_get_name(account), key, value);
 
 			if (account_set_strattr(account, key, value) < 0)
 			{
@@ -4816,7 +4847,7 @@ namespace pvpgn
 				msgtemp = localize(c, "Your latency {}", conn_get_latency(c));
 			}
 			else if ((user = connlist_find_connection_by_accountname(text)))
-				msgtemp = localize(c, "{} latency ()", text, conn_get_latency(user));
+				msgtemp = localize(c, "{} latency {}", text, conn_get_latency(user));
 			else
 			{
 				msgtemp = localize(c, "Invalid user.");
@@ -4909,51 +4940,48 @@ namespace pvpgn
 
 		static int _handle_topic_command(t_connection * c, char const * text)
 		{
-			std::vector<std::string> args = split_command(text, 1);
-			std::string topicstr = args[1];
-
-			
-			t_channel * channel = conn_get_channel(c);
+			t_channel* channel = conn_get_channel(c);
 			if (channel == nullptr)
 			{
 				message_send_text(c, message_type_error, c, localize(c, "This command can only be used inside a channel."));
 				return -1;
 			}
-			
-			class_topic Topic;
-			char const * channel_name = channel_get_name(channel);
 
-			// set channel topic
-			if (!topicstr.empty())
+			const char* channel_name = channel_get_name(channel);
+			if (channel_name == nullptr)
 			{
-				if ((topicstr.size() + 1) > MAX_TOPIC_LEN)
-				{
-					msgtemp = localize(c, "Max topic length exceeded (max {} symbols)", MAX_TOPIC_LEN);
-					message_send_text(c, message_type_error, c, msgtemp);
-					return -1;
-				}
+				message_send_text(c, message_type_error, c, localize(c, "An error has occurred."));
+				return -1;
+			}
+
+			if (std::strlen(text) > std::strlen("/topic "))
+			{
+				// set channel topic
 
 				if (!(account_is_operator_or_admin(conn_get_account(c), channel_name)))
 				{
 					msgtemp = localize(c, "You must be at least a Channel Operator of {} to set the topic", channel_name);
 					message_send_text(c, message_type_error, c, msgtemp);
+
 					return -1;
 				}
 
-				bool do_save;
-				if (channel_get_permanent(channel))
-					do_save = true;
-				else
-					do_save = false;
+				const char* topic = text + std::strlen("/topic ");
+				if ((std::strlen(topic) + 1) > MAX_TOPIC_LEN)
+				{
+					msgtemp = localize(c, "Max topic length exceeded (max {} symbols)", MAX_TOPIC_LEN);
+					message_send_text(c, message_type_error, c, msgtemp);
 
-				Topic.set(std::string(channel_name), std::string(topicstr), do_save);
+					return -1;
+				}
+
+				channel_set_topic(channel, topic);
 			}
-
-			// display channel topic
-			if (Topic.display(c, std::string(channel_name)) == false)
+			else
 			{
-				msgtemp = localize(c, "{} topic: no topic", channel_name);
-				message_send_text(c, message_type_info, c, msgtemp);
+				// get channel topic
+
+				channel_display_topic(channel, c);
 			}
 
 			return 0;
@@ -5209,7 +5237,7 @@ namespace pvpgn
 				return -1;
 			}
 
-			// reduntant line - it adds a caption to message box
+			// redundant line - it adds a caption to message box
 			std::string goodtext = args[1] + localize(c, "\n\n***************************\nBy {}", conn_get_username(c));
 
 			// caption
@@ -5233,6 +5261,151 @@ namespace pvpgn
 					messagebox_show(conn, goodtext.c_str(), msgtemp.c_str());
 				}
 			}
+
+			return 0;
+		}
+
+		static int _handle_email_command(t_connection* c, char const* text)
+		{
+			std::vector<std::string> args = split_command(text, 2);
+			if (args[1].empty())
+			{
+				describe_command(c, args[0].c_str());
+				return -1;
+			}
+
+			t_account* account = conn_get_account(c);
+
+			if (args[1] == "get")
+			{
+				const char* email = account_get_email(account);
+				if (email == nullptr)
+				{
+					message_send_text(c, message_type_error, c, localize(c, "You have not set an email address yet."));
+					return -1;
+				}
+
+				message_send_text(c, message_type_info, c, localize(c, "Your email address is: {}", email));
+			}
+			else if (args[1] == "set")
+			{
+				if (args[2].empty())
+				{
+					describe_command(c, args[0].c_str());
+					return -1;
+				}
+
+				// FIXME: check format of email address
+
+				const char* current_email = account_get_email(account);
+				if (current_email != nullptr && args[2].compare(current_email) == 0)
+				{
+					message_send_text(c, message_type_error, c, localize(c, "Your email address is already set to {}.", args[2]));
+					return 0;
+				}
+
+				if ((args[2].length() + 1) > MAX_EMAIL_STR)
+				{
+					message_send_text(c, message_type_error, c, localize(c, "The email address is too long, please use another one.", args[2]));
+					return -1;
+				}
+
+				int set_email_result = account_set_email(account, args[2]);
+				if (set_email_result != 0)
+				{
+					message_send_text(c, message_type_error, c, localize(c, "An error has occurred."));
+					return -1;
+				}
+
+				account_set_email_verified(account, false);
+				
+				message_send_text(c, message_type_info, c, localize(c, "Email address successfully set to {}.", args[2]));
+
+				if (prefs_get_verify_account_email() == 1)
+				{
+					bool send_verification_code_successful = account_generate_email_verification_code(account);
+					if (send_verification_code_successful)
+					{
+						message_send_text(c, message_type_info, c, localize(c, "An email has been sent, please check your inbox for the verification code."));
+					}
+					else
+					{
+						message_send_text(c, message_type_error, c, localize(c, "An error has occurred, could not send a verification email."));
+					}
+				}
+			}
+			else if (args[1] == "verify")
+			{
+				if (prefs_get_verify_account_email() == 0)
+				{
+					message_send_text(c, message_type_info, c, localize(c, "Email address verification is disabled."));
+					return -1;
+				}
+
+				if (args[2].empty())
+				{
+					describe_command(c, args[0].c_str());
+					return -1;
+				}
+
+				int is_verified = account_get_email_verified(account);
+				if (is_verified == 1)
+				{
+					message_send_text(c, message_type_info, c, localize(c, "Your email address has already been verified."));
+					return -1;
+				}
+
+				AccountVerifyEmailStatus verify_email_status = account_verify_email(account, args[2]);
+				switch (verify_email_status)
+				{
+				case AccountVerifyEmailStatus::Success:
+					message_send_text(c, message_type_info, c, localize(c, "Successfully verified email address."));
+					break;
+				case AccountVerifyEmailStatus::FailureCodeExpired:
+					message_send_text(c, message_type_error, c, localize(c, "The code has already expired."));
+					return -1;
+				case AccountVerifyEmailStatus::FailureCodeIncorrect:
+					message_send_text(c, message_type_error, c, localize(c, "The code is incorrect."));
+					return -1;
+				case AccountVerifyEmailStatus::FailureOther:
+				default:
+					message_send_text(c, message_type_error, c, localize(c, "An error has occurred."));
+					return -1;
+				}
+			}
+			else if (args[1] == "resendverification")
+			{
+				if (prefs_get_verify_account_email() == 0)
+				{
+					message_send_text(c, message_type_info, c, localize(c, "Email address verification is disabled."));
+					return -1;
+				}
+
+				int is_verified = account_get_email_verified(account);
+				if (is_verified == 1)
+				{
+					message_send_text(c, message_type_info, c, localize(c, "Your email address has already been verified."));
+					return -1;
+				}
+
+				bool resend_verification_code_successful = account_generate_email_verification_code(account);
+				if (resend_verification_code_successful)
+				{
+					message_send_text(c, message_type_info, c, localize(c, "Regenerated verification code. Check your email."));
+				}
+				else
+				{
+					message_send_text(c, message_type_error, c, localize(c, "An error has occurred."));
+					return -1;
+				}
+				
+			}
+			else
+			{
+				describe_command(c, args[0].c_str());
+				return -1;
+			}
+
 
 			return 0;
 		}

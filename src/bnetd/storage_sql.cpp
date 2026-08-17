@@ -128,7 +128,7 @@ namespace pvpgn
 
 			if (!sql)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initialized");
 				return NULL;
 			}
 
@@ -152,7 +152,7 @@ namespace pvpgn
 				sql->free_result(result);
 				if (num > 0)
 				{
-					eventlog(eventlog_level_error, __FUNCTION__, "got existant username");
+					eventlog(eventlog_level_error, __FUNCTION__, "got existent username");
 					goto err_dup;
 				}
 			}
@@ -225,13 +225,12 @@ namespace pvpgn
 #ifndef SQL_ON_DEMAND
 			t_sql_res *result = NULL;
 			t_sql_row *row;
-			char **tab;
 			unsigned int uid;
 			unsigned int num_fields;
 
 			if (!sql)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initialized");
 				return -1;
 			}
 
@@ -247,68 +246,62 @@ namespace pvpgn
 				return -1;
 			}
 
-			uid = *((unsigned int *)info);
+			uid = *((unsigned int*)info);
 
-			for (tab = const_cast<char **>(sql_tables); *tab; tab++)
+			std::snprintf(query, sizeof(query), "SELECT * FROM %s%s WHERE " SQL_UID_FIELD "='%u'", tab_prefix, ktab, uid);
+			eventlog(eventlog_level_trace, __FUNCTION__, "{}", query);
+
+			if ((result = sql->query_res(query)) != NULL && sql->num_rows(result) == 1 && (num_fields = sql->num_fields(result)) > 1)
 			{
-				// process only a table where the attribute is in
-				if (strcmp(ktab, *tab) != 0)
-					continue;
+				unsigned int i;
+				t_sql_field *fields, *fentry;
 
-				std::snprintf(query, sizeof(query), "SELECT * FROM %s%s WHERE " SQL_UID_FIELD "='%u'", tab_prefix, *tab, uid);
-				eventlog(eventlog_level_trace, __FUNCTION__, "{}", query);
-
-				if ((result = sql->query_res(query)) != NULL && sql->num_rows(result) == 1 && (num_fields = sql->num_fields(result)) > 1)
+				if ((fields = sql->fetch_fields(result)) == NULL)
 				{
-					unsigned int i;
-					t_sql_field *fields, *fentry;
-
-					if ((fields = sql->fetch_fields(result)) == NULL)
-					{
-						eventlog(eventlog_level_error, __FUNCTION__, "could not fetch the fields");
-						sql->free_result(result);
-						return -1;
-					}
-
-					if (!(row = sql->fetch_row(result)))
-					{
-						eventlog(eventlog_level_error, __FUNCTION__, "could not fetch row");
-						sql->free_fields(fields);
-						sql->free_result(result);
-						return -1;
-					}
-
-					for (i = 0, fentry = fields; *fentry; fentry++, i++)
-					{
-						char *output;
-
-						// (HarpyWar) fix for sqlite3, cause it return columns+rows in "fields", unlike only columns in other databases
-						//            and this row[i] goes beyond the bounds of the array. This restriction handles it.
-						if (i >= num_fields)
-							break;
-						
-						/* we have to skip "uid" */
-						/* we ignore the field used internally by sql */
-						if (std::strcmp(*fentry, SQL_UID_FIELD) == 0)
-							continue;
-
-						//              eventlog(eventlog_level_trace, __FUNCTION__, "read key (step1): '{}' val: '{}'", _db_add_tab(*tab, *fentry), unescape_chars(row[i]));
-						if (row[i] == NULL)
-							continue;	/* its an NULL value sql field */
-
-						//              eventlog(eventlog_level_trace, __FUNCTION__, "read key (step2): '{}' val: '{}'", _db_add_tab(*tab, *fentry), unescape_chars(row[i]));
-						if (cb(_db_add_tab(*tab, *fentry), (output = unescape_chars(row[i])), data))
-							eventlog(eventlog_level_error, __FUNCTION__, "got error from callback on UID: {}", uid);
-						if (output)
-							xfree((void *)output);
-						//              eventlog(eventlog_level_trace, __FUNCTION__, "read key (final): '{}' val: '{}'", _db_add_tab(*tab, *fentry), unescape_chars(row[i]));
-					}
-
-					sql->free_fields(fields);
-				}
-				if (result)
+					eventlog(eventlog_level_error, __FUNCTION__, "could not fetch the fields");
 					sql->free_result(result);
+					return -1;
+				}
+
+				if (!(row = sql->fetch_row(result)))
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "could not fetch row");
+					sql->free_fields(fields);
+					sql->free_result(result);
+					return -1;
+				}
+
+				for (i = 0, fentry = fields; *fentry; fentry++, i++)
+				{
+					char *output;
+
+					// (HarpyWar) fix for sqlite3, cause it return columns+rows in "fields", unlike only columns in other databases
+					//            and this row[i] goes beyond the bounds of the array. This restriction handles it.
+					if (i >= num_fields)
+						break;
+						
+					/* we have to skip "uid" */
+					/* we ignore the field used internally by sql */
+					if (std::strcmp(*fentry, SQL_UID_FIELD) == 0)
+						continue;
+
+					//              eventlog(eventlog_level_trace, __FUNCTION__, "read key (step1): '{}' val: '{}'", _db_add_tab(*tab, *fentry), unescape_chars(row[i]));
+					if (row[i] == NULL)
+						continue;	/* its an NULL value sql field */
+
+					//              eventlog(eventlog_level_trace, __FUNCTION__, "read key (step2): '{}' val: '{}'", _db_add_tab(*tab, *fentry), unescape_chars(row[i]));
+					if (cb(_db_add_tab(ktab, *fentry), (output = unescape_chars(row[i])), data))
+						eventlog(eventlog_level_error, __FUNCTION__, "got error from callback on UID: {}", uid);
+					if (output)
+						xfree((void *)output);
+					//              eventlog(eventlog_level_trace, __FUNCTION__, "read key (final): '{}' val: '{}'", _db_add_tab(*tab, *fentry), unescape_chars(row[i]));
+				}
+
+				sql->free_fields(fields);
 			}
+			if (result)
+				sql->free_result(result);
+
 #endif				/* SQL_ON_DEMAND */
 			return 0;
 		}
@@ -324,7 +317,7 @@ namespace pvpgn
 
 			if (!sql)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initialized");
 				return NULL;
 			}
 
@@ -355,7 +348,7 @@ namespace pvpgn
 
 			if (sql->num_rows(result) != 1)
 			{
-				//      eventlog(eventlog_level_debug, __FUNCTION__, "wrong numer of rows from query ({})", query);
+				//      eventlog(eventlog_level_debug, __FUNCTION__, "wrong number of rows from query ({})", query);
 				sql->free_result(result);
 				return NULL;
 			}
@@ -405,7 +398,7 @@ namespace pvpgn
 
 			if (!sql)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initialized");
 				return -1;
 			}
 
@@ -508,7 +501,7 @@ namespace pvpgn
 			for (std::map<std::string, std::string>::iterator q = queries.begin(); q != queries.end(); ++q)
 			{
 				query_s = "UPDATE " + std::string(tab_prefix) + q->first + " SET ";
-				query_s += q->second.substr(0, q->second.size() - 2); // remove last reduntant comma at the end of the string with parameters
+				query_s += q->second.substr(0, q->second.size() - 2); // remove last redundant comma at the end of the string with parameters
 				query_s += " WHERE " SQL_UID_FIELD " = '" + std_to_string(uid) + "'";
 
 				if (!sql->query(query_s.c_str()))
@@ -533,7 +526,7 @@ namespace pvpgn
 
 			if (!sql)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initilized");
+				eventlog(eventlog_level_error, __FUNCTION__, "sql layer not initialized");
 				return NULL;
 			}
 

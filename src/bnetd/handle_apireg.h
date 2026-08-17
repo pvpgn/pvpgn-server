@@ -45,7 +45,7 @@ namespace pvpgn
 			char const *    serial;       /* also serials of all installed games */
 			char const *    sysid;
 			char const *    syscheck;
-			char const *    oldnick;      /* client send also all nicks that was registerd in the past */
+			char const *    oldnick;      /* client send also all nicks that was registered in the past */
 			char const *    oldpass;      /* and passwords for oldnicks */
 			char const *    newnick;
 			char const *    newpass;

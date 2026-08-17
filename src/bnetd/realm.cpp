@@ -264,7 +264,7 @@ namespace pvpgn
 			}
 			if (realm->active)
 			{
-				eventlog(eventlog_level_debug, __FUNCTION__, "realm {} is already actived,destroy previous one", realm->name);
+				eventlog(eventlog_level_debug, __FUNCTION__, "realm {} is already active, destroy previous one", realm->name);
 				realm_deactive(realm);
 			}
 			realm->active = 1;
@@ -272,7 +272,7 @@ namespace pvpgn
 			conn_set_realm(c, realm);
 			realm->sessionnum = conn_get_sessionnum(c);
 			realm->tcp_sock = conn_get_socket(c);
-			eventlog(eventlog_level_info, __FUNCTION__, "realm {} actived", realm->name);
+			eventlog(eventlog_level_info, __FUNCTION__, "realm {} active", realm->name);
 			return 0;
 		}
 
@@ -287,7 +287,7 @@ namespace pvpgn
 			}
 			if (!realm->active)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "realm {} is not actived", realm->name);
+				eventlog(eventlog_level_error, __FUNCTION__, "realm {} is not active", realm->name);
 				return -1;
 			}
 			if ((c = realm_get_conn(realm)))
@@ -300,7 +300,7 @@ namespace pvpgn
 			realm->player_number=0;
 			realm->game_number=0;
 			*/
-			eventlog(eventlog_level_info, __FUNCTION__, "realm {} deactived", realm->name);
+			eventlog(eventlog_level_info, __FUNCTION__, "realm {} deactivated", realm->name);
 			return 0;
 		}
 

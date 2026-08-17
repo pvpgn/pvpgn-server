@@ -1,0 +1,56 @@
+version: "3"
+
+services:
+  bnetd:
+    depends_on: 
+      - mysql
+    image: pvpgn-server:bnetd-mysql
+    restart: unless-stopped
+    ports:
+      - 6112:6112/udp
+      - 6112:6112
+    volumes:
+      - /opt/pvpgn/etc:/usr/local/etc/pvpgn
+      - /opt/pvpgn/var:/usr/local/var/pvpgn
+  
+  d2cs:
+    depends_on: 
+      - mysql
+    image: pvpgn-server:d2cs-mysql
+    restart: unless-stopped
+    ports:
+      - 6113:6113/udp
+      - 6113:6113
+    environment: 
+      SERVER_TYPE: d2cs 
+    volumes:
+      - /opt/pvpgn/etc:/usr/local/etc/pvpgn
+      - /opt/pvpgn/var:/usr/local/var/pvpgn
+
+  d2dbs:
+    depends_on: 
+      - mysql
+    image: pvpgn-server:d2dbs-mysql
+    restart: unless-stopped
+    ports:
+      - 6114:6114/udp
+      - 6114:6114
+    environment:
+      SERVER_TYPE: d2dbs 
+    volumes:
+      - /opt/pvpgn/etc:/usr/local/etc/pvpgn
+      - /opt/pvpgn/var:/usr/local/var/pvpgn
+
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: bnetd
+      MYSQL_USER: bnetd
+      MYSQL_PASSWORD: example
+    volumes:
+      - /opt/var/lib/mysql:/var/lib/mysql

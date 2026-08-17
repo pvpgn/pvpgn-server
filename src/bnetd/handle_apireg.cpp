@@ -32,6 +32,7 @@
 
 #include "compat/strcasecmp.h"
 
+#include "account_email_verification.h"
 #include "prefs.h"
 #include "irc.h"
 #include "account.h"
@@ -843,11 +844,11 @@ namespace pvpgn
 				}
 				else {
 					if (!newnick) {
-						std::snprintf(message, sizeof(message), "Nick must be specifed!");
+						std::snprintf(message, sizeof(message), "Nick must be specified!");
 						std::snprintf(hresult, sizeof(hresult), "-2147221248");
 					}
 					else if (!newpass) {
-						std::snprintf(message, sizeof(message), "Pussword must be specifed!");
+						std::snprintf(message, sizeof(message), "Pussword must be specified!");
 						std::snprintf(hresult, sizeof(hresult), "-2147221248");
 					}
 					else if (account = accountlist_find_account(newnick)) {
@@ -874,7 +875,17 @@ namespace pvpgn
 							eventlog(eventlog_level_debug, __FUNCTION__, "WOLHASH: {}", wol_pass_hash);
 							account_set_wol_apgar(tempacct, wol_pass_hash);
 							if (apiregmember_get_email(apiregmember))
-								account_set_email(tempacct, apiregmember_get_email(apiregmember));
+							{
+								if (account_set_email(tempacct, apiregmember_get_email(apiregmember)) == 0)
+								{
+									account_set_email_verified(tempacct, false);
+
+									if (prefs_get_verify_account_email() == 1)
+									{
+										account_generate_email_verification_code(tempacct);
+									}
+								}
+							}
 							std::snprintf(message, sizeof(message), "Welcome in the amazing world of PvPGN! Your login can be used for all PvPGN Supported games!");
 							std::snprintf(hresult, sizeof(hresult), "0");
 						}

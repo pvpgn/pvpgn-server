@@ -24,6 +24,8 @@
 #include <cctype>
 #include <cstdlib>
 
+#include <fmt/format.h>
+
 #include "compat/strcasecmp.h"
 
 #include "common/irc_protocol.h"
@@ -96,8 +98,8 @@ namespace pvpgn
 			/* Used only in Red Alert 2 and Yuri's Revenge */
 			player->address = 0;
 			player->port = 0;
-			player->country = -2; /* Default values are form packet dumps - not prefered country */
-			player->colour = -2; /* Default values are form packet dumps - not prefered colour */
+			player->country = -2; /* Default values are form packet dumps - not preferred country */
+			player->colour = -2; /* Default values are form packet dumps - not preferred colour */
 
 			conn_wol_set_anongame_player(conn, player);
 
@@ -316,10 +318,9 @@ namespace pvpgn
 			if (!nick)
 				nick = "UserName";
 
-			std::string data(":matchbot!u@h " + std::string(command) + " " + std::string(nick) + " " + std::string(text));
-			data.erase(MAX_IRC_MESSAGE_LEN, std::string::npos);
+			std::string data = fmt::format(":matchbot!u@h {} {} {}", command, nick, text);
 
-			DEBUG2("[{}] sent \"{}\"", conn_get_socket(conn), data.c_str());
+			DEBUG2("[{}] sent \"{}\"", conn_get_socket(conn), data);
 			data.append("\r\n");
 			packet_set_size(p, 0);
 			packet_append_data(p, data.c_str(), data.length());
@@ -408,15 +409,15 @@ namespace pvpgn
 							_get_pair(&pl1_country, &pl2_country, 8, false);
 							mapname = anongame_get_map_from_prefs(ANONGAME_TYPE_1V1, ctag);
 
-							/* We have madatory of game */
+							/* We have mandatory of game */
 							std::snprintf(_temp, sizeof(_temp), ":Start %d,0,0,10000,0,1,0,1,1,0,1,x,2,1,165368,%s,1:", random, mapname);
 							std::strcat(temp, _temp);
 
-							/* GameHost informations */
+							/* GameHost information */
 							std::snprintf(_temp, sizeof(_temp), "%s,%d,%d,%x,1,%x,", conn_get_chatname(conn_pl1), pl1_country, pl1_colour, anongame_wol_player_get_address(player1), anongame_wol_player_get_port(player1));
 							std::strcat(temp, _temp);
 
-							/* GameJoinie informations */
+							/* GameJoinie information */
 							std::snprintf(_temp, sizeof(_temp), "%s,%d,%d,%x,1,%x", conn_get_chatname(conn_pl2), pl2_country, pl2_colour, anongame_wol_player_get_address(player2), anongame_wol_player_get_port(player2));
 							std::strcat(temp, _temp);
 
@@ -442,17 +443,17 @@ namespace pvpgn
 														  _get_pair(&pl1_country, &pl2_country, 9, false);
 														  mapname = anongame_get_map_from_prefs(ANONGAME_TYPE_1V1, ctag);
 
-														  /* We have madatory of game */
+														  /* We have mandatory of game */
 														  std::snprintf(_temp, sizeof(_temp), ":Start %d,0,0,10000,0,0,1,1,1,0,3,0,x,2,1,163770,%s,1:", random, mapname);
 														  std::strcat(temp, _temp);
 
-														  /* GameHost informations */
+														  /* GameHost information */
 														  std::snprintf(_temp, sizeof(_temp), "%s,%d,%d,-2,-2,", conn_get_chatname(conn_pl1), pl1_country, pl1_colour);
 														  std::strcat(temp, _temp);
 														  std::snprintf(_temp, sizeof(_temp), "%x,1,%x,", anongame_wol_player_get_address(player1), anongame_wol_player_get_port(player1));
 														  std::strcat(temp, _temp);
 
-														  /* GameJoinie informations */
+														  /* GameJoinie information */
 														  std::snprintf(_temp, sizeof(_temp), "%s,%d,%d,-2,-2,", conn_get_chatname(conn_pl2), pl2_country, pl2_colour);
 														  std::strcat(temp, _temp);
 														  std::snprintf(_temp, sizeof(_temp), "%x,1,%x", anongame_wol_player_get_address(player2), anongame_wol_player_get_port(player2));
@@ -464,17 +465,17 @@ namespace pvpgn
 													  else if (std::strcmp(channelname, YURI_CHANNEL_COOP) == 0) {
 														  DEBUG0("Generating COOP game for Yuri's Revenge");
 
-														  /* We have madatory of game */
+														  /* We have mandatory of game */
 														  std::snprintf(_temp, sizeof(_temp), ":Start %d,0,0,10000,10,0,1,1,0,1,3,0,x,2,1,163770,C1A01MD.MAP,1:", random);
 														  std::strcat(temp, _temp);
 
-														  /* GameHost informations */
+														  /* GameHost information */
 														  std::snprintf(_temp, sizeof(_temp), "%s,0,4,0,-2,", conn_get_chatname(conn_pl1));
 														  std::strcat(temp, _temp);
 														  std::snprintf(_temp, sizeof(_temp), "%x,1,%x,", anongame_wol_player_get_address(player1), anongame_wol_player_get_port(player1));
 														  std::strcat(temp, _temp);
 
-														  /* GameJoinie informations */
+														  /* GameJoinie information */
 														  std::snprintf(_temp, sizeof(_temp), "%s,0,5,1,-2,", conn_get_chatname(anongame_wol_player_get_conn(player2)));
 														  std::strcat(temp, _temp);
 														  std::snprintf(_temp, sizeof(_temp), "%x,1,%x", anongame_wol_player_get_address(player2), anongame_wol_player_get_port(player2));
@@ -579,7 +580,7 @@ namespace pvpgn
 			return 0;
 		}
 
-		/* Functions for getting/sending player informations */
+		/* Functions for getting/sending player information */
 
 		extern int anongame_wol_destroy(t_connection * conn)
 		{

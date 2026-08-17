@@ -206,7 +206,7 @@ namespace pvpgn
 		where->next = what;
 	}
 
-	/* link a new node just before "where" (usefull in creating queues) */
+	/* link a new node just before "where" (useful in creating queues) */
 	static inline void elist_add_tail(t_elist *where, t_elist *what)
 	{
 		what->prev = where->prev;
@@ -223,7 +223,7 @@ namespace pvpgn
 	}
 
 	/* finds out the container address by computing it from the list node
-	 * address substracting the offset inside the container of the list node
+	 * address subtracting the offset inside the container of the list node
 	 * member */
 #define elist_entry(ptr,type,member) ((type*)(((char*)ptr)-offsetof(type,member)))
 
@@ -279,7 +279,7 @@ namespace pvpgn
 	}
 
 	/* finds out the container address by computing it from the list node
-	 * address substracting the offset inside the container of the list node
+	 * address subtracting the offset inside the container of the list node
 	 * member */
 #define hlist_entry(ptr,type,member) elist_entry(ptr,type,member)
 

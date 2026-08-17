@@ -243,7 +243,7 @@ extern int main(int argc, char * argv[])
 			curry += icn->height;
 			dsttga = std::fopen(name, "w");
 			if (dsttga == NULL) {
-				std::fprintf(stderr, "%s: could not open ouptut TGA file \"%s\" for writing (std::fopen: %s)\n", argv[0], name, std::strerror(errno));
+				std::fprintf(stderr, "%s: could not open output TGA file \"%s\" for writing (std::fopen: %s)\n", argv[0], name, std::strerror(errno));
 			}
 			else {
 				if (write_tga(dsttga, icn) < 0) {

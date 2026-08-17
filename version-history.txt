@@ -47,7 +47,7 @@ PvPGN Version History:
   -- fixed bug when clanmember can promote/demote any
      member of his clan by sending proper rankupdate packet
   -- fixed bug when a hosting bot was able to create a 
-     custom game which caused clients to disconect
+     custom game which caused clients to disconnect
 
 [MISC]
   -- updated IX86 autoupdate according to STAR/SEXP 1.16.1
@@ -84,7 +84,7 @@ PvPGN Version History:
 [VCHECK]
   -- added WAR3/W3XP IX86 1.21b vcheck entries
   -- added STAR/SEXP IX86 1.51.2 vcheck entries
-  -- rewrited all STAR/SEXP/W2BN/DRTL IX86 vcheck entries
+  -- rewrote all STAR/SEXP/W2BN/DRTL IX86 vcheck entries
      to match new ver-ix86-1.mpq file (this fixes connecting
      problems on Windows Vista systems)
 
@@ -183,7 +183,7 @@ PvPGN Version History:
   -- fixed "clan membership lost after invitation" bug.
 
 [IRC]
-  -- fixed PING problem occouring after about 25 days uptime
+  -- fixed PING problem occurring after about 25 days uptime
   
 [VERSIONCHECK]
   -- added SC/BW 1.13e entries (XMAC & PMAC)
@@ -225,7 +225,7 @@ PvPGN Version History:
   -- usage of the new conf API
 
 [SQL]
-  -- fixed a bug where case sensitive string lookup SQL backends whould not 
+  -- fixed a bug where case sensitive string lookup SQL backends would not 
   see old accounts when searched with different case; this is a major problem 
   and if you are running any non-MySQL SQL backend you MUST upgrade; make sure 
   you read UPDATE too as it contains very important information for this bugfix
@@ -343,7 +343,7 @@ PvPGN Version History:
   -- fixed possible overflow with malformed gamereport packets
 
 [D2DV/D2XP]
-  -- added workarround for D2 classic client side bug 
+  -- added workaround for D2 classic client side bug 
      (open bnet games being listed as closed bnet games)
 
 [MISC]
@@ -358,7 +358,7 @@ PvPGN Version History:
 
 [D2CS]
   -- The backup copy of the charsave file and charinfo file are now deleted
-  when client deletes one of thier charactars
+  when client deletes one of their charactars
 
 [MISC]
   -- fixed problem with language specific channels
@@ -424,7 +424,7 @@ PvPGN Version History:
   for finding a game of a specific difficulty.
 
 [WAR3]: 
-  -- droped <1.13 support, added 1.15 support (CG,PG,AT, clan profile view)
+  -- dropped <1.13 support, added 1.15 support (CG,PG,AT, clan profile view)
   -- added code to detect the right w3routeip if is set to 0.0.0.0
   -- redone major parts of the AT code (old AT teams will be lost)
 
@@ -453,13 +453,13 @@ PvPGN Version History:
   -- added scripts/pvpgn_hash.inc.php so everyone who needs has a php-
      implementation of the commonly used passhash algorithm
   -- fixed problem with topaz-chat (and maybe other clients, too)
-     not propperly displaying tmpOP on initial channel join
+     not properly displaying tmpOP on initial channel join
   -- adjusted friends/watch game/server join/leave message to be more like b.net
      (changed message type from info to whisper)
   -- fixed channel behaviour to now really allow a common channel for all clients
      (different shortname, same special name)
   -- changed all 4 bytes tags (clienttags, archtags, etc) to use internally 
-     integers for comparations instead of strings
+     integers for comparisons instead of strings
   -- changed almost every place where sending username to send the logged in 
   username (if differs in case) than the account username (this fixes some bugs 
   like modifying some account data when logged in with different case and also 

@@ -39,7 +39,7 @@ namespace pvpgn
 	{
 		std::memset(fds.get(), 0, sizeof(struct pollfd) * nfds);
 		std::memset(rridx.get(), 0, sizeof(int)* nfds);
-		/* I would use a memset with 255 but that is dirty and doesnt gain us anything */
+		/* I would use a memset with 255 but that is dirty and does not gain us anything */
 		for (int i = 0; i < nfds; i++) ridx[i] = -1;
 
 		INFO1("fdwatch poll() based layer initialized (max {} sockets)", nfds);

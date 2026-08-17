@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #include "common/setup_before.h"
+#define SERVER_INTERNAL_ACCESS
 #include "setup.h"
 #include "dbserver.h"
 
@@ -28,15 +29,24 @@
 
 #include "compat/psock.h"
 #include "compat/strerror.h"
-#include "common/eventlog.h"
+
 #include "common/addr.h"
-#include "common/xalloc.h"
+#include "common/eventlog.h"
+#include "common/d2dbs_d2gs_protocol.h"
+#include "common/fdwatch.h"
 #include "common/network.h"
-#include "d2ladder.h"
-#include "prefs.h"
+#include "common/packet.h"
+#include "common/xalloc.h"
+
+#include "connection.h"
 #include "charlock.h"
-#include "dbspacket.h"
+#include "d2ladder.h"
+#include "handle_d2gs.h"
+#include "handle_init.h"
 #include "handle_signal.h"
+#include "pgsid.h"
+#include "prefs.h"
+#include "version.h"
 
 #ifdef HAVE_ARPA_INET_H
 # include <arpa/inet.h>
@@ -57,10 +67,7 @@ namespace pvpgn
 	namespace d2dbs
 	{
 
-		static int		dbs_packet_gs_id = 0;
-		static t_preset_d2gsid	*preset_d2gsid_head = NULL;
-		t_list * dbs_server_connection_list = NULL;
-		int dbs_server_listen_socket = -1;
+		static std::time_t curr_exittime;
 
 		/* dbs_server_main
 		 * The module's driver function -- we just call other functions and
@@ -68,207 +75,572 @@ namespace pvpgn
 		 */
 
 		static int dbs_handle_timed_events(void);
-		static void dbs_on_exit(void);
 
-		int dbs_server_init(void);
-		void dbs_server_loop(int ListeningSocket);
-		int dbs_server_setup_fdsets(fd_set * pReadFDs, fd_set * pWriteFDs,
-			fd_set * pExceptFDs, int ListeningSocket);
-		bool dbs_server_read_data(t_d2dbs_connection* conn);
-		bool dbs_server_write_data(t_d2dbs_connection* conn);
-		int dbs_server_list_add_socket(int sd, unsigned int ipaddr);
-		static int setsockopt_keepalive(int sock);
-		static unsigned int get_preset_d2gsid(unsigned int ipaddr);
+		static int handle_accept(void* data, t_fdwatch_type rw);
+		static int handle_tcp(void* data, t_fdwatch_type rw);
+
+		static void _server_mainloop(t_addrlist* laddrs);
+		static void dbs_check_timeout();
+		static void dbs_keepalive();
 
 
-		int dbs_server_main(void)
+		static char const* laddr_type_get_str(t_laddr_type laddr_type)
 		{
-			eventlog(eventlog_level_info, __FUNCTION__, "establishing the listener...");
-			dbs_server_listen_socket = dbs_server_init();
-			if (dbs_server_listen_socket < 0) {
-				eventlog(eventlog_level_error, __FUNCTION__, "dbs_server_init error ");
-				return 3;
+			switch (laddr_type)
+			{
+			case laddr_type_d2gs:
+				return "d2gs";
+			default:
+				return "UNKNOWN";
 			}
-			eventlog(eventlog_level_info, __FUNCTION__, "waiting for connections...");
-			dbs_server_loop(dbs_server_listen_socket);
-			dbs_on_exit();
+		}
+
+
+		static int sd_accept(t_addr const* curr_laddr, t_laddr_info const* laddr_info, int ssocket)
+		{
+			char               tempa[32];
+			int                csocket;
+			struct sockaddr_in caddr;
+			psock_t_socklen    caddr_len;
+			unsigned int       raddr;
+			unsigned short     rport;
+
+			if (!addr_get_addr_str(curr_laddr, tempa, sizeof(tempa)))
+				std::strcpy(tempa, "x.x.x.x:x");
+
+			/* accept the connection */
+			std::memset(&caddr, 0, sizeof(caddr)); /* not sure if this is needed... modern systems are ok anyway */
+			caddr_len = sizeof(caddr);
+			if ((csocket = psock_accept(ssocket, (struct sockaddr*)&caddr, &caddr_len)) < 0)
+			{
+				/* BSD, POSIX error for aborted connections, SYSV often uses EAGAIN or EPROTO */
+				if (
+#ifdef PSOCK_EWOULDBLOCK
+					psock_errno() == PSOCK_EWOULDBLOCK ||
+#endif
+#ifdef PSOCK_ECONNABORTED
+					psock_errno() == PSOCK_ECONNABORTED ||
+#endif
+#ifdef PSOCK_EPROTO
+					psock_errno() == PSOCK_EPROTO ||
+#endif
+					0)
+					eventlog(eventlog_level_error, __FUNCTION__, "client aborted connection on {} (psock_accept: {})", tempa, pstrerror(psock_errno()));
+				else /* EAGAIN can mean out of resources _or_ connection aborted :( */
+					if (
+#ifdef PSOCK_EINTR
+						psock_errno() != PSOCK_EINTR &&
+#endif
+						1)
+						eventlog(eventlog_level_error, __FUNCTION__, "could not accept new connection on {} (psock_accept: {})", tempa, pstrerror(psock_errno()));
+				return -1;
+			}
+
+			/* dont accept new connections while shutting down */
+			if (curr_exittime)
+			{
+				psock_shutdown(csocket, PSOCK_SHUT_RDWR);
+				psock_close(csocket);
+				return 0;
+			}
+
+			char addrstr[INET_ADDRSTRLEN] = {};
+			inet_ntop(AF_INET, &(caddr.sin_addr), addrstr, sizeof(addrstr));
+
+			eventlog(eventlog_level_info, __FUNCTION__, "[{}] accepted connection from {} on {}", csocket, addr_num_to_addr_str(ntohl(caddr.sin_addr.s_addr), ntohs(caddr.sin_port)), tempa);
+
+			{
+				int optval = 1;
+				psock_t_socklen	optlen = sizeof(optval);
+				if (psock_setsockopt(csocket, PSOCK_SOL_SOCKET, PSOCK_SO_KEEPALIVE, &optval, optlen))
+				{
+					eventlog(eventlog_level_info, __FUNCTION__, "[{}] could not set socket option SO_KEEPALIVE (psock_setsockopt: {})", csocket, pstrerror(psock_errno()));
+				}
+				else
+				{
+					eventlog(eventlog_level_info, __FUNCTION__, "[{}] set KEEPALIVE option", csocket);
+				}
+			}
+
+			{
+				struct sockaddr_in rsaddr;
+				psock_t_socklen    rlen;
+
+				std::memset(&rsaddr, 0, sizeof(rsaddr)); /* not sure if this is needed... modern systems are ok anyway */
+				rlen = sizeof(rsaddr);
+				if (psock_getsockname(csocket, (struct sockaddr*)&rsaddr, &rlen) < 0)
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "[{}] unable to determine real local port (psock_getsockname: {})", csocket, pstrerror(psock_errno()));
+					/* not a fatal error */
+					raddr = addr_get_ip(curr_laddr);
+					rport = addr_get_port(curr_laddr);
+				}
+				else
+				{
+					if (rsaddr.sin_family != PSOCK_AF_INET)
+					{
+						eventlog(eventlog_level_error, __FUNCTION__, "local address returned with bad address family {}", (int)rsaddr.sin_family);
+						/* not a fatal error */
+						raddr = addr_get_ip(curr_laddr);
+						rport = addr_get_port(curr_laddr);
+					}
+					else
+					{
+						raddr = ntohl(rsaddr.sin_addr.s_addr);
+						rport = ntohs(rsaddr.sin_port);
+					}
+				}
+			}
+
+			if (psock_ctl(csocket, PSOCK_NONBLOCK) < 0)
+			{
+				eventlog(eventlog_level_error, __FUNCTION__, "[{}] could not set TCP socket to non-blocking mode (closing connection) (psock_ctl: {})", csocket, pstrerror(psock_errno()));
+				psock_close(csocket);
+				return -1;
+			}
+
+			{
+				t_d2dbs_connection* c;
+				if (!(c = conn_create(csocket, raddr, rport, addr_get_ip(curr_laddr), addr_get_port(curr_laddr), ntohl(caddr.sin_addr.s_addr), ntohs(caddr.sin_port))))
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "[{}] unable to create new connection (closing connection)", csocket);
+					psock_close(csocket);
+					return -1;
+				}
+
+				if (conn_add_fdwatch(c, handle_tcp) < 0)
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "[{}] unable to add socket to fdwatch pool (max connections?)", csocket);
+					conn_set_state(c, conn_state_destroy);
+					return -1;
+				}
+
+				eventlog(eventlog_level_debug, __FUNCTION__, "[{}] client connected to a {} listening address", csocket, laddr_type_get_str(laddr_info->type));
+			}
+
 			return 0;
 		}
 
-		/* dbs_server_init
-		 * Sets up a listener on the given interface and port, returning the
-		 * listening socket if successful; if not, returns -1.
-		 */
-		/* FIXME: No it doesn't!  pcAddress is not ever referenced in this
-		 * function.
-		 * CreepLord: Fixed much better way (will accept dns hostnames)
-		 */
-		int dbs_server_init(void)
-		{
-			int sd;
-			struct sockaddr_in sinInterface;
-			int val;
-			t_addr	* servaddr;
 
-			dbs_server_connection_list = list_create();
+		static int sd_tcpinput(t_d2dbs_connection* c)
+		{
+			t_packet* packet = nullptr;
+			auto csocket = c->sd;
+			auto currsize = conn_get_in_size(c);
+
+			if (!conn_get_in_queue(c))
+			{
+				switch (conn_get_class(c))
+				{
+				case conn_class_init:
+					if (!(packet = packet_create(packet_class_init)))
+					{
+						eventlog(eventlog_level_error, __FUNCTION__, "could not allocate init packet for input");
+						return -1;
+					}
+					break;
+				case conn_class_d2gs:
+					if (!(packet = packet_create(packet_class_d2dbs_d2gs)))
+					{
+						eventlog(eventlog_level_error, __FUNCTION__, "could not allocate d2dbs_d2gs packet for input");
+						return -1;
+					}
+					break;
+				default:
+					eventlog(eventlog_level_error, __FUNCTION__, "[{}] connection has bad class (closing connection)", c->sd);
+					conn_close_read(c);
+					return -2;
+				}
+
+				conn_put_in_queue(c, packet);
+				currsize = 0;
+			}
+
+			packet = conn_get_in_queue(c);
+			switch (net_recv_packet(csocket, packet, &currsize))
+			{
+			case -1:
+				eventlog(eventlog_level_debug, __FUNCTION__, "[{}] read returned -1 (closing connection)", csocket);
+				conn_close_read(c);
+				return -2;
+
+			case 0: /* still working on it */
+				/* eventlog(eventlog_level_debug,__FUNCTION__,"[{}] still reading \"{}\" packet ({} of {} bytes so far)",conn_get_socket(c),packet_get_class_str(packet),conn_get_in_size(c),packet_get_size(packet)); */
+				conn_set_in_size(c, currsize);
+				break;
+
+			case 1: /* done reading */
+			{
+				conn_put_in_queue(c, nullptr);
+
+				int ret;
+				switch (conn_get_class(c))
+				{
+				case conn_class_init:
+					ret = handle_init_packet(c, packet);
+					break;
+				case conn_class_d2gs:
+					ret = handle_d2gs_packet(c, packet);
+					break;
+				default:
+					ret = -1;
+				}
+
+				packet_del_ref(packet);
+				if (ret < 0)
+				{
+					conn_close_read(c);
+					return -2;
+				}
+
+				conn_set_in_size(c, 0);
+			}
+			}
+
+			return 0;
+		}
+
+
+		static int sd_tcpoutput(t_d2dbs_connection* c)
+		{
+			unsigned int totsize = 0;
+			auto csocket = c->sd;
+
+			for (;;)
+			{
+				auto currsize = conn_get_out_size(c);
+
+				t_packet* packet = conn_peek_outqueue(c);
+				if (packet == nullptr)
+				{
+					return -2;
+				}
+
+				switch (net_send_packet(csocket, packet, &currsize)) /* avoid warning */
+				{
+				case -1:
+					/* marking connection as "destroyed", memory will be freed later */
+					conn_clear_outqueue(c);
+					conn_set_state(c, conn_state_destroy);
+					return -2;
+
+				case 0: /* still working on it */
+					conn_set_out_size(c, currsize);
+					return 0; /* bail out */
+
+				case 1: /* done sending */
+					packet = conn_pull_outqueue(c);
+					packet_del_ref(packet);
+					conn_set_out_size(c, 0);
+
+					/* stop if out of packets or EWOULDBLOCK) */
+					if (!conn_peek_outqueue(c))
+					{
+						return 0;
+					}
+
+					totsize += currsize;
+
+					break;
+				}
+			}
+
+			/* not reached */
+		}
+
+
+		static int handle_accept(void* data, t_fdwatch_type rw)
+		{
+			t_laddr_info* laddr_info = (t_laddr_info*)addr_get_data((t_addr*)data).p;
+
+			return sd_accept((t_addr*)data, laddr_info, laddr_info->ssocket);
+		}
+
+
+		static int handle_tcp(void* data, t_fdwatch_type rw)
+		{
+			switch (rw)
+			{
+			case fdwatch_type_read: return sd_tcpinput((t_d2dbs_connection*)data);
+			case fdwatch_type_write: return sd_tcpoutput((t_d2dbs_connection*)data);
+			default:
+				return -1;
+			}
+		}
+
+
+		static int _setup_add_addrs(t_addrlist** pladdrs, const char* str, unsigned int defaddr, unsigned short defport, t_laddr_type type)
+		{
+			t_addr* curr_laddr;
+			t_addr_data     laddr_data;
+			t_laddr_info* laddr_info;
+			t_elem const* acurr;
+
+			if (*pladdrs == NULL)
+			{
+				*pladdrs = addrlist_create(str, defaddr, defport);
+				if (*pladdrs == NULL) return -1;
+			}
+			else if (addrlist_append(*pladdrs, str, defaddr, defport)) return -1;
+
+			/* Mark all these laddrs for being classic Battle.net service */
+			LIST_TRAVERSE_CONST(*pladdrs, acurr)
+			{
+				curr_laddr = (t_addr*)elem_get_data(acurr);
+				if (addr_get_data(curr_laddr).p)
+					continue;
+				laddr_info = (t_laddr_info*)xmalloc(sizeof(t_laddr_info));
+				laddr_info->ssocket = -1;
+				laddr_info->type = type;
+				laddr_data.p = laddr_info;
+				if (addr_set_data(curr_laddr, laddr_data) < 0)
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "could not set address data");
+					if (laddr_info->ssocket != -1)
+					{
+						psock_close(laddr_info->ssocket);
+						laddr_info->ssocket = -1;
+					}
+					return -1;
+				}
+			}
+
+			return 0;
+		}
+
+
+		static int _set_reuseaddr(int sock)
+		{
+			int val = 1;
+
+			return psock_setsockopt(sock, PSOCK_SOL_SOCKET, PSOCK_SO_REUSEADDR, &val, (psock_t_socklen)sizeof(val));
+		}
+
+
+		static int _bind_socket(int sock, unsigned addr, short port)
+		{
+			struct sockaddr_in saddr;
+
+			std::memset(&saddr, 0, sizeof(saddr));
+			saddr.sin_family = PSOCK_AF_INET;
+			saddr.sin_port = htons(port);
+			saddr.sin_addr.s_addr = htonl(addr);
+			return psock_bind(sock, (struct sockaddr*)&saddr, (psock_t_socklen)sizeof(saddr));
+		}
+
+
+		static int _setup_listensock(t_addrlist* laddrs)
+		{
+			t_addr* curr_laddr;
+			t_laddr_info* laddr_info;
+			t_elem const* acurr;
+			char            tempa[32];
+			int		    fidx;
+
+			LIST_TRAVERSE_CONST(laddrs, acurr)
+			{
+				curr_laddr = (t_addr*)elem_get_data(acurr);
+				if (!(laddr_info = (t_laddr_info*)addr_get_data(curr_laddr).p))
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "NULL address info");
+					goto err;
+				}
+
+				if (!addr_get_addr_str(curr_laddr, tempa, sizeof(tempa)))
+					std::strcpy(tempa, "x.x.x.x:x");
+
+				laddr_info->ssocket = psock_socket(PSOCK_PF_INET, PSOCK_SOCK_STREAM, PSOCK_IPPROTO_TCP);
+				if (laddr_info->ssocket < 0)
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "could not create a {} listening socket (psock_socket: {})", laddr_type_get_str(laddr_info->type), pstrerror(psock_errno()));
+					goto err;
+				}
+
+				if (_set_reuseaddr(laddr_info->ssocket) < 0)
+					eventlog(eventlog_level_error, __FUNCTION__, "could not set option SO_REUSEADDR on {} socket {} (psock_setsockopt: {})", laddr_type_get_str(laddr_info->type), laddr_info->ssocket, pstrerror(psock_errno()));
+				/* not a fatal error... */
+
+				if (_bind_socket(laddr_info->ssocket, addr_get_ip(curr_laddr), addr_get_port(curr_laddr)) < 0)
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "could not bind {} socket to address {} TCP (psock_bind: {})", laddr_type_get_str(laddr_info->type), tempa, pstrerror(psock_errno()));
+					goto errsock;
+				}
+
+				/* tell socket to listen for connections */
+				if (psock_listen(laddr_info->ssocket, LISTEN_QUEUE) < 0)
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "could not set {} socket {} to listen (psock_listen: {})", laddr_type_get_str(laddr_info->type), laddr_info->ssocket, pstrerror(psock_errno()));
+					goto errsock;
+				}
+
+				if (psock_ctl(laddr_info->ssocket, PSOCK_NONBLOCK) < 0)
+					eventlog(eventlog_level_error, __FUNCTION__, "could not set {} TCP listen socket to non-blocking mode (psock_ctl: {})", laddr_type_get_str(laddr_info->type), pstrerror(psock_errno()));
+
+				/* index not stored persisently because we dont need to refer to it later */
+				fidx = fdwatch_add_fd(laddr_info->ssocket, fdwatch_type_read, handle_accept, curr_laddr);
+				if (fidx < 0)
+				{
+					eventlog(eventlog_level_error, __FUNCTION__, "could not add listening socket {} to fdwatch pool (max sockets?)", laddr_info->ssocket);
+					goto errsock;
+				}
+
+				eventlog(eventlog_level_info, __FUNCTION__, "listening for {} connections on {} TCP", laddr_type_get_str(laddr_info->type), tempa);
+			}
+
+			return 0;
+
+		errsock:
+			psock_close(laddr_info->ssocket);
+			laddr_info->ssocket = -1;
+
+		err:
+			return -1;
+		}
+
+
+		static void _server_mainloop(t_addrlist* laddrs)
+		{
+			while (1)
+			{
+
+#ifdef WIN32
+				if (g_ServiceStatus < 0 && kbhit() && getch() == 'q')
+					d2dbs_signal_quit_wrapper();
+				if (g_ServiceStatus == 0) d2dbs_signal_quit_wrapper();
+
+				while (g_ServiceStatus == 2) Sleep(1000);
+#endif
+
+				if (d2dbs_handle_signal() < 0)
+				{
+					eventlog(eventlog_level_info, __FUNCTION__, "the server is shutting down ({} connections left)", connlist().size());
+					break;
+				}
+
+				dbs_handle_timed_events();
+
+
+				/* no need to populate the fdwatch structures as they are populated on the fly
+				 * by sd_accept, conn_push_outqueue, conn_pull_outqueue, conn_destory */
+
+				 /* find which sockets need servicing */
+				switch (fdwatch(D2DBS_POLL_INTERVAL))
+				{
+				case -1: /* error */
+					if (
+#ifdef PSOCK_EINTR
+						psock_errno() != PSOCK_EINTR &&
+#endif
+						1)
+						eventlog(eventlog_level_error, __FUNCTION__, "fdwatch() failed (errno: {})", pstrerror(psock_errno()));
+				case 0: /* timeout... no sockets need checking */
+					continue;
+				}
+
+				/* cycle through the ready sockets and handle them */
+				fdwatch_handle();
+
+				/* reap dead connections */
+				connlist_reap();
+
+			}
+		}
+
+
+		static void _shutdown_addrs(t_addrlist* laddrs)
+		{
+			t_addr* curr_laddr;
+			t_laddr_info* laddr_info;
+			t_elem const* acurr;
+
+			LIST_TRAVERSE_CONST(laddrs, acurr)
+			{
+				curr_laddr = (t_addr*)elem_get_data(acurr);
+
+				if ((laddr_info = (t_laddr_info*)addr_get_data(curr_laddr).p))
+				{
+					if (laddr_info->ssocket != -1)
+					{
+						psock_close(laddr_info->ssocket);
+					}
+
+					xfree(laddr_info);
+				}
+			}
+
+			addrlist_destroy(laddrs);
+		}
+
+
+		int pre_server_startup()
+		{
+			eventlog(eventlog_level_info, __FUNCTION__, D2DBS_VERSION);
 
 			if (d2dbs_d2ladder_init() == -1)
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "d2ladder_init() failed");
-				return -1;
+				eventlog(eventlog_level_error, __FUNCTION__, "d2dbs_d2ladder_init() failed");
+				return STATUS_D2LADDER_FAILURE;
 			}
 
 			if (cl_init(DEFAULT_HASHTBL_LEN, DEFAULT_GS_MAX) == -1)
 			{
 				eventlog(eventlog_level_error, __FUNCTION__, "cl_init() failed");
-				return -1;
+				return STATUS_CHARLOCK_FAILURE;
 			}
 
-			if (psock_init() < 0)
+			if (fdwatch_init(D2DBS_FDWATCH_MAX_CONNECTIONS))
 			{
-				eventlog(eventlog_level_error, __FUNCTION__, "psock_init() failed");
-				return -1;
+				eventlog(eventlog_level_error, __FUNCTION__, "error initilizing fdwatch");
+				return STATUS_FDWATCH_FAILURE;
 			}
 
-			sd = psock_socket(PSOCK_PF_INET, PSOCK_SOCK_STREAM, PSOCK_IPPROTO_TCP);
-			if (sd == -1)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "psock_socket() failed : {}", pstrerror(psock_errno()));
-				return -1;
-			}
-
-			val = 1;
-			if (psock_setsockopt(sd, PSOCK_SOL_SOCKET, PSOCK_SO_REUSEADDR, &val, sizeof(val)) < 0)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "psock_setsockopt() failed : {}", pstrerror(psock_errno()));
-			}
-
-			if (!(servaddr = addr_create_str(d2dbs_prefs_get_servaddrs(), INADDR_ANY, DEFAULT_LISTEN_PORT)))
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "could not get servaddr");
-				return -1;
-			}
-
-			sinInterface.sin_family = PSOCK_AF_INET;
-			sinInterface.sin_addr.s_addr = htonl(addr_get_ip(servaddr));
-			sinInterface.sin_port = htons(addr_get_port(servaddr));
-			if (psock_bind(sd, (struct sockaddr*)&sinInterface, (psock_t_socklen)sizeof(struct sockaddr_in)) < 0)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "psock_bind() failed : {}", pstrerror(psock_errno()));
-				return -1;
-			}
-			if (psock_listen(sd, LISTEN_QUEUE) < 0)
-			{
-				eventlog(eventlog_level_error, __FUNCTION__, "psock_listen() failed : {}", pstrerror(psock_errno()));
-				return -1;
-			}
-			addr_destroy(servaddr);
-			return sd;
+			return 0;
 		}
 
 
-		/* dbs_server_setup_fdsets
-		 * Set up the three FD sets used with select() with the sockets in the
-		 * connection list.  Also add one for the listener socket, if we have
-		 * one.
-		 */
-
-		int dbs_server_setup_fdsets(t_psock_fd_set * pReadFDs, t_psock_fd_set * pWriteFDs, t_psock_fd_set * pExceptFDs, int lsocket)
+		bool server_process()
 		{
-			t_elem const * elem;
-			t_d2dbs_connection* it;
-			int highest_fd;
-
-			PSOCK_FD_ZERO(pReadFDs);
-			PSOCK_FD_ZERO(pWriteFDs);
-			PSOCK_FD_ZERO(pExceptFDs); /* FIXME: don't check these... remove this code */
-			/* Add the listener socket to the read and except FD sets, if there is one. */
-			if (lsocket >= 0) {
-				PSOCK_FD_SET(lsocket, pReadFDs);
-				PSOCK_FD_SET(lsocket, pExceptFDs);
-			}
-			highest_fd = lsocket;
-
-			LIST_TRAVERSE_CONST(dbs_server_connection_list, elem)
+			t_addrlist* laddrs = nullptr;
+			if (_setup_add_addrs(&laddrs, d2dbs_prefs_get_servaddrs(), INADDR_ANY, DEFAULT_LISTEN_PORT, laddr_type_d2gs))
 			{
-				if (!(it = (t_d2dbs_connection*)elem_get_data(elem))) continue;
-				if (it->nCharsInReadBuffer < (kBufferSize - kMaxPacketLength)) {
-					/* There's space in the read buffer, so pay attention to incoming data. */
-					PSOCK_FD_SET(it->sd, pReadFDs);
-				}
-				if (it->nCharsInWriteBuffer > 0) {
-					PSOCK_FD_SET(it->sd, pWriteFDs);
-				}
-				PSOCK_FD_SET(it->sd, pExceptFDs);
-				if (highest_fd < it->sd) highest_fd = it->sd;
+				eventlog(eventlog_level_error, __FUNCTION__, "could not create {} server address list from \"{}\"", laddr_type_get_str(laddr_type_d2gs), d2dbs_prefs_get_servaddrs());
+				return false;
 			}
-			return highest_fd;
-		}
 
-		/* dbs_server_read_data
-		 * Data came in on a client socket, so read it into the buffer.  Returns
-		 * false on failure, or when the client closes its half of the
-		 * connection.  (EAGAIN doesn't count as a failure.)
-		 */
-		bool dbs_server_read_data(t_d2dbs_connection* conn)
-		{
-			int nBytes;
+			if (_setup_listensock(laddrs))
+			{
+				_shutdown_addrs(laddrs);
+				return false;
+			}
 
-			nBytes = net_recv(conn->sd, conn->ReadBuf + conn->nCharsInReadBuffer,
-				kBufferSize - conn->nCharsInReadBuffer);
+			_server_mainloop(laddrs);
 
-			if (nBytes < 0) return false;
-			conn->nCharsInReadBuffer += nBytes;
+			// cleanup for server shutdown
+			connlist_destroy(); // equivalent to pvpgn::bnetd::_shutdown_conns()
+			_shutdown_addrs(laddrs);
+
 			return true;
 		}
 
 
-		/* dbs_server_write_data
-		 * The connection is writable, so send any pending data.  Returns
-		 * false on failure.  (EAGAIN doesn't count as a failure.)
-		 */
-		bool dbs_server_write_data(t_d2dbs_connection* conn)
+		void post_server_shutdown(int status)
 		{
-			int nBytes;
-
-			nBytes = net_send(conn->sd, conn->WriteBuf,
-				conn->nCharsInWriteBuffer > kMaxPacketLength ? kMaxPacketLength : conn->nCharsInWriteBuffer);
-
-			if (nBytes < 0) return false;
-
-			conn->nCharsInWriteBuffer -= nBytes;
-			if (conn->nCharsInWriteBuffer)
-				std::memmove(conn->WriteBuf, conn->WriteBuf + nBytes, conn->nCharsInWriteBuffer);
-
-			return true;
+			switch (status)
+			{
+			case 0:
+				fdwatch_close();
+			case STATUS_FDWATCH_FAILURE:
+				cl_destroy();
+			case STATUS_CHARLOCK_FAILURE:
+				d2dbs_d2ladder_destroy();
+			case STATUS_D2LADDER_FAILURE:
+				pgsid_destroy();
+				break;
+			default:
+				eventlog(eventlog_level_error, __FUNCTION__, "got bad status \"{}\" during shutdown", status);
+			}
 		}
 
-		int dbs_server_list_add_socket(int sd, unsigned int ipaddr)
-		{
-			t_d2dbs_connection	*it;
-			struct in_addr		in;
-
-			it = (t_d2dbs_connection*)xmalloc(sizeof(t_d2dbs_connection));
-			std::memset(it, 0, sizeof(t_d2dbs_connection));
-			it->sd = sd;
-			it->ipaddr = ipaddr;
-			it->major = 0;
-			it->minor = 0;
-			it->type = 0;
-			it->stats = 0;
-			it->verified = 0;
-			it->serverid = get_preset_d2gsid(ipaddr);
-			it->last_active = std::time(NULL);
-			it->nCharsInReadBuffer = 0;
-			it->nCharsInWriteBuffer = 0;
-			list_append_data(dbs_server_connection_list, it);
-			in.s_addr = htonl(ipaddr);
-			char addrstr[INET_ADDRSTRLEN] = { 0 };
-			inet_ntop(AF_INET, &(in), addrstr, sizeof(addrstr));
-			std::strncpy((char*)it->serverip, addrstr, sizeof(it->serverip) - 1);
-
-			return 1;
-		}
 
 		static int dbs_handle_timed_events(void)
 		{
@@ -293,208 +665,52 @@ namespace pvpgn
 			return 0;
 		}
 
-		void dbs_server_loop(int lsocket)
+
+		static void dbs_check_timeout()
 		{
-			struct sockaddr_in sinRemote;
-			int sd;
-			fd_set ReadFDs, WriteFDs, ExceptFDs;
-			t_elem * elem;
-			t_d2dbs_connection* it;
-			bool bOK;
-			const char* pcErrorType;
-			struct timeval         tv;
-			int highest_fd;
-			psock_t_socklen nAddrSize = sizeof(sinRemote);
+			std::time_t now = std::time(nullptr);
+			unsigned int timeout = d2dbs_prefs_get_idletime();
 
-			while (1) {
-
-#ifdef WIN32
-				if (g_ServiceStatus < 0 && kbhit() && getch() == 'q')
-					d2dbs_signal_quit_wrapper();
-				if (g_ServiceStatus == 0) d2dbs_signal_quit_wrapper();
-
-				while (g_ServiceStatus == 2) Sleep(1000);
-#endif
-
-				if (d2dbs_handle_signal() < 0) break;
-
-				dbs_handle_timed_events();
-				highest_fd = dbs_server_setup_fdsets(&ReadFDs, &WriteFDs, &ExceptFDs, lsocket);
-
-				tv.tv_sec = 0;
-				tv.tv_usec = SELECT_TIME_OUT;
-				switch (psock_select(highest_fd + 1, &ReadFDs, &WriteFDs, &ExceptFDs, &tv)) {
-				case -1:
-					eventlog(eventlog_level_error, __FUNCTION__, "psock_select() failed : {}", pstrerror(psock_errno()));
-					continue;
-				case 0:
-					continue;
-				default:
-					break;
-				}
-
-				if (PSOCK_FD_ISSET(lsocket, &ReadFDs)) {
-					sd = psock_accept(lsocket, (struct sockaddr*)&sinRemote, &nAddrSize);
-					if (sd == -1) {
-						eventlog(eventlog_level_error, __FUNCTION__, "psock_accept() failed : {}", pstrerror(psock_errno()));
-						return;
-					}
-
-					char addrstr[INET_ADDRSTRLEN] = { 0 };
-					inet_ntop(AF_INET, &(sinRemote.sin_addr), addrstr, sizeof(addrstr));
-					eventlog(eventlog_level_info, __FUNCTION__, "accepted connection from {}:{} , socket {} .",
-						addrstr, ntohs(sinRemote.sin_port), sd);
-					eventlog_step(prefs_get_logfile_gs(), eventlog_level_info, __FUNCTION__, "accepted connection from %s:%d , socket %d .",
-						addrstr, ntohs(sinRemote.sin_port), sd);
-					setsockopt_keepalive(sd);
-					dbs_server_list_add_socket(sd, ntohl(sinRemote.sin_addr.s_addr));
-					if (psock_ctl(sd, PSOCK_NONBLOCK) < 0) {
-						eventlog(eventlog_level_error, __FUNCTION__, "could not set TCP socket [{}] to non-blocking mode (closing connection) (psock_ctl: {})", sd, pstrerror(psock_errno()));
-						psock_close(sd);
-					}
-				}
-				else if (PSOCK_FD_ISSET(lsocket, &ExceptFDs)) {
-					eventlog(eventlog_level_error, __FUNCTION__, "exception on listening socket");
-					/* FIXME: exceptions are not errors with TCP, they are out-of-band data */
-					return;
-				}
-
-				LIST_TRAVERSE(dbs_server_connection_list, elem)
+			for (auto c : connlist())
+			{
+				if (!c)
 				{
-					bOK = true;
-					pcErrorType = 0;
-
-					if (!(it = (t_d2dbs_connection*)elem_get_data(elem))) continue;
-					if (PSOCK_FD_ISSET(it->sd, &ExceptFDs)) {
-						bOK = false;
-						pcErrorType = "General socket error"; /* FIXME: no no no no no */
-						PSOCK_FD_CLR(it->sd, &ExceptFDs);
-					}
-					else {
-
-						if (PSOCK_FD_ISSET(it->sd, &ReadFDs)) {
-							bOK = dbs_server_read_data(it);
-							pcErrorType = "Read error";
-							PSOCK_FD_CLR(it->sd, &ReadFDs);
-						}
-
-						if (PSOCK_FD_ISSET(it->sd, &WriteFDs)) {
-							bOK = dbs_server_write_data(it);
-							pcErrorType = "Write error";
-							PSOCK_FD_CLR(it->sd, &WriteFDs);
-						}
-					}
-
-					if (!bOK) {
-						int	err, errno2;
-						psock_t_socklen	errlen;
-
-						err = 0;
-						errlen = sizeof(err);
-						errno2 = psock_errno();
-
-						if (psock_getsockopt(it->sd, PSOCK_SOL_SOCKET, PSOCK_SO_ERROR, &err, &errlen) == 0) {
-							if (errlen && err != 0) {
-								err = err ? err : errno2;
-								eventlog(eventlog_level_error, __FUNCTION__, "data socket error : {}({})", pstrerror(err), err);
-							}
-						}
-						dbs_server_shutdown_connection(it);
-						list_remove_elem(dbs_server_connection_list, &elem);
-					}
-					else {
-						if (dbs_packet_handle(it) == -1) {
-							eventlog(eventlog_level_error, __FUNCTION__, "dbs_packet_handle() failed");
-							dbs_server_shutdown_connection(it);
-							list_remove_elem(dbs_server_connection_list, &elem);
-						}
-					}
+					continue;
 				}
-			}
-		}
 
-		static void dbs_on_exit(void)
-		{
-			t_elem * elem;
-			t_d2dbs_connection * it;
-
-			if (dbs_server_listen_socket >= 0)
-				psock_close(dbs_server_listen_socket);
-			dbs_server_listen_socket = -1;
-
-			LIST_TRAVERSE(dbs_server_connection_list, elem)
-			{
-				if (!(it = (t_d2dbs_connection*)elem_get_data(elem))) continue;
-				dbs_server_shutdown_connection(it);
-				list_remove_elem(dbs_server_connection_list, &elem);
-			}
-			cl_destroy();
-			d2dbs_d2ladder_destroy();
-			list_destroy(dbs_server_connection_list);
-			if (preset_d2gsid_head)
-			{
-				t_preset_d2gsid * curr;
-				t_preset_d2gsid * next;
-
-				for (curr = preset_d2gsid_head; curr; curr = next)
+				if (now - c->last_active > timeout)
 				{
-					next = curr->next;
-					xfree(curr);
+					eventlog(eventlog_level_debug, __FUNCTION__, "[{}] connection {} timed out", c->sd, c->serverid);
+
+					conn_set_state(c, conn_state_destroy);
 				}
 			}
-			eventlog(eventlog_level_info, __FUNCTION__, "dbserver stopped");
 		}
 
-		int dbs_server_shutdown_connection(t_d2dbs_connection* conn)
+		static void dbs_keepalive()
 		{
-			psock_shutdown(conn->sd, PSOCK_SHUT_RDWR);
-			psock_close(conn->sd);
-			if (conn->verified && conn->type == CONNECT_CLASS_D2GS_TO_D2DBS) {
-				eventlog(eventlog_level_info, __FUNCTION__, "unlock all characters on gs {}({})", conn->serverip, conn->serverid);
-				eventlog_step(prefs_get_logfile_gs(), eventlog_level_info, __FUNCTION__, "unlock all characters on gs %s(%d)", conn->serverip, conn->serverid);
-				eventlog_step(prefs_get_logfile_gs(), eventlog_level_info, __FUNCTION__, "close connection to gs on socket %d", conn->sd);
-				cl_unlock_all_char_by_gsid(conn->serverid);
-			}
-			xfree(conn);
-			return 1;
-		}
-
-		static int setsockopt_keepalive(int sock)
-		{
-			int		optval;
-			psock_t_socklen	optlen;
-
-			optval = 1;
-			optlen = sizeof(optval);
-			if (psock_setsockopt(sock, PSOCK_SOL_SOCKET, PSOCK_SO_KEEPALIVE, &optval, optlen)) {
-				eventlog(eventlog_level_info, __FUNCTION__, "failed set KEEPALIVE for socket {}, errno={}", sock, psock_errno());
-				return -1;
-			}
-			else {
-				eventlog(eventlog_level_info, __FUNCTION__, "set KEEPALIVE option for socket {}", sock);
-				return 0;
-			}
-		}
-
-		static unsigned int get_preset_d2gsid(unsigned int ipaddr)
-		{
-			t_preset_d2gsid		*pgsid;
-
-			pgsid = preset_d2gsid_head;
-			while (pgsid)
+			for (auto c : connlist())
 			{
-				if (pgsid->ipaddr == ipaddr)
-					return pgsid->d2gsid;
-				pgsid = pgsid->next;
+				if (!c)
+				{
+					continue;
+				}
+
+				t_packet* rpacket = packet_create(packet_class_d2dbs_d2gs);
+				if (!rpacket)
+				{
+					continue;
+				}
+
+				packet_set_size(rpacket, sizeof(t_d2dbs_d2gs_echorequest));
+				packet_set_type(rpacket, D2DBS_D2GS_ECHOREQUEST);
+
+				bn_int_set(&rpacket->u.d2dbs_d2gs_echorequest.h.seqno, 0);
+
+				conn_push_outqueue(c, rpacket);
+
+				packet_del_ref(rpacket);
 			}
-			/* not found, build a new item */
-			pgsid = (t_preset_d2gsid*)xmalloc(sizeof(t_preset_d2gsid));
-			pgsid->ipaddr = ipaddr;
-			pgsid->d2gsid = ++dbs_packet_gs_id;
-			/* add to list */
-			pgsid->next = preset_d2gsid_head;
-			preset_d2gsid_head = pgsid;
-			return preset_d2gsid_head->d2gsid;
 		}
 
 	}
