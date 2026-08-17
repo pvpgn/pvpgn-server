@@ -2,9 +2,14 @@ name: build
 
 on:
   push:
-    branches: [develop, master]
+    branches: [develop, master, ci-release-binaries]
+    tags: ['1.*', 'v*']
   pull_request:
     branches: [develop, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   linux:
@@ -16,18 +21,96 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake zlib1g-dev libcurl4-openssl-dev
+          sudo apt-get install -y build-essential cmake zlib1g-dev libcurl4-openssl-dev liblua5.1-0-dev
 
       # CMAKE_POLICY_VERSION_MINIMUM is only needed while cmake_minimum_required
       # is below 3.5, which CMake 4 refuses. Harmless on CMake 3.x.
+      # Install paths are baked in at configure time from CMAKE_INSTALL_PREFIX
+      # (see cmake/Modules/DefineInstallationPaths.cmake), so the packaged
+      # binaries default to /usr/local/pvpgn and DESTDIR is used for staging.
       - name: Configure
         run: >
           cmake -S . -B build
           -DCMAKE_BUILD_TYPE=RelWithDebInfo
           -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          -DCMAKE_INSTALL_PREFIX=/usr/local/pvpgn
+          -DWITH_LUA=true
 
       - name: Build
         run: cmake --build build -j"$(nproc)"
+
+      - name: Package
+        run: |
+          DESTDIR="$PWD/stage" cmake --install build
+          REF="$(echo "${GITHUB_REF_NAME}" | tr '/' '-')"
+          PKG="pvpgn-${REF}-${GITHUB_SHA::7}-linux-x64"
+          echo "PKG=$PKG" >> "$GITHUB_ENV"
+          tar -czf "$PKG.tar.gz" -C stage/usr/local pvpgn
+
+      # Only bnetd exits 0 on --version; d2cs exits nonzero after printing
+      # its version and d2dbs prints nothing (upstream quirks), so those two
+      # are only checked for being present and executable.
+      - name: Smoke test
+        run: |
+          ./stage/usr/local/pvpgn/sbin/bnetd --version
+          test -x ./stage/usr/local/pvpgn/sbin/d2cs
+          test -x ./stage/usr/local/pvpgn/sbin/d2dbs
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PKG }}
+          path: ${{ env.PKG }}.tar.gz
+
+  macos:
+    name: macOS (Apple Clang, arm64)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Lua 5.1 must be built from source; newer versions are not supported.
+      - name: Build Lua 5.1
+        run: |
+          curl -fsSL https://www.lua.org/ftp/lua-5.1.5.tar.gz | tar -xz -C "$HOME"
+          make -C "$HOME/lua-5.1.5" macosx
+          make -C "$HOME/lua-5.1.5" install INSTALL_TOP="$HOME/lua51"
+
+      # CMAKE_PREFIX_PATH pins Lua to 5.1; without it CMake picks up any
+      # newer Homebrew Lua on the runner, which fails to compile.
+      - name: Configure
+        run: >
+          cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          -DCMAKE_INSTALL_PREFIX=/usr/local/pvpgn
+          -DWITH_LUA=true
+          -DCMAKE_PREFIX_PATH="$HOME/lua51"
+
+      - name: Build
+        run: cmake --build build -j"$(sysctl -n hw.ncpu)"
+
+      - name: Package
+        run: |
+          DESTDIR="$PWD/stage" cmake --install build
+          REF="$(echo "${GITHUB_REF_NAME}" | tr '/' '-')"
+          PKG="pvpgn-${REF}-${GITHUB_SHA::7}-macos-arm64"
+          echo "PKG=$PKG" >> "$GITHUB_ENV"
+          tar -czf "$PKG.tar.gz" -C stage/usr/local pvpgn
+
+      # Only bnetd exits 0 on --version; d2cs exits nonzero after printing
+      # its version and d2dbs prints nothing (upstream quirks), so those two
+      # are only checked for being present and executable.
+      - name: Smoke test
+        run: |
+          ./stage/usr/local/pvpgn/sbin/bnetd --version
+          test -x ./stage/usr/local/pvpgn/sbin/d2cs
+          test -x ./stage/usr/local/pvpgn/sbin/d2dbs
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PKG }}
+          path: ${{ env.PKG }}.tar.gz
 
   windows:
     name: Windows (MSVC, Win32)
@@ -36,14 +119,67 @@ jobs:
       - uses: actions/checkout@v4
 
       # Win32 is the supported Windows target: the vendored libs in lib/
-      # (curl, zlib, d2gelib) are x86, and src/d2warden/HashGameSeed.asm is
-      # 32-bit MASM, so an x64 build cannot succeed.
+      # (curl, zlib, lua, d2gelib) are x86, and src/d2warden/HashGameSeed.asm
+      # is 32-bit MASM, so an x64 build cannot succeed.
       # Runs in cmd: PowerShell mangles -DCMAKE_POLICY_VERSION_MINIMUM=3.5
       # into "3", which cmake_minimum_required then rejects.
       - name: Configure
         shell: cmd
-        run: cmake -S . -B build -A Win32 -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+        run: cmake -S . -B build -A Win32 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DWITH_LUA=true
 
       - name: Build
         shell: cmd
         run: cmake --build build --config RelWithDebInfo
+
+      # Windows install dirs are relative to the prefix (self-contained,
+      # relocatable layout), so --prefix at install time is all that's needed.
+      - name: Package
+        shell: pwsh
+        run: |
+          cmake --install build --config RelWithDebInfo --prefix "$PWD\stage\pvpgn"
+          # Runtime DLLs for the vendored import libs are not covered by install rules
+          $bnetd = Get-ChildItem -Recurse stage\pvpgn -Filter bnetd.exe | Select-Object -First 1
+          if (-not $bnetd) { Write-Error "bnetd.exe not found in install tree"; exit 1 }
+          Copy-Item lib\curl\*.dll, lib\zlib\zlib1.dll, lib\lua\lua5.1.dll $bnetd.DirectoryName
+          $ref = $env:GITHUB_REF_NAME -replace '/', '-'
+          $pkg = "pvpgn-$ref-$($env:GITHUB_SHA.Substring(0,7))-windows-x86"
+          "PKG=$pkg" | Out-File -Append $env:GITHUB_ENV
+          7z a "$pkg.zip" ".\stage\pvpgn\*"
+
+      - name: Smoke test
+        shell: pwsh
+        run: |
+          foreach ($exe in 'bnetd.exe', 'd2cs.exe', 'd2dbs.exe') {
+            $f = Get-ChildItem -Recurse stage\pvpgn -Filter $exe | Select-Object -First 1
+            if (-not $f) { Write-Error "$exe missing from package"; exit 1 }
+            Write-Output "found $($f.FullName)"
+          }
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PKG }}
+          path: ${{ env.PKG }}.zip
+
+  # On a version tag, gather the three platform packages into a DRAFT release.
+  # A human reviews the draft (all assets present, notes) and publishes it.
+  # Only runs if every platform built successfully.
+  release:
+    name: Draft release
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [linux, macos, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create draft release and attach binaries
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || \
+            gh release create "$GITHUB_REF_NAME" --draft --title "$GITHUB_REF_NAME" --generate-notes
+          gh release upload "$GITHUB_REF_NAME" dist/* --clobber
