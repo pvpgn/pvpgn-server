@@ -87,6 +87,8 @@ namespace pvpgn
 			return CLIENTTAG_TIBSUNXP;
 		case CLIENTTAG_REDALERT_UINT:
 			return CLIENTTAG_REDALERT;
+		case CLIENTTAG_REDALAFM_UINT:
+			return CLIENTTAG_REDALAFM;
 		case CLIENTTAG_REDALERT2_UINT:
 			return CLIENTTAG_REDALERT2;
 		case CLIENTTAG_DUNE2000_UINT:
@@ -98,7 +100,7 @@ namespace pvpgn
 		case CLIENTTAG_RENEGADE_UINT:
 			return CLIENTTAG_RENEGADE;
 		case CLIENTTAG_RENGDFDS_UINT:
-			return CLIENTTAG_RENGDFDS;
+			return CLIENTTAG_RENEGADE;
 		case CLIENTTAG_YURISREV_UINT:
 			return CLIENTTAG_YURISREV;
 		case CLIENTTAG_EMPERORBD_UINT:
@@ -484,6 +486,7 @@ namespace pvpgn
 		case 10499:
 		case 10505:
 		case 10506:
+		case 8397056: /* yuri clan ladder */
 			return CLIENTTAG_YURISREV_UINT;
 		case 12288:  /* C&C Renegade Free Dedicated Server */
 			return CLIENTTAG_RENGDFDS_UINT;

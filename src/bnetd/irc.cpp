@@ -1491,7 +1491,14 @@ namespace pvpgn
 
 							if (first)
 							{
-								irc_send(conn, RPL_MOTDSTART, send_line.c_str());
+								if (conn_get_clienttag(conn) == CLIENTTAG_RENEGADE_UINT) {
+									irc_send(conn, RPL_MOTDSTART, ":- ");
+									irc_send(conn, RPL_MOTD, fmt::format(":- {}", "<news>").c_str());
+									irc_send(conn, RPL_MOTD, send_line.c_str());
+								} else {
+									irc_send(conn, RPL_MOTDSTART, ":- ");
+
+								};
 								first = false;
 							}
 							else
@@ -1522,6 +1529,9 @@ namespace pvpgn
 					irc_send(conn, RPL_MOTD, ":- ====================================================== ");
 				}
 
+				if (conn_get_clienttag(conn) == CLIENTTAG_RENEGADE_UINT) {
+					irc_send(conn, RPL_MOTD, fmt::format(":- {}", "</news>").c_str());
+				};
 				irc_send(conn, RPL_ENDOFMOTD, ":End of /MOTD command");
 
 				return 0;

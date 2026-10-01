@@ -251,6 +251,10 @@ const char* const ILLEGALFILENAMES[] = {
 };
 #endif
 
+const char* const BLOCKEDUSERNAMES[] = {
+    "matchbot"
+};
+
 /***************************************************************/
 /* default values for the tracking server */
 

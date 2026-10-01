@@ -413,6 +413,31 @@ namespace pvpgn
 			}
 #endif
 
+            // Custom blocklist of usernames
+            // Currently contains "matchbot" which is required for WOL clients to matchmake.
+			for (int i = 0; i < (sizeof(BLOCKEDUSERNAMES) / sizeof(*BLOCKEDUSERNAMES)); i++)
+			{
+				if (strcasecmp(account_get_name(account), BLOCKEDUSERNAMES[i]) == 0)
+				{
+					account_set_auth_lockreason(account, "user name is not allowed");
+					eventlog(eventlog_level_debug, __FUNCTION__, "user name is invalid (reserved)");
+					return true;
+				}
+			}
+
+            // Disallow the server name and first 8 of server name for WOL clients.
+            // This allows users to safely "page" the server in WOL to change passwords.
+            if ((strncasecmp(account_get_name(account), prefs_get_servername(), strlen(prefs_get_servername())) == 0) ||
+                (strncasecmp(account_get_name(account), prefs_get_servername(), 8) == 0) ||
+                (strncasecmp(account_get_name(account), server_get_hostname(), strlen(server_get_hostname())) == 0) ||
+                (strncasecmp(account_get_name(account), server_get_hostname(), 8) == 0) ||
+                (strncasecmp(account_get_name(account), prefs_get_irc_network_name(), strlen(prefs_get_irc_network_name())) == 0) ||
+                (strncasecmp(account_get_name(account), prefs_get_irc_network_name(), 8) == 0)) {
+                    account_set_auth_lockreason(account, "user name is not allowed");
+                    eventlog(eventlog_level_debug, __FUNCTION__, "user name is invalid (reserved)");
+                    return true;
+            }
+
 			// check for unlock
 			if (unsigned int locktime = account_get_auth_locktime(account))
 			{
