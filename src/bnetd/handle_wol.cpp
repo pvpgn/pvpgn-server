@@ -31,6 +31,7 @@
 #include <nonstd/optional.hpp>
 
 #include "compat/strcasecmp.h"
+#include "compat/strncasecmp.h"
 #include "common/irc_protocol.h"
 #include "common/eventlog.h"
 #include "common/bnethash.h"
@@ -657,7 +658,7 @@ namespace pvpgn
 
 			conn_part_channel(conn);
 
-			if ((game = conn_get_game(conn)) && (game_get_status(game) == game_status_open))
+			if ((game = conn_get_game(conn)))
 				conn_set_game(conn, NULL, NULL, NULL, game_type_none, 0);
 
 			return 0;
@@ -1080,7 +1081,7 @@ namespace pvpgn
 						gametype = game_type_ladder;
 					else
 						gametype = game_type_ffa;
-					//    		    gametype = game_type_none;
+						//gametype = game_type_none;
 
 					if ((numparams >= 8) && (params[8]))
 					{
@@ -1111,7 +1112,9 @@ namespace pvpgn
 
 						// we have to send the JOINGAME acknowledgement
 						message_send_text(conn, message_wol_joingame, conn, _temp);
-						irc_send_topic(conn, channel);
+                        // This causes channel issues for Renegade, RA2. Needs addditional debugging.
+                        // Causes topic spam and incorrect values.
+						//irc_send_topic(conn, channel);
 						irc_send_rpl_namreply(conn, channel);
 					}
 				}
@@ -1186,13 +1189,23 @@ namespace pvpgn
 
 			if ((numparams >= 1) && (params[0])) {
 				t_connection * user;
+				t_clan * clan;
+				t_channel* curchan = conn_get_channel(conn);
 
-				if ((user = connlist_find_connection_by_accountname(params[0])) && (conn_wol_get_findme(user))) {
+				user = connlist_find_connection_by_accountname(params[0]);
+
+				if ((strncasecmp(params[0], prefs_get_servername(), strlen(prefs_get_servername())) == 0) || (strncasecmp(params[0], prefs_get_servername(), 8) == 0) || (strncasecmp(params[0], server_get_hostname(), strlen(server_get_hostname())) == 0) || (strncasecmp(params[0], server_get_hostname(), 8) == 0) || (strncasecmp(params[0], prefs_get_irc_network_name(), strlen(prefs_get_irc_network_name())) == 0) || (strncasecmp(params[0], prefs_get_irc_network_name(), 8) == 0)) {
+					std::snprintf(_temp, sizeof(_temp), "1 :"); /* Offline or Finding disabled */
+				} else if ((user) && (conn_wol_get_findme(user)) && (conn_get_game(user))) {
 					wolname = irc_convert_channel(conn_get_channel(user), conn);
-					std::snprintf(_temp, sizeof(_temp), "0 :%s", wolname); /* User found in channel wolname */
+					std::snprintf(_temp, sizeof(_temp), "0 :%s", wolname); /* Found in game */
+				} else if ((user) && (conn_wol_get_findme(user)) && (!conn_get_game(user))) {
+					wolname = irc_convert_channel(conn_get_channel(user), conn);
+					std::snprintf(_temp, sizeof(_temp), "0 :%s", wolname); /* Found in channel */
+				} else {
+					std::snprintf(_temp, sizeof(_temp), "1 :"); /* Offline */
 				}
-				else
-					std::snprintf(_temp, sizeof(_temp), "1 :"); /* user not logged or have not allowed find */
+
 
 				irc_send(conn, RPL_FIND_USER, _temp);
 			}
@@ -1210,13 +1223,26 @@ namespace pvpgn
 
 			if ((numparams >= 1) && (params[0])) {
 				t_connection * user;
+				t_clan * clan;
+				t_channel* curchan = conn_get_channel(conn);
 
-				if ((user = connlist_find_connection_by_accountname(params[0])) && (conn_wol_get_findme(user))) {
+				user = connlist_find_connection_by_accountname(params[0]);
+
+				if ((strncasecmp(params[0], prefs_get_servername(), strlen(prefs_get_servername())) == 0) || (strncasecmp(params[0], prefs_get_servername(), 8) == 0) || (strncasecmp(params[0], server_get_hostname(), strlen(server_get_hostname())) == 0) || (strncasecmp(params[0], server_get_hostname(), 8) == 0) || (strncasecmp(params[0], prefs_get_irc_network_name(), strlen(prefs_get_irc_network_name())) == 0) || (strncasecmp(params[0], prefs_get_irc_network_name(), 8) == 0)) {
+					std::snprintf(_temp, sizeof(_temp), "2 :"); /* Finding disabled */
+				} else if ((user) && (conn_get_clienttag(user) == CLIENTTAG_RENEGADE_UINT) && (conn_wol_get_findme(user)) && (!conn_get_game(user) && (!conn_get_channel(user)))) {
+					std::snprintf(_temp, sizeof(_temp), "3 :"); /* Online */
+				} else if ((user) && (!conn_wol_get_findme(user))) {
+					std::snprintf(_temp, sizeof(_temp), "2 :"); /* Finding disabled */
+				} else if ((user) && (conn_wol_get_findme(user)) && (conn_get_game(user))) {
 					wolname = irc_convert_channel(conn_get_channel(user), conn);
-					std::snprintf(_temp, sizeof(_temp), "0 :%s,0", wolname); /* User found in channel wolname */
+					std::snprintf(_temp, sizeof(_temp), "0 :%s,%d", wolname, channel_wol_get_game_type(game_get_channel(conn_get_game(user)))); /* Found in game */
+				} else if ((user) && (conn_wol_get_findme(user)) && (!conn_get_game(user))) {
+					wolname = irc_convert_channel(conn_get_channel(user), conn);
+					std::snprintf(_temp, sizeof(_temp), "0 :%s,0", wolname); /* Found in channel */
+				} else {
+					std::snprintf(_temp, sizeof(_temp), "1 :"); /* Offline */
 				}
-				else
-					std::snprintf(_temp, sizeof(_temp), "1 :"); /* user not logged or have not allowed find */
 
 				irc_send(conn, RPL_FIND_USER_EX, _temp);
 			}
@@ -1224,6 +1250,7 @@ namespace pvpgn
 				irc_send(conn, ERR_NEEDMOREPARAMS, "FINDUSEREX :Not enough parameters");
 			return 0;;
 		}
+
 
 		static int _handle_page_command(t_connection * conn, int numparams, char ** params, char * text)
 		{
@@ -1243,6 +1270,16 @@ namespace pvpgn
 				else if ((user = connlist_find_connection_by_accountname(params[0])) && (conn_wol_get_pageme(user))) {
 					message_send_text(user, message_type_page, conn, text);
 					paged = true;
+				}
+				else if ((strncasecmp(params[0], prefs_get_servername(), 8) == 0) || (strncasecmp(params[0], server_get_hostname(), 8) == 0)) {
+					if (text[0] == '/') {
+						/* "/" commands (like "/help..." */
+						handle_command(conn, text);
+						paged = true;
+					}
+					else {
+						paged = true;
+					}
 				}
 
 				if (paged)
@@ -1617,10 +1654,21 @@ namespace pvpgn
 			return 0;
 		}
 
+
 		/**
-		 * LADDER Server commands:
+		 * LADDER Server commands
+		 *
+		 * Formats:
+		 *
+		 * LISTSEARCH
+		 * [rank] [name] [points] [wins] [losses] [accomplishments] [kills] [deaths] [totalplayed]
+		 * RUNGSEARCH
+		 * [rank] [name] [points] [wins] [losses] [accomplishments] [disconnects]
+		 * HIGHSCORE
+		 * [rank] [name] [points] [wins] [losses] [accomplishments] [disconnects]
 		 */
-		static int _ladder_send(t_connection * conn, char const * command)
+
+		static int _ladder_send(t_connection * conn, char const * command, bool newlines = false)
 		{
 			char data[MAX_IRC_MESSAGE_LEN + 1];
 			unsigned len = 0;
@@ -1631,8 +1679,13 @@ namespace pvpgn
 				return -1;
 			}
 
-			if (command)
-				len = (std::strlen(command) + 6);
+			if (newlines) {
+				if (command)
+					len = (std::strlen(command) + 6);
+			} else {
+				if (command)
+					len = (std::strlen(command));
+			}
 
 			if (len > MAX_IRC_MESSAGE_LEN)
 			{
@@ -1640,9 +1693,12 @@ namespace pvpgn
 				packet_del_ref(p);
 				return -1;
 			}
-			
 
-			std::sprintf(data, "\r\n\r\n\r\n%s", command);
+			if (newlines) {
+				std::sprintf(data, "\r\n\r\n\r\n%s", command);
+			} else {
+				std::sprintf(data, "%s", command);
+			}
 
 			packet_set_size(p, 0);
 			packet_append_data(p, data, len);
@@ -1677,17 +1733,40 @@ namespace pvpgn
 			unsigned points = 0;
 			unsigned wins = 0;
 			unsigned losses = 0;
-			unsigned disconnects = 0;
+			unsigned accomplishments = 0; // Here is number before Nick and Honor Badges in Yuri (1-999)
+			unsigned kills = 0;
+			unsigned deaths = 0;
+			unsigned totalplayed = 0;
+			unsigned totalcount = 0;
 			char temp[MAX_IRC_MESSAGE_LEN];
 			char data[MAX_IRC_MESSAGE_LEN];
 			t_account * cl_account;
 			t_clienttag cl_tag;
+			t_clan * clan;
 			t_ladder_id id = ladder_id_solo;
 
-			std::memset(data, 0, sizeof(data));
+			std::memset(temp,0,sizeof(temp));
+			std::memset(data,0,sizeof(data));
 
 			if ((numparams >= 1) && (params[0]) && (text)) {
 				cl_tag = tag_sku_to_uint(std::atoi(params[0]));
+
+				if ((cl_tag != CLIENTTAG_TIBERNSUN_UINT) && (cl_tag != CLIENTTAG_TIBSUNXP_UINT)
+					&& (cl_tag != CLIENTTAG_REDALERT2_UINT) && (cl_tag != CLIENTTAG_YURISREV_UINT)
+					&& (cl_tag != CLIENTTAG_RENEGADE_UINT)) {
+					// PELISH: We are not supporting ladders for all WOL clients yet
+					std::strcat(data, "\n");
+				_ladder_send(conn, data, false);
+				DEBUG1("Client wants LISTSEARCH for {} client", clienttag_get_title(cl_tag));
+				return 0;
+					}
+
+					if (std::strcmp(params[0], "1005") == 0)
+						cl_tag = CLIENTTAG_REDALERT_UINT;
+				if (std::strcmp(params[0], "500") == 0)
+					cl_tag = CLIENTTAG_REDALAFM_UINT;
+
+				DEBUG1("Client wants LISTSEARCH for {} client", clienttag_get_title(cl_tag));
 
 				if (e = irc_get_ladderelems(text))
 				{
@@ -1696,36 +1775,95 @@ namespace pvpgn
 					//NOTFOUND
 					// TIMESTAMP 1188740860
 					// 'TOTAL 27466
-					/*    std::sprintf(temp,"TIMESTAMP %lu\n", std::time(NULL));
-						std::strcat(data,temp);
-						std::sprintf(temp,"TOTAL 88\n");
-						std::strcat(data,temp);*/
+					/*	std::sprintf(temp,"TIMESTAMP %lu\n", std::time(NULL));
+					 *						std::strcat(data,temp);
+					 *						std::sprintf(temp,"TOTAL 88\n");
+					 *						std::strcat(data,temp);*/
+
+					std::sprintf(temp,"TIMESTAMP %lu\n", std::time(NULL));
+					std::strcat(data, temp);
 
 					for (i = 0; e[i]; i++) {
-						/* Now we have in e[i] names */
+						/* Now we have names in e[i] */
+					}
+
+					std::sprintf(temp, "TOTAL %d\n", i);
+					std::strcat(data, temp);
+
+					for (i = 0; e[i]; i++) {
+						/* Now we have names in e[i] */
 						if (e[i] && (std::strcmp(e[i], ":") != 0)) {
-							cl_account = accountlist_find_account(e[i]);
-							if (cl_account && cl_tag && (rank = account_get_ladder_rank(cl_account, cl_tag, id))) {
-								points = account_get_ladder_points(cl_account, cl_tag, id);
-								wins = account_get_ladder_wins(cl_account, cl_tag, id);
-								losses = account_get_ladder_losses(cl_account, cl_tag, id);
-								disconnects = account_get_ladder_disconnects(cl_account, cl_tag, id);
-								std::sprintf(temp, "%u  %s  %u  %u  %u  0  %u\r\n", rank, e[i], points, wins, losses, disconnects);
+							if (cl_tag != CLIENTTAG_RENEGADE_UINT) {
+								cl_account = accountlist_find_account(e[i]);
+								if (cl_account) {
+									rank = account_get_ladder_rank(cl_account, cl_tag, id);
+									points = account_get_ladder_points(cl_account, cl_tag, id);
+									wins = account_get_ladder_wins(cl_account, cl_tag, id);
+									losses = account_get_ladder_losses(cl_account, cl_tag, id);
+									accomplishments = account_get_ladder_points(cl_account, cl_tag, id);
+									kills = 0;
+									deaths = 0;
+									totalplayed = 0;
+
+									if (!rank) {
+										std::sprintf(temp, "NOTFOUND\n");
+									} else {
+										std::sprintf(temp, "%u %s %u %u %u %u %u %u %u\n", rank, account_get_name(cl_account), points, wins, losses, accomplishments, kills, deaths, totalplayed);
+									}
+
+									std::strcat(data, temp);
+								} else {
+									std::sprintf(temp, "NOTFOUND\n");
+									std::strcat(data, temp);
+								}
+							}
+							if ((cl_tag == CLIENTTAG_RENEGADE_UINT) && (std::strcmp(params[0], "16780288") == 0)) { // Renegade SOLO
+								cl_account = accountlist_find_account(e[i]);
+								if (cl_account) {
+									rank = account_get_ladder_rank(cl_account, cl_tag, id);
+									points = account_get_ladder_points(cl_account, cl_tag, id);
+									wins = account_get_ladder_wins(cl_account, cl_tag, id);
+									losses = account_get_ladder_losses(cl_account, cl_tag, id);
+									accomplishments = account_get_ladder_points(cl_account, cl_tag, id);
+									kills = 0;
+									deaths = 0;
+									totalplayed = 0;
+
+									if (!rank) {
+										std::sprintf(temp, "NOTFOUND\n");
+									} else {
+										std::sprintf(temp, "%u %s %u %u %u %u %u %u %u\n", rank, account_get_name(cl_account), points, wins, losses, accomplishments, kills, deaths, totalplayed);
+									}
+
+									std::strcat(data, temp);
+								} else {
+									std::sprintf(temp, "NOTFOUND\n");
+									std::strcat(data, temp);
+								}
+							}
+							if ((cl_tag == CLIENTTAG_RENEGADE_UINT) && (std::strcmp(params[0], "8391680") == 0)) { // Renegade CLAN
+								clan = clanlist_find_clan_by_clantag(std::atoi(params[0]));
+								if (clan) {
+									std::sprintf(temp, "NOTFOUND\n");
+								}
 								std::strcat(data, temp);
 							}
-							else
-								std::strcat(data, "NOTFOUND\r");
+							if ((cl_tag == CLIENTTAG_REDALERT2_UINT || cl_tag == CLIENTTAG_YURISREV_UINT) && (std::strcmp(params[0], "8397056") == 0)) { // RA2/YR CLAN
+								clan = clanlist_find_clan_by_clantag(std::atoi(params[0]));
+								if (clan) {
+									std::sprintf(temp, "NOTFOUND\n");
+								}
+								std::strcat(data, temp);
+							}
 						}
 					}
 					irc_unget_ladderelems(e);
-
-					_ladder_send(conn, data);
+					_ladder_send(conn, data, false);
+				} else {
+					WARN0("Not enough parameters");
+					conn_set_state(conn, conn_state_destroy);
+					return 0;
 				}
-			}
-			else {
-				WARN0("Not enough parameters");
-				conn_set_state(conn, conn_state_destroy);
-				return 0;
 			}
 			return 0;
 		}
@@ -1738,69 +1876,88 @@ namespace pvpgn
 			unsigned points = 0;
 			unsigned wins = 0;
 			unsigned losses = 0;
+			unsigned accomplishments = 0; // Here is number before Nick and Honor Badges in Yuri (1-999)
 			unsigned disconnects = 0;
 			t_account * cl_account;
 			t_clienttag cl_tag;
 			t_ladder_id id = ladder_id_solo;
 
-			std::memset(data, 0, sizeof(data));
+			std::memset(temp,0,sizeof(temp));
+			std::memset(data,0,sizeof(data));
 
 			if ((numparams >= 4) && (params[0]) && (params[1]) && (params[3])) {
 				cl_tag = tag_sku_to_uint(std::atoi(params[3]));
 
 				if ((cl_tag != CLIENTTAG_TIBERNSUN_UINT) && (cl_tag != CLIENTTAG_TIBSUNXP_UINT)
-					&& (cl_tag != CLIENTTAG_REDALERT2_UINT) && (cl_tag != CLIENTTAG_YURISREV_UINT)) {
+					&& (cl_tag != CLIENTTAG_REDALERT2_UINT) && (cl_tag != CLIENTTAG_YURISREV_UINT)
+					&& (cl_tag != CLIENTTAG_RENEGADE_UINT)) {
 					// PELISH: We are not supporting ladders for all WOL clients yet
-					std::strcat(data, "\r\n");
-					_ladder_send(conn, data);
-					DEBUG1("Wants rung search for SKU {}", params[3]);
-					return 0;
-				}
-
-				if (_ladder_is_integer(params[0]) == 0) {
-					/* rungsearch want to line for one player (nick is in params[0]) */
-					cl_account = accountlist_find_account(params[0]);
-					if (cl_account && cl_tag && (rank = account_get_ladder_rank(cl_account, cl_tag, id))) {
-						points = account_get_ladder_points(cl_account, cl_tag, id);
-						wins = account_get_ladder_wins(cl_account, cl_tag, id);
-						losses = account_get_ladder_losses(cl_account, cl_tag, id);
-						disconnects = account_get_ladder_disconnects(cl_account, cl_tag, id);
-						std::sprintf(temp, "%u  %s  %u  %u  %u  0  %u\r\n", rank, params[0], points, wins, losses, disconnects);
+					std::strcat(data, "\n");
+				_ladder_send(conn, data, false);
+				DEBUG1("Client wants RUNGSEARCH for {} client", params[3]);
+				return 0;
 					}
-					else
-						std::sprintf(temp, "\r\n");
-					_ladder_send(conn, temp);
-				}
-				else {
-					/* Standard RUNG search */
-					unsigned start = std::atoi(params[0]);
-					unsigned count = std::atoi(params[1]);
 
-					eventlog(eventlog_level_debug, __FUNCTION__, "Start({}) Count({})", start, count);
-
-					LadderList* ladderList = NULL;
-
-					ladderList = ladders.getLadderList(LadderKey(id, cl_tag, ladder_sort_default, ladder_time_default));
-					for (unsigned int i = start; i < start + count; i++) {
-						const LadderReferencedObject* referencedObject = NULL;
-						cl_account = NULL;
-						if (((referencedObject = ladderList->getReferencedObject(i))) && (cl_account = referencedObject->getAccount())) {
+					if (_ladder_is_integer(params[0]) == 0) {
+						/* rungsearch want to look for one player (nick is in params[0]) */
+						cl_account = accountlist_find_account(params[0]);
+						if (cl_account) {
 							rank = account_get_ladder_rank(cl_account, cl_tag, id);
 							points = account_get_ladder_points(cl_account, cl_tag, id);
 							wins = account_get_ladder_wins(cl_account, cl_tag, id);
 							losses = account_get_ladder_losses(cl_account, cl_tag, id);
+							accomplishments = account_get_ladder_points(cl_account, cl_tag, id);
 							disconnects = account_get_ladder_disconnects(cl_account, cl_tag, id);
-							std::sprintf(temp, "%u  %s  %u  %u  %u  0  %u\r\n", rank, account_get_name(cl_account), points, wins, losses, disconnects);
+
+							if (!rank) {
+								std::sprintf(temp, "NOTFOUND\n");
+							} else {
+								std::sprintf(temp, "%u %s %u %u %u %u %u\n", rank, account_get_name(cl_account), points, wins, losses, accomplishments, disconnects);
+							}
+
+							std::strcat(data, temp);
+						} else {
+							std::sprintf(temp, "NOTFOUND\n");
+
 							std::strcat(data, temp);
 						}
-						else {
-							std::strcat(data, "\r\n");
-							_ladder_send(conn, data);
-							return 0;
+					}
+					else {
+						/* Standard RUNG search */
+						unsigned start = std::atoi(params[0]);
+						unsigned count = std::atoi(params[1]);
+
+						eventlog(eventlog_level_debug, __FUNCTION__, "Start({}) Count({})", start, count);
+
+						LadderList* ladderList = NULL;
+
+						ladderList = ladders.getLadderList(LadderKey(id, cl_tag, ladder_sort_default, ladder_time_default));
+						for (unsigned int i = start; i < start + count; i++) {
+							const LadderReferencedObject* referencedObject = NULL;
+							cl_account = NULL;
+							if (((referencedObject = ladderList->getReferencedObject(i))) && (cl_account = referencedObject->getAccount())) {
+								rank = account_get_ladder_rank(cl_account, cl_tag, id);
+								points = account_get_ladder_points(cl_account, cl_tag, id);
+								wins = account_get_ladder_wins(cl_account, cl_tag, id);
+								losses = account_get_ladder_losses(cl_account, cl_tag, id);
+								accomplishments = account_get_ladder_points(cl_account, cl_tag, id);
+								disconnects = account_get_ladder_disconnects(cl_account, cl_tag, id);
+
+								if (!rank) {
+									std::sprintf(temp, "NOTFOUND\n");
+								} else {
+									std::sprintf(temp, "%u %s %u %u %u %u %u\n", rank, account_get_name(cl_account), points, wins, losses, accomplishments, disconnects);
+								}
+
+								std::strcat(data, temp);
+							} else {
+								std::sprintf(temp, "NOTFOUND\n");
+
+								std::strcat(data, temp);
+							}
 						}
 					}
-					_ladder_send(conn, data);
-				}
+					_ladder_send(conn, data, true);
 			}
 			else {
 				WARN0("Not enough parameters");
@@ -1812,52 +1969,70 @@ namespace pvpgn
 
 		static int _handle_highscore_command(t_connection * conn, int numparams, char ** params, char * text)
 		{
-			/*    char ** e;
-				int i = 0;
-				unsigned rank = 2;
-				unsigned points = 258;
-				unsigned wins = 0;
-				unsigned losses = 0;
-				unsigned unknown = 0;  // Here is number before Nick and Honor Badges in Yuri (1-999)
-				unsigned disconnects = 0;
-				char temp[MAX_IRC_MESSAGE_LEN];
-				char data[MAX_IRC_MESSAGE_LEN];
-				t_account * cl_account;
-				t_clienttag cltag;
+			char ** e;
+			int i = 0;
+			unsigned rank = 0;
+			unsigned points = 0;
+			unsigned wins = 0;
+			unsigned losses = 0;
+			unsigned accomplishments = 0; // Here is number before Nick and Honor Badges in Yuri (1-999)
+			unsigned disconnects = 0;
+			char temp[MAX_IRC_MESSAGE_LEN];
+			char data[MAX_IRC_MESSAGE_LEN];
+			t_account * cl_account;
+			t_clienttag cl_tag;
+			t_ladder_id id = ladder_id_solo;
 
-				std::memset(temp,0,sizeof(temp));
-				std::memset(data,0,sizeof(data));
+			std::memset(temp,0,sizeof(temp));
+			std::memset(data,0,sizeof(data));
 
-				if (text)
+			if (text)
 				e = irc_get_ladderelems(text);
 
-				if (params[0])
-				cltag = tag_sku_to_uint(std::atoi(params[0]));
+			if (params[0])
+				cl_tag = tag_sku_to_uint(std::atoi(params[0]));
+
+			if ((cl_tag != CLIENTTAG_TIBERNSUN_UINT) && (cl_tag != CLIENTTAG_TIBSUNXP_UINT)
+				&& (cl_tag != CLIENTTAG_REDALERT2_UINT) && (cl_tag != CLIENTTAG_YURISREV_UINT)
+				&& (cl_tag != CLIENTTAG_RENEGADE_UINT)) {
+				// PELISH: We are not supporting ladders for all WOL clients yet
+				std::strcat(data, "\n");
+			_ladder_send(conn, data);
+			DEBUG1("Client wants HIGHSCORE for {} client", params[3]);
+			return 0;
+				}
 
 				for (i=0;e[i];i++) {
-				if (e[i] && (std::strcmp(e[i], ":") != 0)) {
-				cl_account = accountlist_find_account(e[i]);
-				if (cl_account) {
-				wins = account_get_normal_wins(cl_account, cltag);
-				losses = account_get_normal_losses(cl_account, cltag);
-				disconnects = account_get_normal_disconnects(cl_account, cltag);
-				std::sprintf(temp,"%u  %s  %u  %u  %u  %u  %u\r\n",rank+i,e[i],points,wins,losses,unknown,disconnects);
-				std::strcat(data,temp);
-				}
-				else
-				std::strcat(data,"NOTFOUND\r\n");
-				}
+					if (e[i] && (std::strcmp(e[i], ":") != 0)) {
+						cl_account = accountlist_find_account(e[i]);
+						if (cl_account) {
+							rank = account_get_ladder_rank(cl_account, cl_tag, id);
+							points = account_get_ladder_points(cl_account, cl_tag, id);
+							wins = account_get_ladder_wins(cl_account, cl_tag, id);
+							losses = account_get_ladder_losses(cl_account, cl_tag, id);
+							accomplishments = account_get_ladder_points(cl_account, cl_tag, id);
+							disconnects = account_get_ladder_disconnects(cl_account, cl_tag, id);
+
+							if (!rank) {
+								std::sprintf(temp, "NOTFOUND\n");
+							} else {
+								std::sprintf(temp, "%u %s %u %u %u %u %u\n", rank, account_get_name(cl_account), points, wins, losses, accomplishments, disconnects);
+							}
+
+							std::strcat(data, temp);
+						} else {
+							std::sprintf(temp, "NOTFOUND\n");
+
+							std::strcat(data, temp);
+						}
+					}
 				}
 
 				if (e)
-				irc_unget_ladderelems(e);
-
-				_ladder_send(conn,data);
-				*/
-			conn_set_state(conn, conn_state_destroy);
+					irc_unget_ladderelems(e);
+			_ladder_send(conn, data, false);
 			return 0;
 		}
-
 	}
 
 }
